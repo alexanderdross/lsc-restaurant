@@ -102,6 +102,14 @@ export const site = {
       a: "Direkt am Bodensee-Airport Friedrichshafen, Am Flugplatz 70, 88046 Friedrichshafen – mit Terrasse und Blick aufs Rollfeld.",
     },
     {
+      q: "Wie komme ich zum Restaurant?",
+      a: "Sie finden uns am Bodensee-Airport Friedrichshafen (Am Flugplatz 70), direkt hinter dem Hotel Ibis. Die Anfahrt mit dem Auto führt über den Flughafen.",
+    },
+    {
+      q: "Gibt es Parkplätze?",
+      a: "Ja, am Bodensee-Airport Friedrichshafen stehen Parkmöglichkeiten zur Verfügung.",
+    },
+    {
       q: "Wie sind die Öffnungszeiten?",
       a: "Dienstag bis Sonntag von 10:00 bis 22:00 Uhr. Montag ist Ruhetag.",
     },

@@ -34,6 +34,12 @@ export function RestaurantJsonLd() {
     telephone: site.phone.intl,
     email: site.email,
     servesCuisine: site.cuisine,
+    keywords: [
+      ...site.cuisine,
+      `Restaurant ${site.address.city}`,
+      `Pizzeria ${site.address.city}`,
+      site.address.landmark,
+    ].join(", "),
     priceRange: "€€",
     currenciesAccepted: "EUR",
     paymentAccepted: "Bar, MasterCard, VISA",
@@ -135,10 +141,14 @@ export function BreadcrumbJsonLd({
 type MenuSectionInput = { name: string; items: readonly Dish[] };
 
 function menuItem(d: Dish) {
+  // „vegan" wird nur ausgezeichnet, wenn es im Namen/Beschreibung explizit
+  // steht – rein aus vorhandenem Text abgeleitet, nichts erfunden.
+  const isVegan = /vegan/i.test(`${d.name} ${d.desc ?? ""}`);
   return {
     "@type": "MenuItem",
     name: d.name,
     ...(d.desc ? { description: d.desc } : {}),
+    ...(isVegan ? { suitableForDiet: "https://schema.org/VeganDiet" } : {}),
     ...(d.price
       ? {
           offers: {
