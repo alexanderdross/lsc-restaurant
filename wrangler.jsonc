@@ -1,6 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "lsc-restaurant",
+  // Cloudflare-Account „Dross:Media" – Deploy-Ziel explizit setzen.
+  "account_id": "e8d2e50aa1f1d61d8c68ba490d7cdec1",
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-03-25",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
