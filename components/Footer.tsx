@@ -11,10 +11,10 @@ export default function Footer() {
         {/* Marke */}
         <div>
           <Image
-            src="/logo.webp"
+            src="/logo-sm.webp"
             alt={site.name}
-            width={640}
-            height={359}
+            width={360}
+            height={202}
             loading="lazy"
             sizes="180px"
             className="mb-4 h-16 w-auto"
@@ -34,9 +34,9 @@ export default function Footer() {
               </a>
             </p>
             <p>
-              <a href={`mailto:${site.email}`} className="hover:text-rose">
+              <Link href="/reservieren" className="hover:text-rose">
                 {site.email}
-              </a>
+              </Link>
             </p>
             <p className="pt-2">
               {site.address.street}
@@ -63,7 +63,11 @@ export default function Footer() {
             {site.hours.map((h) => (
               <div key={h.day} className="flex justify-between gap-4">
                 <dt>{h.day}</dt>
-                <dd className={h.closed ? "text-rose" : "text-cream"}>
+                <dd
+                  className={`whitespace-nowrap ${
+                    h.closed ? "text-rose" : "text-cream"
+                  }`}
+                >
                   {h.value}
                 </dd>
               </div>

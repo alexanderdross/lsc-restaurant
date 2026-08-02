@@ -127,7 +127,6 @@ function b64(str: string): string {
 
 function encodeWord(text: string): string {
   // MIME encoded-word für Nicht-ASCII (z. B. in Betreff/Anzeigenamen).
-  // eslint-disable-next-line no-control-regex
   if (!/[^\x00-\x7F]/.test(text)) return text;
   return `=?UTF-8?B?${b64(text)}?=`;
 }

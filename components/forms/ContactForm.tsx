@@ -99,7 +99,7 @@ export default function ContactForm() {
       <div className="flex items-center gap-4">
         <SubmitButton />
       </div>
-      <p className="text-xs leading-relaxed text-cream-dim/70">
+      <p className="text-xs leading-relaxed text-cream-dim">
         Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben zur Bearbeitung
         Ihrer Anfrage zu. Details in unserer{" "}
         <a href="/datenschutz" className="underline hover:text-rose">

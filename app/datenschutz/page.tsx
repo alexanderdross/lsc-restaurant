@@ -83,14 +83,17 @@ export default function DatenschutzPage() {
               haben.
             </p>
 
-            <h2>7. Karten &amp; eingebettete Inhalte (Google Maps)</h2>
+            <h2>7. Karten &amp; eingebettete Inhalte</h2>
             <p>
-              Zur Darstellung unseres Standorts binden wir Kartenmaterial von Google
-              Maps (Google Ireland Ltd.) ein. Beim Laden der Karte kann Google
-              Informationen (u. a. Ihre IP-Adresse) verarbeiten. Rechtsgrundlage ist
-              Art. 6 Abs. 1 lit. f DSGVO. Weitere Informationen finden Sie in der{" "}
-              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
-                Datenschutzerklärung von Google
+              Zur Darstellung unseres Standorts binden wir eine Karte von
+              OpenStreetMap (OpenStreetMap Foundation) ein. Die Karte wird aus
+              Datenschutz- und Performance-Gründen erst geladen, wenn sie in den
+              sichtbaren Bereich gelangt. Beim Laden werden technisch notwendige
+              Daten (u. a. Ihre IP-Adresse) an OpenStreetMap übermittelt; dabei
+              werden keine Tracking-Cookies gesetzt. Rechtsgrundlage ist Art. 6
+              Abs. 1 lit. f DSGVO. Weitere Informationen finden Sie in der{" "}
+              <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener noreferrer">
+                Datenschutzerklärung der OpenStreetMap Foundation
               </a>
               .
             </p>

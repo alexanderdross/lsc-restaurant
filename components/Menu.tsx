@@ -10,11 +10,19 @@ function Price({ value }: { value?: string }) {
   );
 }
 
-function DishRow({ dish }: { dish: Dish }) {
+function DishRow({
+  dish,
+  headingTag: HeadingTag = "h3",
+}: {
+  dish: Dish;
+  headingTag?: "h2" | "h3";
+}) {
   return (
     <div className="py-4">
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="font-serif text-lg text-cream">{dish.name}</h3>
+        <HeadingTag className="font-serif text-lg text-cream">
+          {dish.name}
+        </HeadingTag>
         <Price value={dish.price} />
       </div>
       {dish.desc && (
@@ -23,7 +31,7 @@ function DishRow({ dish }: { dish: Dish }) {
         </p>
       )}
       {dish.codes && (
-        <p className="mt-1 text-xs italic text-cream-dim/70">({dish.codes})</p>
+        <p className="mt-1 text-xs italic text-cream-dim">({dish.codes})</p>
       )}
     </div>
   );
@@ -65,7 +73,7 @@ export function DishList({ items }: { items: Dish[] }) {
   return (
     <div className="mx-auto max-w-3xl divide-y divide-cream/10">
       {items.map((dish, i) => (
-        <DishRow key={dish.name + i} dish={dish} />
+        <DishRow key={dish.name + i} dish={dish} headingTag="h2" />
       ))}
     </div>
   );

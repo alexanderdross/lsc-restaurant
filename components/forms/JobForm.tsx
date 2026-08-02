@@ -90,7 +90,7 @@ export default function JobForm() {
           className="block w-full text-sm text-cream-dim file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-rose file:px-4 file:py-2 file:font-semibold file:text-espresso hover:file:bg-rose-gold"
         />
         <FieldError id="job-file-error" msg={state.errors?.file} />
-        <p id="job-file-hint" className="mt-1 text-xs text-cream-dim/70">
+        <p id="job-file-hint" className="mt-1 text-xs text-cream-dim">
           Lebenslauf o. Ä. – PDF, DOC/DOCX, JPG oder PNG, max. 5 MB.
         </p>
       </div>
@@ -104,7 +104,7 @@ export default function JobForm() {
       )}
 
       <SubmitButton />
-      <p className="text-xs leading-relaxed text-cream-dim/70">
+      <p className="text-xs leading-relaxed text-cream-dim">
         Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben im Rahmen des
         Bewerbungsverfahrens zu. Details in unserer{" "}
         <a href="/datenschutz" className="underline hover:text-rose">

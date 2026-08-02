@@ -29,8 +29,11 @@ export const site = {
     // Bodensee-Airport Friedrichshafen (Näherungswerte)
     geo: { lat: 47.6712, lng: 9.5115 },
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=LSC+Restaurant+Am+Flugplatz+70+88046+Friedrichshafen",
+    // Cookie-freie Karten-Einbindung (OpenStreetMap) – DSGVO-freundlich, keine
+    // Third-Party-Cookies/Tracking. Der Anfahrt-Link (mapsUrl) öffnet Google Maps
+    // erst auf Klick in einem neuen Tab.
     mapsEmbed:
-      "https://www.google.com/maps?q=Am+Flugplatz+70,+88046+Friedrichshafen&output=embed",
+      "https://www.openstreetmap.org/export/embed.html?bbox=9.5055%2C47.6682%2C9.5175%2C47.6742&layer=mapnik&marker=47.6712%2C9.5115",
   },
 
   hours: [
@@ -48,7 +51,7 @@ export const site = {
 
   payment: {
     methods: ["Bar", "MasterCard", "VISA"],
-    note: "Kartenzahlung erst ab einem Betrag von 20 €.",
+    note: "Kartenzahlung ab 20 €.",
   },
 
   social: {

@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
     "preview": "npm run patch:opennext && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "npm run patch:opennext && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-build": "npm run patch:opennext && opennextjs-cloudflare build",
@@ -22,11 +24,16 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@eslint/eslintrc": "^3.3.6",
     "@opennextjs/cloudflare": "^1.9.1",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^22.15.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.22",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
     "wrangler": "^4.42.0"
