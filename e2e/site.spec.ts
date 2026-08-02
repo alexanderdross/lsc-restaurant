@@ -156,6 +156,50 @@ test("SEO: Open-Graph- und Twitter-Card-Tags vorhanden", async ({ page }) => {
   await expect(page.locator('meta[name="twitter:image"]')).toHaveCount(1);
 });
 
+test.describe("PWA: Manifest, Service Worker & Theme-Color", () => {
+  test("Manifest ist erreichbar und korrekt", async ({ page, request }) => {
+    await page.goto("/");
+    const link = page.locator('link[rel="manifest"]');
+    await expect(link).toHaveCount(1);
+    const href = await link.getAttribute("href");
+    expect(href).toBeTruthy();
+
+    const res = await request.get(href!);
+    expect(res.status()).toBe(200);
+    const manifest = await res.json();
+    expect(manifest.name).toBeTruthy();
+    expect(manifest.display).toBe("standalone");
+    expect(manifest.start_url).toBe("/");
+    expect(Array.isArray(manifest.icons)).toBe(true);
+    expect(manifest.icons.length).toBeGreaterThanOrEqual(2);
+    expect(
+      manifest.icons.some((i: { purpose?: string }) => i.purpose === "maskable")
+    ).toBe(true);
+  });
+
+  test("theme-color-Meta ist gesetzt", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
+      "content",
+      "#1e120c"
+    );
+  });
+
+  test("Service Worker wird als JavaScript ausgeliefert", async ({ request }) => {
+    const res = await request.get("/sw.js");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"] || "").toContain("javascript");
+    const body = await res.text();
+    expect(body).toContain("addEventListener");
+  });
+
+  test("Offline-Fallback-Seite lädt", async ({ page }) => {
+    const res = await page.goto("/offline/");
+    expect(res?.status()).toBe(200);
+    await expect(page.locator("h1")).toHaveCount(1);
+  });
+});
+
 test("SEO: JSON-LD BreadcrumbList und Menu vorhanden", async ({ page }) => {
   await page.goto("/speisekarte");
   const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();

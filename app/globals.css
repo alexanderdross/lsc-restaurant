@@ -176,16 +176,6 @@ h1, h2, h3, h4 {
     background: var(--color-cocoa-2);
     color: var(--color-cream-dim);
     font-size: 0.8rem;
-    animation: lsc-pulse 1.6s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .turnstile-skeleton {
-      animation: none;
-    }
-  }
-  @keyframes lsc-pulse {
-    0%, 100% { opacity: 0.6; }
-    50% { opacity: 0.95; }
   }
 }
 

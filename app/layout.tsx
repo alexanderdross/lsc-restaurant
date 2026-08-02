@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { site } from "@/content/site";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
 // Vollständig self-hosted Variable Fonts (woff2 im Repo unter app/fonts/).
@@ -67,6 +68,18 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
   icons: { icon: "/icon.png", apple: "/apple-icon.png" },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: site.shortName,
+  },
+  applicationName: site.shortName,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#1e120c",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -94,6 +107,7 @@ export default function RootLayout({
         <Header />
         <main id="inhalt">{children}</main>
         <Footer />
+        <ServiceWorkerRegister />
       </body>
     </html>
   );

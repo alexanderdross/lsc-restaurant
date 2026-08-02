@@ -23,7 +23,8 @@ for (const path of pages) {
     // prüfen (kein Messen mitten in der Einblend-Animation).
     await page.addStyleTag({
       content:
-        ".reveal{opacity:1 !important;transform:none !important;transition:none !important}",
+        ".reveal{opacity:1 !important;transform:none !important;transition:none !important}" +
+        ".turnstile-skeleton{animation:none !important;opacity:1 !important}",
     });
     await page.waitForTimeout(50);
     const results = await new AxeBuilder({ page })
