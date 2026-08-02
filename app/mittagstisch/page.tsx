@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { DishList } from "@/components/Menu";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { BreadcrumbJsonLd, MittagstischJsonLd } from "@/components/JsonLd";
 import { mittagstisch } from "@/content/menu";
 import { site } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
@@ -23,6 +23,7 @@ export default function MittagstischPage() {
           { name: "Mittagstisch", path: "/mittagstisch" },
         ]}
       />
+      <MittagstischJsonLd />
       <PageHero
         eyebrow="Unsere Mittagstischkarte"
         title="Mittagstisch"

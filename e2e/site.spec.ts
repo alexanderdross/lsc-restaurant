@@ -213,3 +213,93 @@ test("SEO: JSON-LD BreadcrumbList und Menu vorhanden", async ({ page }) => {
   expect(types).toContain("BreadcrumbList");
   expect(types).toContain("Menu");
 });
+
+async function jsonLdTypes(page: import("@playwright/test").Page) {
+  const blocks = await page
+    .locator('script[type="application/ld+json"]')
+    .allTextContents();
+  return blocks.map((b) => {
+    try {
+      return JSON.parse(b)["@type"];
+    } catch {
+      return null;
+    }
+  });
+}
+
+test.describe("Local SEO & GEO: strukturierte Daten", () => {
+  test("Restaurant-Entität ist site-weit vorhanden (Home & Unterseite)", async ({
+    page,
+  }) => {
+    for (const path of ["/", "/impressum"]) {
+      await page.goto(path);
+      expect(await jsonLdTypes(page), `Restaurant fehlt auf ${path}`).toContain(
+        "Restaurant"
+      );
+    }
+  });
+
+  test("Restaurant-Schema enthält NAP, Geo & Öffnungszeiten", async ({ page }) => {
+    await page.goto("/");
+    const blocks = await page
+      .locator('script[type="application/ld+json"]')
+      .allTextContents();
+    const restaurant = blocks
+      .map((b) => {
+        try {
+          return JSON.parse(b);
+        } catch {
+          return null;
+        }
+      })
+      .find((d) => d && d["@type"] === "Restaurant");
+    expect(restaurant).toBeTruthy();
+    expect(restaurant.telephone).toBeTruthy();
+    expect(restaurant.address?.addressLocality).toBe("Friedrichshafen");
+    expect(restaurant.geo?.latitude).toBeTruthy();
+    expect(Array.isArray(restaurant.openingHoursSpecification)).toBe(true);
+    expect(Array.isArray(restaurant.hasMenu)).toBe(true);
+  });
+
+  test("Alle drei Karten liefern Menu-Schema", async ({ page }) => {
+    for (const path of ["/speisekarte", "/mittagstisch", "/saisonkarte"]) {
+      await page.goto(path);
+      expect(await jsonLdTypes(page), `Menu fehlt auf ${path}`).toContain("Menu");
+    }
+  });
+
+  test("Reservieren: FAQPage-Schema + sichtbarer FAQ-Abschnitt", async ({
+    page,
+  }) => {
+    await page.goto("/reservieren");
+    expect(await jsonLdTypes(page)).toContain("FAQPage");
+    await expect(
+      page.getByRole("heading", { name: "Häufige Fragen" })
+    ).toBeVisible();
+    await expect(page.getByText("Wie sind die Öffnungszeiten?")).toBeVisible();
+  });
+
+  test("Geo-Meta-Tags sind gesetzt", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator('meta[name="geo.placename"]')).toHaveAttribute(
+      "content",
+      "Friedrichshafen"
+    );
+    await expect(page.locator('meta[name="geo.region"]')).toHaveAttribute(
+      "content",
+      "DE-BW"
+    );
+    await expect(page.locator('meta[name="geo.position"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="ICBM"]')).toHaveCount(1);
+  });
+
+  test("/llms.txt liefert eine Text-Zusammenfassung (GEO)", async ({ request }) => {
+    const res = await request.get("/llms.txt");
+    expect(res.status()).toBe(200);
+    expect(res.headers()["content-type"] || "").toContain("text/plain");
+    const body = await res.text();
+    expect(body).toContain("LSC Restaurant");
+    expect(body).toContain("Öffnungszeiten");
+    expect(body).toContain("Friedrichshafen");
+  });
+});

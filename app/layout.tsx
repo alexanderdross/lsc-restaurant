@@ -4,6 +4,7 @@ import { site } from "@/content/site";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import { RestaurantJsonLd, WebsiteJsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
 // Vollständig self-hosted Variable Fonts (woff2 im Repo unter app/fonts/).
@@ -75,6 +76,13 @@ export const metadata: Metadata = {
     title: site.shortName,
   },
   applicationName: site.shortName,
+  // Klassische Geo-Meta-Tags für lokale Suche
+  other: {
+    "geo.region": site.address.region,
+    "geo.placename": site.address.city,
+    "geo.position": `${site.address.geo.lat};${site.address.geo.lng}`,
+    ICBM: `${site.address.geo.lat}, ${site.address.geo.lng}`,
+  },
 };
 
 export const viewport: Viewport = {
@@ -91,6 +99,10 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} ${script.variable}`}
     >
       <body>
+        {/* Site-weite strukturierte Daten: Restaurant (LocalBusiness) + WebSite.
+            Auf jeder Seite vorhanden für konsistente lokale Signale (Local SEO/GEO). */}
+        <RestaurantJsonLd />
+        <WebsiteJsonLd />
         {/* Aktiviert JS-abhängige Effekte (Scroll-Reveal) erst, wenn JS läuft –
             ohne JS bleibt der Inhalt vollständig sichtbar. */}
         <script
