@@ -279,6 +279,62 @@ test.describe("Local SEO & GEO: strukturierte Daten", () => {
     await expect(page.getByText("Wie sind die Öffnungszeiten?")).toBeVisible();
   });
 
+  test("Reservieren: Anfahrt & Parken sichtbar, neue FAQ im Schema", async ({
+    page,
+  }) => {
+    await page.goto("/reservieren");
+    await expect(
+      page.getByRole("heading", { name: /Anfahrt & Parken/ })
+    ).toBeVisible();
+    await expect(page.getByText("Wie komme ich zum Restaurant?")).toBeVisible();
+    await expect(page.getByText("Gibt es Parkplätze?")).toBeVisible();
+
+    const blocks = await page
+      .locator('script[type="application/ld+json"]')
+      .allTextContents();
+    const faq = blocks
+      .map((b) => {
+        try {
+          return JSON.parse(b);
+        } catch {
+          return null;
+        }
+      })
+      .find((d) => d && d["@type"] === "FAQPage");
+    const questions = (faq?.mainEntity ?? []).map(
+      (q: { name: string }) => q.name
+    );
+    expect(questions).toContain("Wie komme ich zum Restaurant?");
+    expect(questions).toContain("Gibt es Parkplätze?");
+  });
+
+  test("Speisekarte: Menu-Schema enthält suitableForDiet (vegan)", async ({
+    page,
+  }) => {
+    await page.goto("/speisekarte");
+    const blocks = await page
+      .locator('script[type="application/ld+json"]')
+      .allTextContents();
+    const menu = blocks
+      .map((b) => {
+        try {
+          return JSON.parse(b);
+        } catch {
+          return null;
+        }
+      })
+      .find((d) => d && d["@type"] === "Menu");
+    expect(menu).toBeTruthy();
+    const items = (menu.hasMenuSection ?? []).flatMap(
+      (s: { hasMenuItem?: unknown[] }) => s.hasMenuItem ?? []
+    );
+    const vegan = items.filter(
+      (i: { suitableForDiet?: string }) =>
+        i.suitableForDiet === "https://schema.org/VeganDiet"
+    );
+    expect(vegan.length).toBeGreaterThanOrEqual(1);
+  });
+
   test("Geo-Meta-Tags sind gesetzt", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator('meta[name="geo.placename"]')).toHaveAttribute(

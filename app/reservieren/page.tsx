@@ -84,6 +84,24 @@ export default function ReservierenPage() {
         </div>
       </section>
 
+      {/* Anfahrt & Parken – kurzer, faktischer GEO-Content (LLM-zitierfähig) */}
+      <section className="bg-cocoa">
+        <div className="container-lsc pb-4 md:pb-8">
+          <div className="mx-auto max-w-4xl">
+            <h2 className="text-2xl text-cream md:text-3xl">Anfahrt &amp; Parken</h2>
+            <p className="mt-4 leading-relaxed text-cream-dim">
+              Sie finden das {site.shortName} direkt am{" "}
+              {site.address.landmark}, {site.address.street},{" "}
+              {site.address.zip} {site.address.city} – direkt hinter dem Hotel
+              Ibis. Die Anfahrt mit dem Auto führt über den Flughafen; am
+              Bodensee-Airport stehen Parkmöglichkeiten zur Verfügung. Von
+              unserer Terrasse aus haben Sie dabei einen direkten Blick aufs
+              Rollfeld.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Häufige Fragen (sichtbar + FAQPage-Schema, gut für lokale Suche & GEO) */}
       <section className="bg-espresso">
         <div className="container-lsc py-16 md:py-20">
