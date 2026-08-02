@@ -32,6 +32,7 @@ export default function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
+    <>
     <header
       className={`sticky top-0 z-50 transition-colors duration-300 ${
         scrolled
@@ -152,8 +153,12 @@ export default function Header() {
           </div>
         </button>
       </div>
+    </header>
 
-      {/* Mobile-Overlay */}
+      {/* Mobile-Overlay – bewusst AUSSERHALB von <header>: der Header bekommt
+          beim Scrollen backdrop-blur, was ihn zum Containing Block für
+          position:fixed-Nachfahren machen würde. Als Geschwister-Element bleibt
+          das Overlay am Viewport fixiert und deckt voll ab. */}
       <div
         id="mobile-menu"
         className={`fixed inset-0 top-0 z-40 flex flex-col bg-espresso/98 backdrop-blur transition-opacity duration-300 xl:hidden ${
@@ -198,6 +203,6 @@ export default function Header() {
           </Link>
         </nav>
       </div>
-    </header>
+    </>
   );
 }

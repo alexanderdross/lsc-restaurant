@@ -78,6 +78,27 @@ test("Header schrumpft beim Scrollen (Shrink-on-Scroll)", async ({ page }) => {
   expect(after!.height).toBeLessThan(before!.height);
 });
 
+test("Mobiles Menü deckt bei gescrolltem Header den vollen Viewport ab", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  // Seite scrollen → Header wird kompakt und bekommt backdrop-blur
+  await page.evaluate(() => window.scrollTo(0, 600));
+  await page.waitForTimeout(400);
+  // Burger öffnen
+  await page.getByRole("button", { name: /Menü öffnen/i }).click();
+
+  const overlay = page.locator("#mobile-menu");
+  await expect(overlay).toBeVisible();
+  const box = await overlay.boundingBox();
+  const vp = page.viewportSize()!;
+  expect(box).not.toBeNull();
+  // Overlay muss am Viewport (nicht am geshrinkten Header) verankert sein
+  expect(box!.y).toBeLessThanOrEqual(1);
+  expect(box!.height).toBeGreaterThanOrEqual(vp.height - 1);
+});
+
 test("Reservierungsformular hat die Pflichtfelder", async ({ page }) => {
   await page.goto("/reservieren");
   await expect(page.locator("#name")).toBeVisible();
