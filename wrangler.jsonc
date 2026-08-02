@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "lsc-restaurant",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+  // SMTP-Zugangsdaten NICHT hier eintragen – als Secrets hinterlegen:
+  //   npx wrangler secret put SMTP_HOST
+  //   npx wrangler secret put SMTP_PORT
+  //   npx wrangler secret put SMTP_USER
+  //   npx wrangler secret put SMTP_PASS
+  //   npx wrangler secret put MAIL_FROM
+  //   npx wrangler secret put MAIL_TO
+  // Für lokale Entwicklung: in .dev.vars (siehe .dev.vars.example)
+}

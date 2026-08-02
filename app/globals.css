@@ -1,0 +1,185 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ *  LSC Restaurant – Design-Tokens (Braun-Rosé, dark-first)
+ *  Orientiert an der bestehenden Marken-Stimmung, modern verfeinert.
+ * ------------------------------------------------------------------ */
+@theme {
+  /* Braun-Palette */
+  --color-espresso: #1e120c; /* tiefste Flächen, Header, Footer */
+  --color-cocoa: #2c1a13; /* Standard-Sektionshintergrund */
+  --color-cocoa-2: #3a2420; /* etwas hellere Fläche / Cards */
+  --color-wine: #5a3733; /* Hero-/Akzentbänder (maroon) */
+
+  /* Rosé-Akzente */
+  --color-rose: #c99a9a; /* Signatur-Akzent: Buttons, Headings */
+  --color-rose-gold: #d8b4a6; /* Hover, feine Linien */
+
+  /* Helle Töne */
+  --color-cream: #f3e9dd; /* Text auf Dunkel */
+  --color-cream-dim: #c9b8a8; /* gedämpfter Text */
+  --color-sand: #e7d9c6; /* helle Sektion / Cards */
+
+  /* Schrift-Familien (werden von next/font gesetzt) */
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-script), "Segoe Script", cursive;
+
+  /* Rhythmus */
+  --radius-card: 14px;
+}
+
+/* ------------------------------------------------------------------ *
+ *  Basis
+ * ------------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-espresso);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-rose);
+  color: var(--color-espresso);
+}
+
+/* Fokus-Sichtbarkeit (A11y) */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-rose);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+/* ------------------------------------------------------------------ *
+ *  Utility-Komponenten
+ * ------------------------------------------------------------------ */
+@layer components {
+  .container-lsc {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-lsc {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Schreibschrift-Akzent */
+  .script {
+    font-family: var(--font-script);
+    color: var(--color-rose);
+    font-weight: 400;
+  }
+
+  /* Kleines Label über Überschriften */
+  .eyebrow {
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-rose);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1;
+    transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    will-change: transform;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  .btn-primary {
+    background: var(--color-rose);
+    color: var(--color-espresso);
+  }
+  .btn-primary:hover {
+    background: var(--color-rose-gold);
+  }
+  .btn-outline {
+    border: 1.5px solid rgba(243, 233, 221, 0.4);
+    color: var(--color-cream);
+  }
+  .btn-outline:hover {
+    border-color: var(--color-rose);
+    color: var(--color-rose);
+  }
+
+  /* Card */
+  .card {
+    background: var(--color-cocoa-2);
+    border: 1px solid rgba(243, 233, 221, 0.08);
+    border-radius: var(--radius-card);
+  }
+
+  /* Zierlinie */
+  .rule {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(216, 180, 166, 0.5),
+      transparent
+    );
+    border: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ *  Scroll-Reveal (progressive enhancement)
+ * ------------------------------------------------------------------ */
+/* Inhalt ist standardmäßig sichtbar (No-JS-/Fallback-sicher).
+   Nur wenn JS aktiv ist (Klasse `js` am <html>), wird vor dem Einblenden
+   ausgeblendet. So bleibt der Inhalt bei deaktiviertem JS immer sichtbar. */
+.reveal {
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

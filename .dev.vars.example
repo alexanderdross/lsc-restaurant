@@ -1,0 +1,11 @@
+# Vorlage für lokale Entwicklung – kopieren nach `.dev.vars` (wird nicht committet).
+# In Produktion als Cloudflare-Worker-Secrets hinterlegen (siehe README).
+# netcup-SMTP-Zugangsdaten:
+SMTP_HOST="mail.your-netcup-server.de"
+SMTP_PORT="587"
+SMTP_USER="info@lsc-restaurant.de"
+SMTP_PASS="dein-postfach-passwort"
+# Absender muss eine echte netcup-Postfachadresse sein (SPF/DKIM):
+MAIL_FROM="info@lsc-restaurant.de"
+# Empfänger der Formular-Mails:
+MAIL_TO="info@lsc-restaurant.de"

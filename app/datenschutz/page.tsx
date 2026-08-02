@@ -1,0 +1,132 @@
+import type { Metadata } from "next";
+import PageHero from "@/components/PageHero";
+import Prose from "@/components/Prose";
+import { site } from "@/content/site";
+
+export const metadata: Metadata = {
+  title: "Datenschutzerklärung",
+  description:
+    "Informationen zur Verarbeitung personenbezogener Daten auf der Website des LSC Restaurants.",
+  alternates: { canonical: "/datenschutz" },
+  robots: { index: true, follow: false },
+};
+
+export default function DatenschutzPage() {
+  return (
+    <>
+      <PageHero title="Datenschutzerklärung" />
+      <section className="bg-cocoa">
+        <div className="container-lsc py-16 md:py-20">
+          <Prose>
+            <h2>1. Verantwortlicher</h2>
+            <p>
+              Verantwortlich für die Datenverarbeitung auf dieser Website ist:
+              <br />
+              <strong>{site.name}</strong>, {site.owner.replace(" & Team", "")}
+              <br />
+              {site.address.street}, {site.address.zip} {site.address.city}
+              <br />
+              Telefon: <a href={site.phone.href}>{site.phone.intl}</a>
+              <br />
+              E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a>
+            </p>
+
+            <h2>2. Allgemeines zur Datenverarbeitung</h2>
+            <p>
+              Wir verarbeiten personenbezogene Daten unserer Nutzer grundsätzlich nur,
+              soweit dies zur Bereitstellung einer funktionsfähigen Website sowie
+              unserer Inhalte und Leistungen erforderlich ist. Rechtsgrundlagen sind
+              insbesondere Art. 6 Abs. 1 lit. a, b und f DSGVO.
+            </p>
+
+            <h2>3. Hosting</h2>
+            <p>
+              Diese Website wird bei Cloudflare (Cloudflare, Inc.) auf der
+              Infrastruktur „Cloudflare Workers“ gehostet. Beim Aufruf der Website
+              werden technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt des
+              Zugriffs, aufgerufene Seite) verarbeitet, um die Auslieferung der
+              Website und die Sicherheit zu gewährleisten. Rechtsgrundlage ist Art. 6
+              Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren und
+              effizienten Betrieb).
+            </p>
+
+            <h2>4. Server-Logfiles</h2>
+            <p>
+              Bei jedem Zugriff werden automatisch Informationen erhoben, die Ihr
+              Browser übermittelt (u. a. Browsertyp/-version, Betriebssystem,
+              Referrer-URL, Uhrzeit, IP-Adresse in gekürzter/anonymisierter Form).
+              Diese Daten werden nicht mit anderen Datenquellen zusammengeführt und
+              dienen ausschließlich der technischen Bereitstellung und Sicherheit.
+            </p>
+
+            <h2>5. Kontakt- und Reservierungsformular</h2>
+            <p>
+              Wenn Sie uns über das Reservierungs- bzw. Kontaktformular kontaktieren,
+              verarbeiten wir die von Ihnen angegebenen Daten (Name, E-Mail-Adresse,
+              ggf. Telefonnummer, gewünschtes Datum, Personenzahl und Nachricht), um
+              Ihre Anfrage zu bearbeiten. Die Übermittlung erfolgt per E-Mail an uns.
+              Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Anbahnung/Erfüllung
+              eines Vertragsverhältnisses) bzw. lit. f DSGVO (Bearbeitung Ihrer
+              Anfrage). Die Daten werden gelöscht, sobald sie für die Bearbeitung
+              nicht mehr erforderlich sind und keine gesetzlichen
+              Aufbewahrungspflichten entgegenstehen.
+            </p>
+
+            <h2>6. Bewerbungen</h2>
+            <p>
+              Übermitteln Sie uns eine Bewerbung über das Jobs-Formular, verarbeiten
+              wir die angegebenen Daten sowie ggf. hochgeladene Dokumente
+              ausschließlich zur Durchführung des Bewerbungsverfahrens.
+              Rechtsgrundlage ist § 26 BDSG i. V. m. Art. 6 Abs. 1 lit. b DSGVO. Im
+              Falle einer Absage werden die Bewerberdaten spätestens nach sechs
+              Monaten gelöscht, sofern Sie keiner längeren Speicherung zugestimmt
+              haben.
+            </p>
+
+            <h2>7. Karten &amp; eingebettete Inhalte (Google Maps)</h2>
+            <p>
+              Zur Darstellung unseres Standorts binden wir Kartenmaterial von Google
+              Maps (Google Ireland Ltd.) ein. Beim Laden der Karte kann Google
+              Informationen (u. a. Ihre IP-Adresse) verarbeiten. Rechtsgrundlage ist
+              Art. 6 Abs. 1 lit. f DSGVO. Weitere Informationen finden Sie in der{" "}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+                Datenschutzerklärung von Google
+              </a>
+              .
+            </p>
+
+            <h2>8. Cookies &amp; Tracking</h2>
+            <p>
+              Diese Website setzt keine Tracking- oder Marketing-Cookies und bindet
+              keine Analyse-Dienste ein. Es werden ausschließlich technisch notwendige
+              Daten verarbeitet.
+            </p>
+
+            <h2>9. Ihre Rechte</h2>
+            <p>Ihnen stehen gegenüber uns folgende Rechte hinsichtlich Ihrer personenbezogenen Daten zu:</p>
+            <ul>
+              <li>Recht auf Auskunft (Art. 15 DSGVO)</li>
+              <li>Recht auf Berichtigung (Art. 16 DSGVO)</li>
+              <li>Recht auf Löschung (Art. 17 DSGVO)</li>
+              <li>Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO)</li>
+              <li>Recht auf Datenübertragbarkeit (Art. 20 DSGVO)</li>
+              <li>Recht auf Widerspruch (Art. 21 DSGVO)</li>
+              <li>Recht auf Widerruf einer Einwilligung (Art. 7 Abs. 3 DSGVO)</li>
+            </ul>
+            <p>
+              Zudem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde
+              zu beschweren (Art. 77 DSGVO).
+            </p>
+
+            <p className="mt-10 text-sm italic">
+              Hinweis: Diese Datenschutzerklärung ist eine an das Projekt angepasste
+              Vorlage. Bitte prüfen und ergänzen Sie sie vor Veröffentlichung (z. B.
+              konkrete Hosting-/Auftragsverarbeitungs-Angaben) und lassen Sie sie
+              rechtlich abnehmen.
+            </p>
+          </Prose>
+        </div>
+      </section>
+    </>
+  );
+}
