@@ -1,7 +1,8 @@
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/forms/ContactForm";
 import LazyEmbed from "@/components/LazyEmbed";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import Faq from "@/components/Faq";
+import { BreadcrumbJsonLd, FaqJsonLd } from "@/components/JsonLd";
 import { site } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
@@ -26,6 +27,7 @@ export default function ReservierenPage() {
           { name: "Reservieren", path: "/reservieren" },
         ]}
       />
+      <FaqJsonLd items={site.faq} />
       <PageHero
         eyebrow="Reservierung & Kontakt"
         title="Tisch reservieren"
@@ -79,6 +81,17 @@ export default function ReservierenPage() {
               />
             </div>
           </aside>
+        </div>
+      </section>
+
+      {/* Häufige Fragen (sichtbar + FAQPage-Schema, gut für lokale Suche & GEO) */}
+      <section className="bg-espresso">
+        <div className="container-lsc py-16 md:py-20">
+          <div className="mb-10 text-center">
+            <p className="eyebrow mb-3">Gut zu wissen</p>
+            <h2 className="text-3xl md:text-4xl">Häufige Fragen</h2>
+          </div>
+          <Faq items={site.faq} className="mx-auto max-w-4xl" />
         </div>
       </section>
     </>

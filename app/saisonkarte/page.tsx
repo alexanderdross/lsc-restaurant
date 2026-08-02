@@ -1,7 +1,7 @@
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { DishList } from "@/components/Menu";
-import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { BreadcrumbJsonLd, SaisonkarteJsonLd } from "@/components/JsonLd";
 import { saisonkarte } from "@/content/menu";
 import { pageMeta } from "@/lib/seo";
 
@@ -22,6 +22,7 @@ export default function SaisonkartePage() {
           { name: "Saisonkarte", path: "/saisonkarte" },
         ]}
       />
+      <SaisonkarteJsonLd />
       <PageHero
         eyebrow="Saisonal & frisch"
         title="Saisonkarte"
