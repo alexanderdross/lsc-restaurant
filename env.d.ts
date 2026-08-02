@@ -9,4 +9,6 @@ interface CloudflareEnv {
   SMTP_PASS?: string;
   MAIL_FROM?: string;
   MAIL_TO?: string;
+  /** Cloudflare Turnstile – geheimer Schlüssel für die serverseitige Prüfung. */
+  TURNSTILE_SECRET_KEY?: string;
 }

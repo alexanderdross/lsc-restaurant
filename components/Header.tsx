@@ -60,11 +60,12 @@ export default function Header() {
           className="shrink-0"
         >
           <Image
-            src="/logo.png"
+            src="/logo.webp"
             alt={site.name}
-            width={1000}
-            height={560}
+            width={640}
+            height={359}
             priority
+            sizes="140px"
             className="h-12 w-auto sm:h-14"
           />
         </Link>

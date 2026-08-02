@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { headers } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { sendSmtpMail } from "@/lib/smtp";
 import { site } from "@/content/site";
@@ -31,6 +32,47 @@ function fieldErrors(err: z.ZodError): Record<string, string> {
 
 function getEnv(): CloudflareEnv {
   return getCloudflareContext().env as unknown as CloudflareEnv;
+}
+
+const TURNSTILE_ERROR =
+  "Sicherheitsprüfung fehlgeschlagen. Bitte laden Sie die Seite neu und versuchen Sie es erneut.";
+
+/**
+ * Prüft das Cloudflare-Turnstile-Token gegen die siteverify-API.
+ * Ist kein Secret konfiguriert (Setup-Phase), wird die Prüfung übersprungen.
+ */
+async function verifyTurnstile(token: string | null): Promise<boolean> {
+  const secret = getEnv().TURNSTILE_SECRET_KEY;
+  if (!secret) return true; // nicht konfiguriert -> überspringen
+  if (!token) return false;
+
+  let ip: string | undefined;
+  try {
+    ip = (await headers()).get("cf-connecting-ip") ?? undefined;
+  } catch {
+    /* ignore */
+  }
+
+  const body = new URLSearchParams();
+  body.set("secret", secret);
+  body.set("response", token);
+  if (ip) body.set("remoteip", ip);
+
+  try {
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+        body,
+      }
+    );
+    const data = (await res.json()) as { success?: boolean };
+    return data.success === true;
+  } catch (err) {
+    console.error("Turnstile-Verifikation fehlgeschlagen:", err);
+    return false;
+  }
 }
 
 async function sendMail(opts: {
@@ -101,6 +143,15 @@ export async function sendReservation(
       message: "Bitte prüfen Sie Ihre Eingaben.",
       errors: fieldErrors(parsed.error),
     };
+  }
+
+  const turnstileToken = formData.get("cf-turnstile-response");
+  if (
+    !(await verifyTurnstile(
+      typeof turnstileToken === "string" ? turnstileToken : null
+    ))
+  ) {
+    return { ok: false, message: TURNSTILE_ERROR };
   }
 
   const d = parsed.data;
@@ -181,6 +232,15 @@ export async function sendApplication(
       message: "Bitte prüfen Sie Ihre Eingaben.",
       errors: fieldErrors(parsed.error),
     };
+  }
+
+  const turnstileToken = formData.get("cf-turnstile-response");
+  if (
+    !(await verifyTurnstile(
+      typeof turnstileToken === "string" ? turnstileToken : null
+    ))
+  ) {
+    return { ok: false, message: TURNSTILE_ERROR };
   }
 
   // Datei-Upload prüfen

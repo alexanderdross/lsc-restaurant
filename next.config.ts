@@ -4,9 +4,10 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
-    // Bilder werden unverändert ausgeliefert (kein Image-Optimierungs-Service auf Workers nötig).
-    // Assets sind bereits in passenden Größen abgelegt.
-    unoptimized: true,
+    // Cloudflare-nativer Optimizer via Custom Loader (siehe image-loader.ts).
+    // Ohne aktivierte Cloudflare Image Transformations wird das Original geliefert.
+    loader: "custom",
+    loaderFile: "./image-loader.ts",
   },
 };
 

@@ -9,3 +9,8 @@ SMTP_PASS="dein-postfach-passwort"
 MAIL_FROM="info@lsc-restaurant.de"
 # Empfänger der Formular-Mails:
 MAIL_TO="info@lsc-restaurant.de"
+
+# Cloudflare Turnstile – geheimer Schlüssel (serverseitige Prüfung):
+TURNSTILE_SECRET_KEY="0x4AAAAAAA..."
+# Hinweis: Der öffentliche Site-Key gehört NICHT hierher, sondern als
+# Build-Variable NEXT_PUBLIC_TURNSTILE_SITE_KEY (siehe .env.example / README).

@@ -9,7 +9,7 @@
   --color-espresso: #1e120c; /* tiefste Flächen, Header, Footer */
   --color-cocoa: #2c1a13; /* Standard-Sektionshintergrund */
   --color-cocoa-2: #3a2420; /* etwas hellere Fläche / Cards */
-  --color-wine: #5a3733; /* Hero-/Akzentbänder (maroon) */
+  --color-wine: #4a2b27; /* Hero-/Akzentbänder (maroon) – WCAG-AA-tauglich für Rosé/Creme-Text */
 
   /* Rosé-Akzente */
   --color-rose: #c99a9a; /* Signatur-Akzent: Buttons, Headings */
@@ -156,6 +156,36 @@ h1, h2, h3, h4 {
       transparent
     );
     border: 0;
+  }
+
+  /* Turnstile: reservierter Slot (Standardgröße 300×65) gegen Layout-Shift (CLS) */
+  .turnstile-slot {
+    position: relative;
+    width: 300px;
+    max-width: 100%;
+    min-height: 65px;
+  }
+  .turnstile-skeleton {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(243, 233, 221, 0.12);
+    border-radius: 8px;
+    background: var(--color-cocoa-2);
+    color: var(--color-cream-dim);
+    font-size: 0.8rem;
+    animation: lsc-pulse 1.6s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .turnstile-skeleton {
+      animation: none;
+    }
+  }
+  @keyframes lsc-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.95; }
   }
 }
 

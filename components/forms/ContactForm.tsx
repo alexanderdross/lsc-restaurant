@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { sendReservation, type FormState } from "@/app/actions/mail";
 import { inputBase, FieldLabel, FieldError, Honeypot } from "./fields";
+import Turnstile from "./Turnstile";
 
 const initial: FormState = { ok: false, message: "" };
 
@@ -37,15 +38,33 @@ export default function ContactForm() {
           <FieldLabel htmlFor="name" required>
             Name
           </FieldLabel>
-          <input id="name" name="name" type="text" autoComplete="name" required className={inputBase} />
-          <FieldError msg={state.errors?.name} />
+          <input
+            id="name"
+            name="name"
+            type="text"
+            autoComplete="name"
+            required
+            aria-invalid={!!state.errors?.name}
+            aria-describedby={state.errors?.name ? "name-error" : undefined}
+            className={inputBase}
+          />
+          <FieldError id="name-error" msg={state.errors?.name} />
         </div>
         <div>
           <FieldLabel htmlFor="email" required>
             E-Mail
           </FieldLabel>
-          <input id="email" name="email" type="email" autoComplete="email" required className={inputBase} />
-          <FieldError msg={state.errors?.email} />
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            aria-invalid={!!state.errors?.email}
+            aria-describedby={state.errors?.email ? "email-error" : undefined}
+            className={inputBase}
+          />
+          <FieldError id="email-error" msg={state.errors?.email} />
         </div>
       </div>
 
@@ -68,6 +87,8 @@ export default function ContactForm() {
         <FieldLabel htmlFor="message">Nachricht</FieldLabel>
         <textarea id="message" name="message" rows={5} className={inputBase} placeholder="Wunschzeit, Anlass, Fragen …" />
       </div>
+
+      <Turnstile action="reservation" />
 
       {state.message && !state.ok && (
         <p className="text-sm text-rose" role="alert">

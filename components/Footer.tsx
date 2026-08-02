@@ -11,10 +11,12 @@ export default function Footer() {
         {/* Marke */}
         <div>
           <Image
-            src="/logo.png"
+            src="/logo.webp"
             alt={site.name}
-            width={1000}
-            height={560}
+            width={640}
+            height={359}
+            loading="lazy"
+            sizes="180px"
             className="mb-4 h-16 w-auto"
           />
           <p className="max-w-xs text-sm leading-relaxed text-cream-dim">

@@ -95,14 +95,25 @@ export default function DatenschutzPage() {
               .
             </p>
 
-            <h2>8. Cookies &amp; Tracking</h2>
+            <h2>8. Spam-/Bot-Schutz (Cloudflare Turnstile)</h2>
+            <p>
+              Zum Schutz unserer Formulare vor missbräuchlicher automatisierter
+              Nutzung setzen wir „Cloudflare Turnstile" (Cloudflare, Inc.) ein. Dabei
+              werden technische Informationen (u. a. IP-Adresse, Browser-Merkmale) an
+              Cloudflare übermittelt und verarbeitet, um menschliche von
+              automatisierten Anfragen zu unterscheiden. Turnstile setzt nach Angaben
+              des Anbieters keine Cookies zu Werbezwecken. Rechtsgrundlage ist Art. 6
+              Abs. 1 lit. f DSGVO (berechtigtes Interesse an Spam-/Missbrauchsschutz).
+            </p>
+
+            <h2>9. Cookies &amp; Tracking</h2>
             <p>
               Diese Website setzt keine Tracking- oder Marketing-Cookies und bindet
               keine Analyse-Dienste ein. Es werden ausschließlich technisch notwendige
               Daten verarbeitet.
             </p>
 
-            <h2>9. Ihre Rechte</h2>
+            <h2>10. Ihre Rechte</h2>
             <p>Ihnen stehen gegenüber uns folgende Rechte hinsichtlich Ihrer personenbezogenen Daten zu:</p>
             <ul>
               <li>Recht auf Auskunft (Art. 15 DSGVO)</li>

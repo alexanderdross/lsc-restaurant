@@ -95,11 +95,49 @@ Postinstall-Skript `scripts/patch-opennext.mjs` die esbuild-`external`-Liste. Da
 Skript ist idempotent und läuft automatisch nach `npm install` (auch in
 Cloudflare Workers Builds).
 
+## Formular-Schutz (Cloudflare Turnstile)
+
+Beide Formulare (Reservierung & Bewerbung) sind mit **Cloudflare Turnstile**
+geschützt. Der Widget-Slot ist CLS-optimiert (reservierter Platz, kein
+Layout-Shift beim Nachladen). Serverseitig wird das Token in `app/actions/mail.ts`
+gegen die siteverify-API geprüft.
+
+Benötigte Schlüssel (Turnstile im Cloudflare-Dashboard anlegen):
+
+- **`NEXT_PUBLIC_TURNSTILE_SITE_KEY`** – öffentlicher Site-Key, als **Build-Variable**
+  in Workers Builds (bzw. `.env.local` lokal).
+- **`TURNSTILE_SECRET_KEY`** – geheimer Schlüssel, als **Secret** im Worker
+  (`wrangler secret put TURNSTILE_SECRET_KEY`).
+
+Solange keine Schlüssel gesetzt sind, bleibt der Platzhalter sichtbar und die
+serverseitige Prüfung wird übersprungen – die Formulare funktionieren weiterhin.
+
+## Bildoptimierung (Cloudflare-Best-Practice)
+
+Alle Bilder/Logos nutzen `next/image` mit fixen `width`/`height` (CLS-sicher),
+`sizes`, `priority` fürs LCP-Bild und `loading="lazy"` below the fold. Logos sind
+als **WebP** vor-optimiert. Da Workers keinen `sharp`-Optimizer haben, läuft die
+Laufzeit-Optimierung über **Cloudflare Image Transformations** (`image-loader.ts`):
+
+- Standard: Original wird ausgeliefert (funktioniert überall, auch `*.workers.dev`).
+- Nach Aktivierung von „Image Transformations" auf der Zone: Build-Variable
+  **`NEXT_PUBLIC_CF_IMAGE_RESIZING=true`** setzen → echtes Resizing + AVIF/WebP.
+
+## Barrierefreiheit (WCAG AA)
+
+- Farbkontraste auf allen Seiten auf AA geprüft (Palette in `app/globals.css`
+  entsprechend abgestimmt, u. a. Wein-Ton für Rosé-/Creme-Text abgedunkelt).
+- Semantische Struktur (genau ein `h1` pro Seite, Landmarks), sichtbarer
+  Fokus-Ring, „Zum Inhalt springen"-Link, `aria-invalid`/`aria-describedby` an
+  Formularfeldern, `prefers-reduced-motion` respektiert, `lang="de"`.
+
 ## Offene Punkte (vor Go-Live)
 
 - [ ] Echte Foodfotografie / Terrassen- & Innenbilder einbinden
 - [ ] Finale Braun-Hex-Werte gegen Logo/CI abgleichen (`app/globals.css`)
 - [ ] netcup-SMTP-Zugangsdaten als Secrets setzen
+- [ ] Turnstile-Schlüssel setzen (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`)
+- [ ] Nach Domain-/Zone-Setup: Image Transformations aktivieren + `NEXT_PUBLIC_CF_IMAGE_RESIZING=true`
 - [ ] 360°-Rundgang-Embed-URL in `content/site.ts` (`tourEmbedUrl`) eintragen
 - [ ] Impressum & Datenschutz rechtlich prüfen und `[…]`-Platzhalter ergänzen
 - [ ] Allergen-Legende (`content/menu.ts`) gegen die interne Kennzeichnung abgleichen

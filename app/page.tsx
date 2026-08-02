@@ -51,13 +51,17 @@ export default function Home() {
         />
         <div className="container-lsc relative flex min-h-[82vh] flex-col items-center justify-center py-24 text-center">
           <Reveal>
+            <h1 className="sr-only">
+              {site.name} – {site.claim}
+            </h1>
             <p className="eyebrow mb-5">Bodensee-Airport Friedrichshafen</p>
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt={site.name}
-              width={1000}
-              height={560}
+              width={640}
+              height={359}
               priority
+              sizes="(min-width: 640px) 280px, 200px"
               className="mx-auto mb-8 h-28 w-auto sm:h-36"
             />
             <p className="script text-3xl sm:text-4xl">{site.claim}</p>
