@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/forms/ContactForm";
-import MapEmbed from "@/components/MapEmbed";
+import LazyEmbed from "@/components/LazyEmbed";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -60,7 +60,11 @@ export default function ReservierenPage() {
             </div>
 
             <div className="card overflow-hidden">
-              <MapEmbed src={site.address.mapsEmbed} title="Standort LSC Restaurant" />
+              <LazyEmbed
+                src={site.address.mapsEmbed}
+                title="Standort LSC Restaurant"
+                placeholder="Karte wird geladen …"
+              />
             </div>
           </aside>
         </div>

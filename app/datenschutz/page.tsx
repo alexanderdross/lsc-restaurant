@@ -94,6 +94,14 @@ export default function DatenschutzPage() {
               </a>
               .
             </p>
+            <p>
+              Auf der Seite „360° Rundgang" binden wir eine interaktive Panorama-Tour
+              unseres Dienstleisters (vr-easy) ein. Die Tour wird aus Datenschutz- und
+              Performance-Gründen erst geladen, wenn sie in den sichtbaren Bereich
+              gelangt. Beim Laden können dabei technische Daten (u. a. IP-Adresse) an
+              den Anbieter übermittelt werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f
+              DSGVO.
+            </p>
 
             <h2>8. Spam-/Bot-Schutz (Cloudflare Turnstile)</h2>
             <p>

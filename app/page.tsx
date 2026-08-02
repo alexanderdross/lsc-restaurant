@@ -3,7 +3,7 @@ import Image from "next/image";
 import { site } from "@/content/site";
 import Reveal from "@/components/Reveal";
 import RestaurantJsonLd from "@/components/JsonLd";
-import MapEmbed from "@/components/MapEmbed";
+import LazyEmbed from "@/components/LazyEmbed";
 
 const highlights = [
   {
@@ -163,9 +163,10 @@ export default function Home() {
           </Reveal>
           <Reveal delay={120}>
             <div className="card overflow-hidden">
-              <MapEmbed
+              <LazyEmbed
                 src={site.address.mapsEmbed}
                 title="Standort LSC Restaurant auf der Karte"
+                placeholder="Karte wird geladen …"
               />
             </div>
           </Reveal>

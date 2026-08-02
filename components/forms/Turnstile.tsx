@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useInView } from "@/components/useInView";
 
 /**
- * Cloudflare Turnstile – unsichtbare/interaktive Bot-Abwehr für Formulare.
+ * Cloudflare Turnstile – Bot-Abwehr für Formulare.
  *
- * CLS-optimiert: Der Slot reserviert von Anfang an den Platz des Widgets
- * (Standardgröße 300×65 px) über einen Skeleton-Platzhalter, sodass beim
- * Nachladen des Widgets kein Layout-Shift entsteht.
+ * - CLS-optimiert: reservierter Slot (300×65) über einen Skeleton-Platzhalter.
+ * - Lazy/„on-load": Script + Widget werden erst geladen, wenn der Slot in den
+ *   Sichtbereich scrollt (useInView) – kein `challenges.cloudflare.com`-Request
+ *   beim initialen Seitenaufruf. rootMargin sorgt dafür, dass es rechtzeitig vor
+ *   dem Absende-Button bereit ist.
  *
  * Der Token wird von Turnstile automatisch als verstecktes Feld
  * `cf-turnstile-response` in das umgebende <form> gelegt und serverseitig
@@ -50,12 +53,13 @@ function loadTurnstileScript(): Promise<void> {
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export default function Turnstile({ action }: { action?: string }) {
+  const [slotRef, inView] = useInView<HTMLDivElement>("250px");
   const holder = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | null>(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (!SITE_KEY) return;
+    if (!SITE_KEY || !inView) return;
     let cancelled = false;
 
     loadTurnstileScript()
@@ -85,10 +89,10 @@ export default function Turnstile({ action }: { action?: string }) {
         widgetId.current = null;
       }
     };
-  }, [action]);
+  }, [action, inView]);
 
   return (
-    <div className="turnstile-slot">
+    <div ref={slotRef} className="turnstile-slot">
       {/* Turnstile rendert hier hinein und legt das verborgene Token-Feld an */}
       <div ref={holder} />
       {!ready && (

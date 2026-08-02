@@ -59,8 +59,9 @@ export const site = {
   // Externe Bewertungsseite (öffnet in neuem Tab)
   reviewsUrl:
     "https://www.google.com/maps/search/?api=1&query=LSC+Restaurant+Friedrichshafen",
-  // 360°-Rundgang (bestehende Tour – hier die echte Embed-URL eintragen)
-  tourEmbedUrl: "",
+  // 360°-Rundgang (bestehende Tour von vr-easy / Immobilienschmiede)
+  tourEmbedUrl:
+    "https://vr-easy.com/tour/immobilienschmiede/240115-lsc_restaurant/#pano=2",
 } as const;
 
 export type Site = typeof site;

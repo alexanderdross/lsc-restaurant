@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
+import LazyEmbed from "@/components/LazyEmbed";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -22,13 +23,12 @@ export default function RundgangPage() {
         <div className="container-lsc py-16 md:py-20">
           {site.tourEmbedUrl ? (
             <div className="card overflow-hidden">
-              <iframe
-                title="360° Rundgang durch das LSC Restaurant"
+              <LazyEmbed
                 src={site.tourEmbedUrl}
-                className="aspect-video w-full"
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
+                title="360° Rundgang durch das LSC Restaurant"
+                placeholder="Rundgang wird geladen …"
+                ratio="aspect-video"
+                allow="accelerometer; gyroscope; magnetometer; xr-spatial-tracking; fullscreen"
               />
             </div>
           ) : (
