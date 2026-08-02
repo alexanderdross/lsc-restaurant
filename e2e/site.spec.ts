@@ -63,6 +63,21 @@ test("Keine generischen/nicht-beschreibenden Link-Texte", async ({ page }) => {
   }
 });
 
+test("Header schrumpft beim Scrollen (Shrink-on-Scroll)", async ({ page }) => {
+  await page.goto("/");
+  const header = page.getByRole("banner");
+  const before = await header.boundingBox();
+  expect(before).not.toBeNull();
+
+  await page.evaluate(() => window.scrollTo(0, 600));
+  // Auf die 300ms-Transition warten
+  await page.waitForTimeout(500);
+
+  const after = await header.boundingBox();
+  expect(after).not.toBeNull();
+  expect(after!.height).toBeLessThan(before!.height);
+});
+
 test("Reservierungsformular hat die Pflichtfelder", async ({ page }) => {
   await page.goto("/reservieren");
   await expect(page.locator("#name")).toBeVisible();

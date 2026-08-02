@@ -39,8 +39,14 @@ export default function Header() {
           : "bg-espresso"
       }`}
     >
-      {/* Top-Bar */}
-      <div className="border-b border-cream/10 bg-espresso">
+      {/* Top-Bar – kollabiert beim Scrollen (Shrink-on-Scroll) */}
+      <div
+        className={`overflow-hidden border-b bg-espresso transition-all duration-300 motion-reduce:transition-none ${
+          scrolled
+            ? "max-h-0 border-transparent opacity-0"
+            : "max-h-12 border-cream/10 opacity-100"
+        }`}
+      >
         <div className="container-lsc flex items-center justify-center gap-2 py-1.5 text-center text-sm text-cream-dim">
           <span>Jetzt anrufen!</span>
           <a
@@ -53,7 +59,11 @@ export default function Header() {
       </div>
 
       {/* Haupt-Navigation */}
-      <div className="container-lsc flex items-center justify-between gap-4 py-3">
+      <div
+        className={`container-lsc flex items-center justify-between gap-4 transition-all duration-300 motion-reduce:transition-none ${
+          scrolled ? "py-1.5" : "py-3"
+        }`}
+      >
         <Link
           href="/"
           aria-label={`${site.name} – Startseite`}
@@ -67,7 +77,9 @@ export default function Header() {
             height={202}
             priority
             sizes="140px"
-            className="h-12 w-auto sm:h-14"
+            className={`w-auto transition-all duration-300 motion-reduce:transition-none ${
+              scrolled ? "h-9 sm:h-10" : "h-12 sm:h-14"
+            }`}
           />
         </Link>
 
