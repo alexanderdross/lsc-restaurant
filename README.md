@@ -10,7 +10,9 @@ Braun-Rosé-Markenwelt in einem aufgefrischten, mobiloptimierten Design.
 - **Next.js 15** (App Router, React 19, TypeScript)
 - **@opennextjs/cloudflare** – Adapter für Cloudflare Workers
 - **Tailwind CSS v4** – Design-Tokens als CSS-Variablen (dunkles Braun-Rosé-Theme)
-- **next/font** – selbst-gehostete Google Fonts (Fraunces, Inter, Dancing Script)
+- **next/font/local** – vollständig self-hosted Variable Fonts (Fraunces, Inter,
+  Dancing Script als `woff2` in `app/fonts/`), `font-display: swap`, keine
+  Google-Abhängigkeit (Build + Runtime)
 - **Kontakt-/Bewerbungsformular** – Server Actions + eigener SMTP-Client
   (`lib/smtp.ts`, `cloudflare:sockets`, STARTTLS) an **netcup**
 

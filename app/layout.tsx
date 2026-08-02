@@ -1,29 +1,34 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, Dancing_Script } from "next/font/google";
+import localFont from "next/font/local";
 import { site } from "@/content/site";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+// Vollständig self-hosted Variable Fonts (woff2 im Repo unter app/fonts/).
+// Keine Abhängigkeit zu Google Fonts – weder beim Build noch zur Laufzeit.
+const fraunces = localFont({
+  src: [
+    { path: "./fonts/fraunces-latin-wght-normal.woff2", weight: "100 900", style: "normal" },
+    { path: "./fonts/fraunces-latin-wght-italic.woff2", weight: "100 900", style: "italic" },
+  ],
   variable: "--font-fraunces",
   display: "swap",
+  fallback: ["Georgia", "Times New Roman", "serif"],
 });
 
-const inter = Inter({
-  subsets: ["latin"],
+const inter = localFont({
+  src: [{ path: "./fonts/inter-latin-wght-normal.woff2", weight: "100 900", style: "normal" }],
   variable: "--font-inter",
   display: "swap",
+  fallback: ["system-ui", "Segoe UI", "Arial", "sans-serif"],
 });
 
-const script = Dancing_Script({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
+const script = localFont({
+  src: [{ path: "./fonts/dancing-script-latin-wght-normal.woff2", weight: "400 700", style: "normal" }],
   variable: "--font-script",
   display: "swap",
+  fallback: ["cursive"],
 });
 
 export const metadata: Metadata = {

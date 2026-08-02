@@ -3,6 +3,7 @@ import Image from "next/image";
 import { site } from "@/content/site";
 import Reveal from "@/components/Reveal";
 import RestaurantJsonLd from "@/components/JsonLd";
+import MapEmbed from "@/components/MapEmbed";
 
 const highlights = [
   {
@@ -162,16 +163,10 @@ export default function Home() {
           </Reveal>
           <Reveal delay={120}>
             <div className="card overflow-hidden">
-              <div className="aspect-[4/3] w-full">
-                {/* Platzhalter bis echte Fotos vorliegen */}
-                <iframe
-                  title="Standort LSC Restaurant auf der Karte"
-                  src={site.address.mapsEmbed}
-                  className="h-full w-full grayscale-[0.2]"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </div>
+              <MapEmbed
+                src={site.address.mapsEmbed}
+                title="Standort LSC Restaurant auf der Karte"
+              />
             </div>
           </Reveal>
         </div>
