@@ -51,12 +51,21 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "de_DE",
-    url: site.url,
+    url: `${site.url}/`,
     siteName: site.name,
     title: `${site.name} – ${site.claim}`,
     description: site.description,
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: `${site.name} – ${site.claim}`,
+    description: site.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
   icons: { icon: "/icon.png", apple: "/apple-icon.png" },
 };
 

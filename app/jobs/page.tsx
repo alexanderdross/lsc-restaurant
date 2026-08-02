@@ -1,14 +1,16 @@
-import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import JobForm from "@/components/forms/JobForm";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Jobs & Karriere",
   description:
     "Wir suchen DICH! Werde Teil des Teams im LSC Restaurant am Bodensee-Airport Friedrichshafen. Jetzt online bewerben.",
-  alternates: { canonical: "/jobs" },
-};
+  path: "/jobs",
+  keywords: ["Jobs Friedrichshafen Gastronomie", "Stellenangebote LSC Restaurant"],
+});
 
 const perks = [
   "Familiäres Team & herzliche Atmosphäre",
@@ -20,6 +22,12 @@ const perks = [
 export default function JobsPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Jobs & Karriere", path: "/jobs" },
+        ]}
+      />
       <PageHero
         eyebrow="Karriere"
         title="Wir suchen DICH!"

@@ -1,20 +1,28 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { DishList } from "@/components/Menu";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { mittagstisch } from "@/content/menu";
 import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Mittagstisch",
   description:
-    "Der Mittagstisch im LSC Restaurant: wechselnde, günstige Gerichte von Dienstag bis Freitag, 12 – 14 Uhr.",
-  alternates: { canonical: "/mittagstisch" },
-};
+    "Der Mittagstisch im LSC Restaurant am Bodensee-Airport: wechselnde, günstige Gerichte von Dienstag bis Freitag, 12 – 14 Uhr.",
+  path: "/mittagstisch",
+  keywords: ["Mittagstisch Friedrichshafen", "Mittagsmenü Bodensee Airport"],
+});
 
 export default function MittagstischPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Mittagstisch", path: "/mittagstisch" },
+        ]}
+      />
       <PageHero
         eyebrow="Unsere Mittagstischkarte"
         title="Mittagstisch"

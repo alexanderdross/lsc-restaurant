@@ -1,13 +1,15 @@
-import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { allergene } from "@/content/menu";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Allergene & Zusatzstoffe",
   description:
     "Kennzeichnung der in unseren Speisen und Getränken enthaltenen Allergene und Zusatzstoffe im LSC Restaurant.",
-  alternates: { canonical: "/allergene" },
-};
+  path: "/allergene",
+  keywords: ["Allergene", "Zusatzstoffe", "LSC Restaurant Kennzeichnung"],
+});
 
 function Legend({
   title,
@@ -36,6 +38,12 @@ function Legend({
 export default function AllergenePage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Allergene & Zusatzstoffe", path: "/allergene" },
+        ]}
+      />
       <PageHero
         eyebrow="Gut zu wissen"
         title="Allergene & Zusatzstoffe"

@@ -1,19 +1,27 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { DishList } from "@/components/Menu";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { saisonkarte } from "@/content/menu";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Saisonkarte",
   description:
-    "Saisonale Spezialitäten im LSC Restaurant – frisch für Sie ausgewählt, wechselnd je nach Jahreszeit.",
-  alternates: { canonical: "/saisonkarte" },
-};
+    "Saisonale Spezialitäten im LSC Restaurant am Bodensee-Airport – frisch für Sie ausgewählt, wechselnd je nach Jahreszeit.",
+  path: "/saisonkarte",
+  keywords: ["Saisonkarte Friedrichshafen", "saisonale Gerichte Bodensee"],
+});
 
 export default function SaisonkartePage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Saisonkarte", path: "/saisonkarte" },
+        ]}
+      />
       <PageHero
         eyebrow="Saisonal & frisch"
         title="Saisonkarte"

@@ -1,19 +1,25 @@
-import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import Prose from "@/components/Prose";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Datenschutzerklärung",
   description:
     "Informationen zur Verarbeitung personenbezogener Daten auf der Website des LSC Restaurants.",
-  alternates: { canonical: "/datenschutz" },
-  robots: { index: true, follow: false },
-};
+  path: "/datenschutz",
+});
 
 export default function DatenschutzPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Datenschutzerklärung", path: "/datenschutz" },
+        ]}
+      />
       <PageHero title="Datenschutzerklärung" />
       <section className="bg-cocoa">
         <div className="container-lsc py-16 md:py-20">

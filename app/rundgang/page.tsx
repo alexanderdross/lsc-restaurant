@@ -1,19 +1,27 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import LazyEmbed from "@/components/LazyEmbed";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "360° Rundgang",
   description:
-    "Erleben Sie das LSC Restaurant am Bodensee-Airport Friedrichshafen im interaktiven 360°-Rundgang.",
-  alternates: { canonical: "/rundgang" },
-};
+    "Erleben Sie das LSC Restaurant am Bodensee-Airport Friedrichshafen im interaktiven 360°-Rundgang durch unsere Räume.",
+  path: "/rundgang",
+  keywords: ["360 Grad Rundgang", "virtuelle Tour LSC Restaurant"],
+});
 
 export default function RundgangPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "360° Rundgang", path: "/rundgang" },
+        ]}
+      />
       <PageHero
         eyebrow="Virtueller Besuch"
         title="360° Rundgang"

@@ -38,7 +38,7 @@ test("Speisekarte: Kategorien, Gericht und Allergen-Link", async ({ page }) => {
   await expect(page.getByText("Pizza Margherita")).toBeVisible();
   await expect(
     page.getByRole("link", { name: /Allergene & Zusatzstoffe/ })
-  ).toHaveAttribute("href", "/allergene");
+  ).toHaveAttribute("href", "/allergene/");
 });
 
 test("Keine generischen/nicht-beschreibenden Link-Texte", async ({ page }) => {
@@ -137,6 +137,35 @@ test("Metadaten: Title und Canonical gesetzt", async ({ page }) => {
   await expect(page).toHaveTitle(/Speisekarte/);
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    /\/speisekarte$/
+    /\/speisekarte\/$/
   );
+});
+
+test("SEO: Open-Graph- und Twitter-Card-Tags vorhanden", async ({ page }) => {
+  await page.goto("/speisekarte");
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+    "content",
+    /Speisekarte/
+  );
+  await expect(page.locator('meta[property="og:description"]')).toHaveCount(1);
+  await expect(page.locator('meta[property="og:image"]')).toHaveCount(1);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+    "content",
+    "summary_large_image"
+  );
+  await expect(page.locator('meta[name="twitter:image"]')).toHaveCount(1);
+});
+
+test("SEO: JSON-LD BreadcrumbList und Menu vorhanden", async ({ page }) => {
+  await page.goto("/speisekarte");
+  const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+  const types = blocks.map((b) => {
+    try {
+      return JSON.parse(b)["@type"];
+    } catch {
+      return null;
+    }
+  });
+  expect(types).toContain("BreadcrumbList");
+  expect(types).toContain("Menu");
 });

@@ -57,6 +57,7 @@ export default function Header() {
         <Link
           href="/"
           aria-label={`${site.name} – Startseite`}
+          title={`${site.name} – Startseite am Bodensee-Airport`}
           className="shrink-0"
         >
           <Image
@@ -82,6 +83,7 @@ export default function Header() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                title={item.title}
                 className="rounded-full px-3 py-2 text-sm font-medium text-cream/85 transition-colors hover:text-rose"
               >
                 {item.label}
@@ -90,6 +92,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                title={item.title}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={`rounded-full px-3 py-2 text-sm font-medium transition-colors hover:text-rose ${
                   isActive(item.href) ? "text-rose" : "text-cream/85"
@@ -99,7 +102,11 @@ export default function Header() {
               </Link>
             )
           )}
-          <Link href="/reservieren" className="btn btn-primary ml-2 !py-2.5">
+          <Link
+            href="/reservieren"
+            title="Tisch reservieren im LSC Restaurant Friedrichshafen"
+            className="btn btn-primary ml-2 !py-2.5"
+          >
             Tisch reservieren
           </Link>
         </nav>
@@ -152,6 +159,7 @@ export default function Header() {
                 href={item.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                title={item.title}
                 className="border-b border-cream/10 py-4 font-serif text-2xl text-cream"
               >
                 {item.label}
@@ -160,6 +168,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                title={item.title}
                 className={`border-b border-cream/10 py-4 font-serif text-2xl ${
                   isActive(item.href) ? "text-rose" : "text-cream"
                 }`}
@@ -170,6 +179,7 @@ export default function Header() {
           )}
           <Link
             href="/reservieren"
+            title="Tisch reservieren im LSC Restaurant Friedrichshafen"
             className="btn btn-primary mt-8 self-start text-base"
           >
             Tisch reservieren

@@ -1,18 +1,24 @@
-import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import Prose from "@/components/Prose";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Impressum",
   description: "Impressum des LSC Restaurants am Bodensee-Airport Friedrichshafen.",
-  alternates: { canonical: "/impressum" },
-  robots: { index: true, follow: false },
-};
+  path: "/impressum",
+});
 
 export default function ImpressumPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Impressum", path: "/impressum" },
+        ]}
+      />
       <PageHero title="Impressum" />
       <section className="bg-cocoa">
         <div className="container-lsc py-16 md:py-20">
@@ -40,7 +46,7 @@ export default function ImpressumPage() {
             <p>
               Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:
               <br />
-              <strong>[USt-IdNr. bitte ergänzen]</strong>
+              <strong>DE347848928</strong>
             </p>
 
             <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
@@ -96,8 +102,8 @@ export default function ImpressumPage() {
             </p>
 
             <p className="mt-10 text-sm italic">
-              Hinweis: Bitte ergänzen Sie die mit [ … ] markierten Angaben und lassen
-              Sie das Impressum vor Veröffentlichung rechtlich prüfen.
+              Hinweis: Bitte lassen Sie das Impressum vor Veröffentlichung rechtlich
+              prüfen.
             </p>
           </Prose>
         </div>

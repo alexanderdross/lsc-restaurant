@@ -1,19 +1,31 @@
-import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import ContactForm from "@/components/forms/ContactForm";
 import LazyEmbed from "@/components/LazyEmbed";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Reservieren & Kontakt",
   description:
     "Reservieren Sie Ihren Tisch im LSC Restaurant am Bodensee-Airport Friedrichshafen – bequem online oder telefonisch unter 07541 73336.",
-  alternates: { canonical: "/reservieren" },
-};
+  path: "/reservieren",
+  keywords: [
+    "Tisch reservieren Friedrichshafen",
+    "LSC Restaurant Kontakt",
+    "Reservierung Bodensee Airport",
+  ],
+});
 
 export default function ReservierenPage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Reservieren", path: "/reservieren" },
+        ]}
+      />
       <PageHero
         eyebrow="Reservierung & Kontakt"
         title="Tisch reservieren"

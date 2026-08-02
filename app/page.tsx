@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/content/site";
 import Reveal from "@/components/Reveal";
-import RestaurantJsonLd from "@/components/JsonLd";
+import RestaurantJsonLd, { WebsiteJsonLd } from "@/components/JsonLd";
 import LazyEmbed from "@/components/LazyEmbed";
 
 const highlights = [
@@ -39,6 +39,7 @@ export default function Home() {
   return (
     <>
       <RestaurantJsonLd />
+      <WebsiteJsonLd />
 
       {/* ---------------------------------------------------------------- Hero */}
       <section className="relative overflow-hidden bg-espresso">

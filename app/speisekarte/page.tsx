@@ -1,20 +1,34 @@
-import type { Metadata } from "next";
-import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { MenuCategories } from "@/components/Menu";
+import { BreadcrumbJsonLd, MenuJsonLd } from "@/components/JsonLd";
 import { speisekarte } from "@/content/menu";
 import { site } from "@/content/site";
+import { pageMeta } from "@/lib/seo";
+import Link from "next/link";
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: "Speisekarte",
   description:
-    "Die Speisekarte des LSC Restaurants: Vorspeisen, Salate, hausgemachte Pasta, Steinofen-Pizza, Fleisch, Fisch und hausgemachte Desserts.",
-  alternates: { canonical: "/speisekarte" },
-};
+    "Die Speisekarte des LSC Restaurants am Bodensee-Airport: Vorspeisen, Salate, hausgemachte Pasta, Steinofen-Pizza, Fleisch, Fisch und hausgemachte Desserts.",
+  path: "/speisekarte",
+  keywords: [
+    "Speisekarte LSC Restaurant",
+    "Pizza Friedrichshafen",
+    "Pasta Friedrichshafen",
+    "Italiener Bodensee Airport",
+  ],
+});
 
 export default function SpeisekartePage() {
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Startseite", path: "/" },
+          { name: "Speisekarte", path: "/speisekarte" },
+        ]}
+      />
+      <MenuJsonLd />
       <PageHero
         eyebrow="Buon Appetito"
         title="Speisekarte"
