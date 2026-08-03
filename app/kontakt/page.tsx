@@ -44,8 +44,8 @@ export default function KontaktPage() {
             </h2>
             <p className="mx-auto mt-4 max-w-xl leading-relaxed text-cream-dim">
               Ein Online-Reservierungs- oder Bestellformular bieten wir bewusst
-              nicht an. Rufen Sie uns einfach an – wir beraten Sie gerne
-              persönlich.
+              nicht an. Rufen Sie uns einfach an – wir nehmen Ihre Bestellung
+              oder Tischreservierung gerne persönlich entgegen.
             </p>
             <div className="mt-8">
               <a
