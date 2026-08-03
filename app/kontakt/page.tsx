@@ -120,9 +120,9 @@ export default function KontaktPage() {
               Sie finden das {site.shortName} direkt am {site.address.landmark},{" "}
               {site.address.street}, {site.address.zip} {site.address.city} –
               direkt hinter dem Hotel Ibis. Die Anfahrt mit dem Auto führt über
-              den Flughafen; am Bodensee-Airport stehen Parkmöglichkeiten zur
-              Verfügung. Von unserer Terrasse aus haben Sie dabei einen direkten
-              Blick aufs Rollfeld.
+              den Flughafen; direkt vor dem Restaurant steht ein großer,
+              kostenloser Parkplatz zur Verfügung. Von unserer Terrasse aus haben
+              Sie dabei einen direkten Blick aufs Rollfeld.
             </p>
           </div>
         </div>
