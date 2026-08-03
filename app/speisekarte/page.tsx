@@ -54,9 +54,9 @@ export default function SpeisekartePage() {
           </div>
 
           <div className="mt-10 text-center">
-            <Link href="/reservieren" className="btn btn-primary">
-              Tisch reservieren
-            </Link>
+            <a href={site.phone.href} className="btn btn-primary">
+              Jetzt anrufen
+            </a>
           </div>
         </div>
       </section>

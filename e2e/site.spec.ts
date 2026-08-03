@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const routes = [
   "/",
-  "/reservieren",
+  "/kontakt",
   "/speisekarte",
   "/mittagstisch",
   "/saisonkarte",
@@ -53,7 +53,7 @@ test("Keine generischen/nicht-beschreibenden Link-Texte", async ({ page }) => {
     "read more",
     "link",
   ]);
-  for (const path of ["/", "/speisekarte", "/reservieren", "/jobs"]) {
+  for (const path of ["/", "/speisekarte", "/kontakt", "/jobs"]) {
     await page.goto(path);
     const texts = await page.locator("a").allInnerTexts();
     const bad = texts
@@ -99,12 +99,25 @@ test("Mobiles Menü deckt bei gescrolltem Header den vollen Viewport ab", async 
   expect(box!.height).toBeGreaterThanOrEqual(vp.height - 1);
 });
 
-test("Reservierungsformular hat die Pflichtfelder", async ({ page }) => {
-  await page.goto("/reservieren");
-  await expect(page.locator("#name")).toBeVisible();
-  await expect(page.locator("#email")).toBeVisible();
-  await expect(page.locator("textarea#message")).toBeVisible();
-  await expect(page.getByRole("button", { name: /Anfrage senden/i })).toBeVisible();
+test("Kontakt: kein Formular, Telefon-Hinweis + Anruf-Link", async ({ page }) => {
+  await page.goto("/kontakt");
+  // Kein Kontakt-/Reservierungsformular mehr
+  await expect(page.locator("form")).toHaveCount(0);
+  await expect(page.locator("#name")).toHaveCount(0);
+  // Expliziter Hinweis: nur telefonisch (Überschrift des Hinweis-Blocks)
+  await expect(
+    page.getByRole("heading", { name: /ausschließlich\s+telefonisch/i })
+  ).toBeVisible();
+  // tel:-CTA vorhanden
+  await expect(
+    page.getByRole("link", { name: /Jetzt anrufen/i }).first()
+  ).toHaveAttribute("href", /^tel:/);
+});
+
+test("Alte /reservieren-URL leitet dauerhaft auf /kontakt um", async ({ page }) => {
+  const res = await page.goto("/reservieren");
+  expect(res?.status()).toBe(200);
+  expect(new URL(page.url()).pathname).toBe("/kontakt/");
 });
 
 test("Bewerbungsformular hat Datei-Upload", async ({ page }) => {
@@ -115,7 +128,7 @@ test("Bewerbungsformular hat Datei-Upload", async ({ page }) => {
 
 test.describe("CLS: reservierter Platz für Embeds/Widgets", () => {
   test("Turnstile-Slot ist von Anfang an reserviert (~300×65)", async ({ page }) => {
-    await page.goto("/reservieren");
+    await page.goto("/jobs");
     const slot = page.locator(".turnstile-slot");
     await expect(slot).toBeVisible();
     const box = await slot.boundingBox();
@@ -125,7 +138,7 @@ test.describe("CLS: reservierter Platz für Embeds/Widgets", () => {
   });
 
   test("Map-Container reserviert Höhe vor dem Laden", async ({ page }) => {
-    await page.goto("/reservieren");
+    await page.goto("/kontakt");
     const embed = page.locator("div.relative.w-full.overflow-hidden").first();
     const box = await embed.boundingBox();
     expect(box).not.toBeNull();
@@ -149,7 +162,7 @@ test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
     page.on("request", (r) => {
       if (/google\.com\/maps|googleapis\.com/.test(r.url())) googleReqs.push(r.url());
     });
-    await page.goto("/reservieren");
+    await page.goto("/kontakt");
     await page
       .locator("div.relative.w-full.overflow-hidden")
       .first()
@@ -304,10 +317,10 @@ test.describe("Local SEO & GEO: strukturierte Daten", () => {
     }
   });
 
-  test("Reservieren: FAQPage-Schema + sichtbarer FAQ-Abschnitt", async ({
+  test("Kontakt: FAQPage-Schema + sichtbarer FAQ-Abschnitt", async ({
     page,
   }) => {
-    await page.goto("/reservieren");
+    await page.goto("/kontakt");
     expect(await jsonLdTypes(page)).toContain("FAQPage");
     await expect(
       page.getByRole("heading", { name: "Häufige Fragen" })
@@ -315,10 +328,10 @@ test.describe("Local SEO & GEO: strukturierte Daten", () => {
     await expect(page.getByText("Wie sind die Öffnungszeiten?")).toBeVisible();
   });
 
-  test("Reservieren: Anfahrt & Parken sichtbar, neue FAQ im Schema", async ({
+  test("Kontakt: Anfahrt & Parken sichtbar, neue FAQ im Schema", async ({
     page,
   }) => {
-    await page.goto("/reservieren");
+    await page.goto("/kontakt");
     await expect(
       page.getByRole("heading", { name: /Anfahrt & Parken/ })
     ).toBeVisible();

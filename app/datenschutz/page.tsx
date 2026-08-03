@@ -65,12 +65,13 @@ export default function DatenschutzPage() {
               dienen ausschließlich der technischen Bereitstellung und Sicherheit.
             </p>
 
-            <h2>5. Kontakt- und Reservierungsformular</h2>
+            <h2>5. Kontaktaufnahme</h2>
             <p>
-              Wenn Sie uns über das Reservierungs- bzw. Kontaktformular kontaktieren,
-              verarbeiten wir die von Ihnen angegebenen Daten (Name, E-Mail-Adresse,
-              ggf. Telefonnummer, gewünschtes Datum, Personenzahl und Nachricht), um
-              Ihre Anfrage zu bearbeiten. Die Übermittlung erfolgt per E-Mail an uns.
+              Diese Website bietet <strong>kein Kontakt- oder
+              Reservierungsformular</strong> an. Reservierungen und Bestellungen
+              nehmen wir ausschließlich telefonisch entgegen. Wenn Sie uns
+              telefonisch oder per E-Mail kontaktieren, verarbeiten wir die dabei
+              übermittelten Daten ausschließlich zur Bearbeitung Ihres Anliegens.
               Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Anbahnung/Erfüllung
               eines Vertragsverhältnisses) bzw. lit. f DSGVO (Bearbeitung Ihrer
               Anfrage). Die Daten werden gelöscht, sobald sie für die Bearbeitung

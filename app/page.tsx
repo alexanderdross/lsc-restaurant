@@ -68,9 +68,9 @@ export default function Home() {
               frische Salate, direkt am Flughafen mit Blick aufs Rollfeld.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
-              <Link href="/reservieren" className="btn btn-primary">
-                Tisch reservieren
-              </Link>
+              <a href={site.phone.href} className="btn btn-primary">
+                Jetzt anrufen
+              </a>
               <Link href="/speisekarte" className="btn btn-outline">
                 Zur Speisekarte
               </Link>
@@ -224,20 +224,21 @@ export default function Home() {
 
           <Reveal delay={120}>
             <div className="card flex h-full flex-col justify-center p-8 text-center md:p-10">
-              <p className="script text-2xl">Reservieren Sie Ihren Tisch</p>
+              <p className="script text-2xl">Reservieren Sie telefonisch</p>
               <p className="mt-3 text-cream-dim">
-                Ob zu zweit oder in großer Runde – sichern Sie sich Ihren Platz.
+                Ob zu zweit oder in großer Runde – Bestellungen und Reservierungen
+                nehmen wir gerne telefonisch entgegen.
               </p>
               <div className="mt-7 flex flex-col items-center gap-3">
-                <Link href="/reservieren" className="btn btn-primary w-full sm:w-auto">
-                  Online reservieren
-                </Link>
-                <a
-                  href={site.phone.href}
+                <a href={site.phone.href} className="btn btn-primary w-full sm:w-auto">
+                  Jetzt anrufen: {site.phone.display}
+                </a>
+                <Link
+                  href="/kontakt"
                   className="text-sm font-semibold text-cream hover:text-rose"
                 >
-                  oder anrufen: {site.phone.display}
-                </a>
+                  Kontakt & Anfahrt
+                </Link>
               </div>
             </div>
           </Reveal>

@@ -93,7 +93,7 @@ export const site = {
 
   /**
    * Häufige Fragen (FAQ) – rein faktisch aus den Stammdaten abgeleitet.
-   * Sichtbar auf /reservieren gerendert und als FAQPage-JSON-LD ausgegeben
+   * Sichtbar auf /kontakt gerendert und als FAQPage-JSON-LD ausgegeben
    * (gut für lokale Suche & generative KI-Antworten / GEO).
    */
   faq: [
@@ -115,7 +115,7 @@ export const site = {
     },
     {
       q: "Kann ich einen Tisch reservieren?",
-      a: "Ja. Reservieren Sie bequem online über unser Formular oder telefonisch unter 07541 73336.",
+      a: "Ja. Reservierungen und Bestellungen nehmen wir ausschließlich telefonisch unter 07541 73336 entgegen – ein Online-Formular bieten wir nicht an.",
     },
     {
       q: "Welche Küche bietet das LSC Restaurant?",

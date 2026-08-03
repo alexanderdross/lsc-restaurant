@@ -11,7 +11,7 @@ export type NavItem = {
 /** Hauptnavigation (Reihenfolge wie auf der bestehenden Website). */
 export const mainNav: NavItem[] = [
   { label: "Home", href: "/", title: "LSC Restaurant | Pizzeria – Startseite am Bodensee-Airport" },
-  { label: "Reservieren", href: "/reservieren", title: "Tisch reservieren im LSC Restaurant Friedrichshafen" },
+  { label: "Kontakt", href: "/kontakt", title: "Kontakt & telefonische Reservierung im LSC Restaurant Friedrichshafen" },
   { label: "Speisekarte", href: "/speisekarte", title: "Speisekarte – italienische Spezialitäten, Pasta & Steinofen-Pizza" },
   { label: "Mittagstisch", href: "/mittagstisch", title: "Mittagstisch – günstige Mittagsangebote (Di–Fr, 12–14 Uhr)" },
   { label: "Saisonkarte", href: "/saisonkarte", title: "Saisonkarte – saisonale Spezialitäten des LSC Restaurants" },

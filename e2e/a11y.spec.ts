@@ -9,7 +9,7 @@ const pages = [
   "/",
   "/speisekarte",
   "/mittagstisch",
-  "/reservieren",
+  "/kontakt",
   "/jobs",
   "/allergene",
   "/impressum",
