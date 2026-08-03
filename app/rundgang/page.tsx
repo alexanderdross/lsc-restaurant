@@ -1,4 +1,3 @@
-import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import LazyEmbed from "@/components/LazyEmbed";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -47,9 +46,9 @@ export default function RundgangPage() {
                 Bis dahin freuen wir uns, Sie persönlich bei uns begrüßen zu dürfen.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <Link href="/reservieren" className="btn btn-primary">
-                  Tisch reservieren
-                </Link>
+                <a href={site.phone.href} className="btn btn-primary">
+                  Jetzt anrufen
+                </a>
                 <a href={site.address.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
                   Anfahrt ansehen
                 </a>

@@ -77,6 +77,8 @@ export function RestaurantJsonLd() {
     })),
     publicAccess: true,
     isAccessibleForFree: true,
+    // Reservierungen werden ausschließlich telefonisch entgegengenommen –
+    // keine Online-ReserveAction (kein Online-Formular mehr).
     acceptsReservations: true,
     sameAs: [site.social.facebook, site.social.instagram],
     hasMenu: [
@@ -84,19 +86,6 @@ export function RestaurantJsonLd() {
       `${site.url}/mittagstisch/`,
       `${site.url}/saisonkarte/`,
     ],
-    potentialAction: {
-      "@type": "ReserveAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${site.url}/reservieren/`,
-        inLanguage: "de-DE",
-        actionPlatform: [
-          "http://schema.org/DesktopWebPlatform",
-          "http://schema.org/MobileWebPlatform",
-        ],
-      },
-      result: { "@type": "Reservation", name: "Tischreservierung" },
-    },
   };
   return <JsonLd data={data} />;
 }

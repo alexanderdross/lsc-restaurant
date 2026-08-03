@@ -32,7 +32,7 @@ export function GET(): Response {
 
 ## Seiten
 - Startseite: ${url}/
-- Reservieren & Kontakt: ${url}/reservieren/
+- Kontakt (Reservierung/Bestellung nur telefonisch): ${url}/kontakt/
 - Speisekarte (${categories}): ${url}/speisekarte/
 - Mittagstisch (${mittagstisch.period}, ${mittagstisch.time}): ${url}/mittagstisch/
 - Saisonkarte: ${url}/saisonkarte/

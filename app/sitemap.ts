@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/speisekarte", priority: 0.9 },
     { path: "/mittagstisch", priority: 0.8 },
     { path: "/saisonkarte", priority: 0.8 },
-    { path: "/reservieren", priority: 0.9 },
+    { path: "/kontakt", priority: 0.9 },
     { path: "/rundgang", priority: 0.6 },
     { path: "/jobs", priority: 0.6 },
     { path: "/allergene", priority: 0.4 },

@@ -115,13 +115,13 @@ export default function Header() {
               </Link>
             )
           )}
-          <Link
-            href="/reservieren"
-            title="Tisch reservieren im LSC Restaurant Friedrichshafen"
+          <a
+            href={site.phone.href}
+            title="Jetzt im LSC Restaurant anrufen"
             className="btn btn-primary ml-2 !py-2.5"
           >
-            Tisch reservieren
-          </Link>
+            Jetzt anrufen
+          </a>
         </nav>
 
         {/* Burger */}
@@ -194,13 +194,13 @@ export default function Header() {
               </Link>
             )
           )}
-          <Link
-            href="/reservieren"
-            title="Tisch reservieren im LSC Restaurant Friedrichshafen"
+          <a
+            href={site.phone.href}
+            title="Jetzt im LSC Restaurant anrufen"
             className="btn btn-primary mt-8 self-start text-base"
           >
-            Tisch reservieren
-          </Link>
+            Jetzt anrufen
+          </a>
         </nav>
       </div>
     </>

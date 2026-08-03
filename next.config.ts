@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
     loader: "custom",
     loaderFile: "./image-loader.ts",
   },
+  // Die frühere Online-Reservierung wurde entfernt; alte URL dauerhaft
+  // auf die neue Kontaktseite umleiten (Backlinks/SEO).
+  async redirects() {
+    return [
+      { source: "/reservieren", destination: "/kontakt", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

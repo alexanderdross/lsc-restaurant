@@ -22,7 +22,7 @@ Braun-Rosé-Markenwelt in einem aufgefrischten, mobiloptimierten Design.
 app/
   layout.tsx              # Fonts, Header, Footer, Metadata
   page.tsx                # Startseite
-  reservieren/            # Reservierung & Kontakt (Formular)
+  kontakt/                # Kontakt (kein Formular – Reservierung/Bestellung telefonisch)
   speisekarte/            # Speisekarte
   mittagstisch/           # Mittagstisch
   saisonkarte/            # Saisonkarte
@@ -30,7 +30,7 @@ app/
   rundgang/               # 360°-Rundgang (iframe-Einbindung)
   jobs/                   # Jobs + Bewerbungsformular (mit Datei-Upload)
   impressum/, datenschutz/
-  actions/mail.ts         # Server Actions: Reservierung & Bewerbung
+  actions/mail.ts         # Server Action: Bewerbung (Jobs)
   sitemap.ts, robots.ts   # SEO
 components/                # Header, Footer, Menu, Formulare, …
 content/
@@ -99,7 +99,7 @@ Cloudflare Workers Builds).
 
 ## Formular-Schutz (Cloudflare Turnstile)
 
-Beide Formulare (Reservierung & Bewerbung) sind mit **Cloudflare Turnstile**
+Das Bewerbungsformular (Jobs) ist mit **Cloudflare Turnstile**
 geschützt. Der Widget-Slot ist CLS-optimiert (reservierter Platz, kein
 Layout-Shift beim Nachladen). Serverseitig wird das Token in `app/actions/mail.ts`
 gegen die siteverify-API geprüft.

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import { DishList } from "@/components/Menu";
 import { BreadcrumbJsonLd, MittagstischJsonLd } from "@/components/JsonLd";
@@ -39,9 +38,9 @@ export default function MittagstischPage() {
             {site.payment.note}
           </p>
           <div className="mt-8 text-center">
-            <Link href="/reservieren" className="btn btn-primary">
-              Tisch reservieren
-            </Link>
+            <a href={site.phone.href} className="btn btn-primary">
+              Jetzt anrufen
+            </a>
           </div>
         </div>
       </section>
