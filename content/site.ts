@@ -87,7 +87,7 @@ export const site = {
     "Terrasse mit Blick aufs Rollfeld",
     "Flugzeug-Spotting",
     "Familienfreundlich",
-    "Parkplätze am Flughafen",
+    "Großer kostenloser Parkplatz vor dem Restaurant",
     "Take-away / Straßenverkauf",
   ],
 
@@ -107,7 +107,7 @@ export const site = {
     },
     {
       q: "Gibt es Parkplätze?",
-      a: "Ja, am Bodensee-Airport Friedrichshafen stehen Parkmöglichkeiten zur Verfügung.",
+      a: "Ja. Direkt vor dem Restaurant steht ein großer, kostenloser Parkplatz zur Verfügung.",
     },
     {
       q: "Wie sind die Öffnungszeiten?",

@@ -44,8 +44,8 @@ export default function KontaktPage() {
             </h2>
             <p className="mx-auto mt-4 max-w-xl leading-relaxed text-cream-dim">
               Ein Online-Reservierungs- oder Bestellformular bieten wir bewusst
-              nicht an. Rufen Sie uns einfach an – wir beraten Sie gerne
-              persönlich.
+              nicht an. Rufen Sie uns einfach an – wir nehmen Ihre Bestellung
+              oder Tischreservierung gerne persönlich entgegen.
             </p>
             <div className="mt-8">
               <a
@@ -120,9 +120,9 @@ export default function KontaktPage() {
               Sie finden das {site.shortName} direkt am {site.address.landmark},{" "}
               {site.address.street}, {site.address.zip} {site.address.city} –
               direkt hinter dem Hotel Ibis. Die Anfahrt mit dem Auto führt über
-              den Flughafen; am Bodensee-Airport stehen Parkmöglichkeiten zur
-              Verfügung. Von unserer Terrasse aus haben Sie dabei einen direkten
-              Blick aufs Rollfeld.
+              den Flughafen; direkt vor dem Restaurant steht ein großer,
+              kostenloser Parkplatz zur Verfügung. Von unserer Terrasse aus haben
+              Sie dabei einen direkten Blick aufs Rollfeld.
             </p>
           </div>
         </div>
