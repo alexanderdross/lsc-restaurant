@@ -35,7 +35,7 @@ export default function MittagstischPage() {
             {mittagstisch.note}
           </p>
           <DishList items={mittagstisch.items} />
-          <PaymentNote className="mt-10" />
+          <PaymentNote className="mx-auto mt-10 max-w-2xl text-center" />
           <div className="mt-8 text-center">
             <a href={site.phone.href} className="btn btn-primary">
               Jetzt anrufen
