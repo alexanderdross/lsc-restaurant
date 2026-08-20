@@ -76,6 +76,7 @@ export default function Home() {
                 Zur Speisekarte
               </Link>
             </div>
+            <PaymentNote className="mx-auto mt-6 max-w-md text-center" />
           </Reveal>
         </div>
       </section>

@@ -1,5 +1,6 @@
 import PageHero from "@/components/PageHero";
 import PaymentNote from "@/components/PaymentNote";
+import AllergeneNote from "@/components/AllergeneNote";
 import { DishList } from "@/components/Menu";
 import { BreadcrumbJsonLd, MittagstischJsonLd } from "@/components/JsonLd";
 import { mittagstisch } from "@/content/menu";
@@ -35,6 +36,8 @@ export default function MittagstischPage() {
             {mittagstisch.note}
           </p>
           <DishList items={mittagstisch.items} />
+          <AllergeneNote className="mt-14" />
+
           <PaymentNote className="mx-auto mt-10 max-w-2xl text-center" />
           <div className="mt-8 text-center">
             <a href={site.phone.href} className="btn btn-primary">
