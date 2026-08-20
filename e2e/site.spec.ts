@@ -147,32 +147,41 @@ test.describe("CLS: reservierter Platz für Embeds/Widgets", () => {
 });
 
 test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
-  test("Karte lädt erst beim Scrollen (Startseite)", async ({ page }) => {
-    // Vor dem Scrollen darf noch kein Google-Request rausgehen: das iframe wird
-    // erst nach dem load-Event UND im Sichtbereich gerendert.
+  test("Zwei-Klick: Karte lädt erst nach Zustimmung (Startseite)", async ({ page }) => {
     const googleReqs: string[] = [];
     page.on("request", (r) => {
       if (/google\.com\/maps|googleapis\.com/.test(r.url())) googleReqs.push(r.url());
     });
 
     await page.goto("/");
+    await page
+      .locator("div.relative.w-full.overflow-hidden")
+      .first()
+      .scrollIntoViewIfNeeded();
+
+    // Sichtbar, gescrollt – und trotzdem noch kein Request an Google.
+    const loadButton = page.getByRole("button", { name: "Karte laden" }).first();
+    await expect(loadButton).toBeVisible();
     await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(0);
     expect(googleReqs, googleReqs.join("\n")).toEqual([]);
 
-    await page
-      .locator("div.relative.w-full.overflow-hidden")
-      .first()
-      .scrollIntoViewIfNeeded();
+    await loadButton.click();
     await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
   });
 
-  test("Karte wird auf /kontakt eingebunden", async ({ page }) => {
+  test("Zwei-Klick: Zustimmung gilt für den restlichen Besuch", async ({ page }) => {
     await page.goto("/kontakt");
+    await page.getByRole("button", { name: "Karte laden" }).first().click();
+    await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
+
+    // Auf der Startseite darf nicht erneut gefragt werden.
+    await page.goto("/");
     await page
       .locator("div.relative.w-full.overflow-hidden")
       .first()
       .scrollIntoViewIfNeeded();
     await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
+    await expect(page.getByRole("button", { name: "Karte laden" })).toHaveCount(0);
   });
 
   test("360°-Tour wird auf /rundgang eingebunden", async ({ page }) => {
