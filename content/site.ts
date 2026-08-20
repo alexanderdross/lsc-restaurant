@@ -43,6 +43,7 @@ export const site = {
   hours: [
     { day: "Montag", value: "Ruhetag", closed: true },
     { day: "Dienstag – Sonntag", value: "10:00 – 22:00 Uhr", closed: false },
+    { day: "Warme Küche", value: "12:00 – 21:00 Uhr", closed: false },
   ],
   // Maschinenlesbar für schema.org
   openingHoursSpec: [
@@ -112,7 +113,7 @@ export const site = {
     },
     {
       q: "Wie sind die Öffnungszeiten?",
-      a: "Dienstag bis Sonntag von 10:00 bis 22:00 Uhr. Montag ist Ruhetag.",
+      a: "Dienstag bis Sonntag von 10:00 bis 22:00 Uhr, warme Küche von 12:00 bis 21:00 Uhr. Montag ist Ruhetag.",
     },
     {
       q: "Kann ich einen Tisch reservieren?",
