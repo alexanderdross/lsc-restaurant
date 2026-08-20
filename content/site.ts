@@ -32,12 +32,16 @@ export const site = {
     landmark: "Bodensee-Airport Friedrichshafen",
     // Bodensee-Airport Friedrichshafen (Näherungswerte)
     geo: { lat: 47.6712, lng: 9.5115 },
-    mapsUrl: "https://www.google.com/maps/search/?api=1&query=LSC+Restaurant+Am+Flugplatz+70+88046+Friedrichshafen",
-    // Cookie-freie Karten-Einbindung (OpenStreetMap) – DSGVO-freundlich, keine
-    // Third-Party-Cookies/Tracking. Der Anfahrt-Link (mapsUrl) öffnet Google Maps
-    // erst auf Klick in einem neuen Tab.
+    mapsUrl: "https://maps.app.goo.gl/W4g9Kv7zNmiNANyDA",
+    // Google-Maps-Einbindung ohne API-Key über den output=embed-Endpunkt.
+    // Geladen wird sie erst nach dem window-load-Event UND sobald sie in den
+    // Sichtbereich scrollt (siehe components/LazyEmbed.tsx).
+    // Soll stattdessen die exakte Listing-Karte erscheinen, hier die URL aus
+    // Google Maps → Teilen → Karte einbetten eintragen (…/maps/embed?pb=…).
+    // ACHTUNG: Google setzt beim Laden Cookies – Abschnitt 7 der
+    // Datenschutzerklärung (app/datenschutz/page.tsx) beschreibt das.
     mapsEmbed:
-      "https://www.openstreetmap.org/export/embed.html?bbox=9.5055%2C47.6682%2C9.5175%2C47.6742&layer=mapnik&marker=47.6712%2C9.5115",
+      "https://www.google.com/maps?q=LSC+Restaurant+Pizzeria,+Am+Flugplatz+70,+88046+Friedrichshafen&z=16&hl=de&output=embed",
   },
 
   hours: [

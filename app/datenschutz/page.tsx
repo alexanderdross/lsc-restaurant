@@ -92,15 +92,18 @@ export default function DatenschutzPage() {
 
             <h2>7. Karten &amp; eingebettete Inhalte</h2>
             <p>
-              Zur Darstellung unseres Standorts binden wir eine Karte von
-              OpenStreetMap (OpenStreetMap Foundation) ein. Die Karte wird aus
-              Datenschutz- und Performance-Gründen erst geladen, wenn sie in den
-              sichtbaren Bereich gelangt. Beim Laden werden technisch notwendige
-              Daten (u. a. Ihre IP-Adresse) an OpenStreetMap übermittelt; dabei
-              werden keine Tracking-Cookies gesetzt. Rechtsgrundlage ist Art. 6
-              Abs. 1 lit. f DSGVO. Weitere Informationen finden Sie in der{" "}
-              <a href="https://osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener noreferrer">
-                Datenschutzerklärung der OpenStreetMap Foundation
+              Zur Darstellung unseres Standorts binden wir eine Karte von Google
+              Maps ein (Anbieter: Google Ireland Limited, Gordon House, Barrow
+              Street, Dublin 4, Irland). Die Karte wird aus Datenschutz- und
+              Performance-Gründen erst geladen, wenn die Seite fertig geladen ist
+              und die Karte in den sichtbaren Bereich gelangt. Beim Laden werden
+              Daten – u. a. Ihre IP-Adresse – an Google übermittelt und es können
+              Cookies gesetzt werden; eine Übermittlung in die USA ist dabei nicht
+              ausgeschlossen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO
+              (berechtigtes Interesse an einer auffindbaren Anfahrtsbeschreibung).
+              Weitere Informationen finden Sie in der{" "}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">
+                Datenschutzerklärung von Google
               </a>
               .
             </p>

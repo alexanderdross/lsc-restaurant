@@ -148,27 +148,31 @@ test.describe("CLS: reservierter Platz für Embeds/Widgets", () => {
 
 test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
   test("Karte lädt erst beim Scrollen (Startseite)", async ({ page }) => {
-    await page.goto("/");
-    await expect(page.locator('iframe[src*="openstreetmap"]')).toHaveCount(0);
-    await page
-      .locator("div.relative.w-full.overflow-hidden")
-      .first()
-      .scrollIntoViewIfNeeded();
-    await expect(page.locator('iframe[src*="openstreetmap"]')).toHaveCount(1);
-  });
-
-  test("Keine Google-Maps-Third-Party-Einbettung (cookie-frei)", async ({ page }) => {
+    // Vor dem Scrollen darf noch kein Google-Request rausgehen: das iframe wird
+    // erst nach dem load-Event UND im Sichtbereich gerendert.
     const googleReqs: string[] = [];
     page.on("request", (r) => {
       if (/google\.com\/maps|googleapis\.com/.test(r.url())) googleReqs.push(r.url());
     });
+
+    await page.goto("/");
+    await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(0);
+    expect(googleReqs, googleReqs.join("\n")).toEqual([]);
+
+    await page
+      .locator("div.relative.w-full.overflow-hidden")
+      .first()
+      .scrollIntoViewIfNeeded();
+    await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
+  });
+
+  test("Karte wird auf /kontakt eingebunden", async ({ page }) => {
     await page.goto("/kontakt");
     await page
       .locator("div.relative.w-full.overflow-hidden")
       .first()
       .scrollIntoViewIfNeeded();
-    await page.waitForTimeout(500);
-    expect(googleReqs, googleReqs.join("\n")).toEqual([]);
+    await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
   });
 
   test("360°-Tour wird auf /rundgang eingebunden", async ({ page }) => {
