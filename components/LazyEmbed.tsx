@@ -18,7 +18,7 @@ import { useInView } from "./useInView";
  *   geht kein einziger Request an den Drittanbieter raus – auch keiner, der nur
  *   die IP überträgt. Siehe `EmbedConsent` unten.
  *
- * Einsatz: Google Maps (aspect-[4/3], mit consent) und 360°-Tour (aspect-video).
+ * Einsatz: Google Maps (aspect-[4/3]) und 360°-Tour (aspect-video), beide mit consent.
  */
 export default function LazyEmbed({
   src,
@@ -38,15 +38,18 @@ export default function LazyEmbed({
   rootMargin?: string;
   className?: string;
   /**
-   * Zwei-Klick-Lösung aktivieren. `provider` erscheint im Hinweistext und ist
-   * zugleich der Schlüssel, unter dem die Zustimmung für die Dauer des Besuchs
-   * gemerkt wird (sessionStorage – bewusst nicht dauerhaft).
+   * Zwei-Klick-Lösung aktivieren. `provider` erscheint im Hinweistext,
+   * `storageKey` bestimmt, unter welchem Schlüssel die Zustimmung für die Dauer
+   * des Besuchs gemerkt wird (sessionStorage – bewusst nicht dauerhaft).
+   * Ohne `storageKey` wird er aus `provider` abgeleitet.
    */
-  consent?: { provider: string; loadLabel?: string };
+  consent?: { provider: string; loadLabel?: string; storageKey?: string };
 }) {
   const [ref, inView] = useInView<HTMLDivElement>(rootMargin);
   const pageLoaded = useAfterWindowLoad();
-  const [accepted, setAccepted] = useConsent(consent?.provider);
+  const [accepted, setAccepted] = useConsent(
+    consent && (consent.storageKey ?? consent.provider)
+  );
 
   const needsConsent = Boolean(consent) && !accepted;
   const show = inView && pageLoaded && !needsConsent;
@@ -140,35 +143,37 @@ function useAfterWindowLoad() {
  * Karte beim Wechsel zwischen Startseite und Kontakt nicht erneut freigegeben
  * werden muss. Bewusst `sessionStorage` statt `localStorage`: nichts bleibt über
  * das Schließen des Tabs hinaus stehen, es gibt also auch nichts zu widerrufen.
+ * Pro Anbieter ein eigener Schlüssel – die Zustimmung zur Karte gibt also nicht
+ * zugleich die 360°-Tour frei.
  *
- * Ohne `provider` (kein consent gefordert) ist der Wert konstant `true`.
+ * Ohne Schlüssel (kein consent gefordert) ist der Wert konstant `true`.
  */
-function useConsent(provider?: string): [boolean, (value: boolean) => void] {
+function useConsent(key?: string | false): [boolean, (value: boolean) => void] {
   const [accepted, setAccepted] = useState(false);
 
   useEffect(() => {
-    if (!provider) return;
+    if (!key) return;
     try {
-      if (sessionStorage.getItem(storageKey(provider)) === "1") setAccepted(true);
+      if (sessionStorage.getItem(storageKey(key)) === "1") setAccepted(true);
     } catch {
       // sessionStorage kann blockiert sein (Privatmodus, strikte Einstellungen) –
       // dann bleibt es bei der Nachfrage pro Seitenaufruf.
     }
-  }, [provider]);
+  }, [key]);
 
   const accept = (value: boolean) => {
     setAccepted(value);
-    if (!provider || !value) return;
+    if (!key || !value) return;
     try {
-      sessionStorage.setItem(storageKey(provider), "1");
+      sessionStorage.setItem(storageKey(key), "1");
     } catch {
-      // s. o. – die Karte lädt trotzdem, nur eben ohne Merken.
+      // s. o. – das Embed lädt trotzdem, nur eben ohne Merken.
     }
   };
 
-  return [provider ? accepted : true, accept];
+  return [key ? accepted : true, accept];
 }
 
-function storageKey(provider: string) {
-  return `embed-consent:${provider.toLowerCase().replace(/\s+/g, "-")}`;
+function storageKey(key: string) {
+  return `embed-consent:${key.toLowerCase().replace(/\s+/g, "-")}`;
 }

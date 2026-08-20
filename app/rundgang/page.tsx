@@ -36,6 +36,11 @@ export default function RundgangPage() {
                 placeholder="Rundgang wird geladen …"
                 ratio="aspect-video"
                 allow="accelerometer; gyroscope; magnetometer; xr-spatial-tracking; fullscreen"
+                consent={{
+                  provider: "die 360°-Tour unseres Dienstleisters vr-easy",
+                  loadLabel: "Rundgang laden",
+                  storageKey: "vr-easy",
+                }}
               />
             </div>
           ) : (

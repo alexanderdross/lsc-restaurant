@@ -184,13 +184,40 @@ test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
     await expect(page.getByRole("button", { name: "Karte laden" })).toHaveCount(0);
   });
 
-  test("360°-Tour wird auf /rundgang eingebunden", async ({ page }) => {
+  test("Zwei-Klick: 360°-Tour lädt erst nach Zustimmung", async ({ page }) => {
+    const tourReqs: string[] = [];
+    page.on("request", (r) => {
+      if (/vr-easy/.test(r.url())) tourReqs.push(r.url());
+    });
+
     await page.goto("/rundgang");
     await page
       .locator("div.relative.w-full.overflow-hidden")
       .first()
       .scrollIntoViewIfNeeded();
+
+    const loadButton = page.getByRole("button", { name: "Rundgang laden" });
+    await expect(loadButton).toBeVisible();
+    await expect(page.locator('iframe[src*="vr-easy"]')).toHaveCount(0);
+    expect(tourReqs, tourReqs.join("\n")).toEqual([]);
+
+    await loadButton.click();
     await expect(page.locator('iframe[src*="vr-easy"]')).toHaveCount(1);
+  });
+
+  test("Zwei-Klick: Zustimmungen gelten je Anbieter getrennt", async ({ page }) => {
+    // Karte freigeben – das darf die Tour nicht mitfreigeben.
+    await page.goto("/kontakt");
+    await page.getByRole("button", { name: "Karte laden" }).first().click();
+    await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
+
+    await page.goto("/rundgang");
+    await page
+      .locator("div.relative.w-full.overflow-hidden")
+      .first()
+      .scrollIntoViewIfNeeded();
+    await expect(page.getByRole("button", { name: "Rundgang laden" })).toBeVisible();
+    await expect(page.locator('iframe[src*="vr-easy"]')).toHaveCount(0);
   });
 });
 

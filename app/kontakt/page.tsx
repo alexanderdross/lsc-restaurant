@@ -108,7 +108,7 @@ export default function KontaktPage() {
               src={site.address.mapsEmbed}
               title="Standort LSC Restaurant"
               placeholder="Karte wird geladen …"
-              consent={{ provider: "Google Maps", loadLabel: "Karte laden" }}
+              consent={{ provider: "Google Maps", loadLabel: "Karte laden", storageKey: "google-maps" }}
             />
           </div>
         </div>
