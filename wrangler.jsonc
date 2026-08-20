@@ -10,14 +10,15 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
-  // CPU-Budget pro Request explizit auf 30 s setzen (Default auf dem Paid-Plan).
-  // WICHTIG: Wirkt nur auf dem "Workers Paid"-Plan. Der "Free"-Plan begrenzt die
-  // CPU-Zeit hart auf 10 ms/Request – zu wenig für Next.js-SSR (OpenNext) und die
-  // Ursache von Cloudflare Error 1102 "Worker exceeded resource limits".
-  // Fix: Account auf Workers Paid upgraden (Dashboard → Workers & Pages → Plans).
-  "limits": {
-    "cpu_ms": 30000
-  },
+  // KEIN "limits"-Block hier eintragen, solange der Account auf dem Workers-Free-
+  // Plan läuft: die API lehnt das Anlegen der Version sonst ab und JEDER Deploy
+  // schlägt fehl mit
+  //   "CPU limits are not supported for the Free plan. [code: 100328]"
+  // Genau daran sind alle Deploys zwischen dem 03.08. und dem 20.08.2026
+  // gescheitert. Erst nach einem Upgrade auf "Workers Paid" (Dashboard →
+  // Workers & Pages → Plans) darf wieder z. B. "limits": { "cpu_ms": 30000 }
+  // gesetzt werden – das ist dann auch das Gegenmittel gegen Error 1102
+  // "Worker exceeded resource limits".
   "observability": {
     "enabled": true
   }
