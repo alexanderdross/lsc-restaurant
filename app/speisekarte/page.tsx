@@ -53,7 +53,7 @@ export default function SpeisekartePage() {
             </p>
           </div>
 
-          <PaymentNote className="mt-10" />
+          <PaymentNote className="mx-auto mt-10 max-w-2xl text-center" />
 
           <div className="mt-8 text-center">
             <a href={site.phone.href} className="btn btn-primary">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/content/site";
 import Reveal from "@/components/Reveal";
+import PaymentNote from "@/components/PaymentNote";
 import LazyEmbed from "@/components/LazyEmbed";
 
 const highlights = [
@@ -219,7 +220,7 @@ export default function Home() {
                 </div>
               ))}
             </dl>
-            <p className="mt-5 text-sm text-cream-dim">{site.payment.note}</p>
+            <PaymentNote className="mt-5" />
           </Reveal>
 
           <Reveal delay={120}>
