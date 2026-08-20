@@ -56,6 +56,7 @@ export const site = {
   payment: {
     methods: ["Bar", "MasterCard", "VISA"],
     note: "Kartenzahlung ab 20 €.",
+    tipNote: "Trinkgeld bitte in bar, da wir dieses sonst versteuern müssen.",
   },
 
   social: {

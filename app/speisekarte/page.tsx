@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import PaymentNote from "@/components/PaymentNote";
 import { MenuCategories } from "@/components/Menu";
 import { BreadcrumbJsonLd, MenuJsonLd } from "@/components/JsonLd";
 import { speisekarte } from "@/content/menu";
@@ -50,10 +51,11 @@ export default function SpeisekartePage() {
               </Link>{" "}
               finden Sie auf unserer Info-Seite.
             </p>
-            <p className="mt-2">{site.payment.note}</p>
           </div>
 
-          <div className="mt-10 text-center">
+          <PaymentNote className="mt-10" />
+
+          <div className="mt-8 text-center">
             <a href={site.phone.href} className="btn btn-primary">
               Jetzt anrufen
             </a>
