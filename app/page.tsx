@@ -166,7 +166,7 @@ export default function Home() {
                 src={site.address.mapsEmbed}
                 title="Standort LSC Restaurant auf der Karte"
                 placeholder="Karte wird geladen …"
-                consent={{ provider: "Google Maps", loadLabel: "Karte laden" }}
+                consent={{ provider: "Google Maps", loadLabel: "Karte laden", storageKey: "google-maps" }}
               />
             </div>
           </Reveal>
