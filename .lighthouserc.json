@@ -2,9 +2,9 @@
   "ci": {
     "collect": {
       "url": [
-        "http://127.0.0.1:3000/",
-        "http://127.0.0.1:3000/speisekarte",
-        "http://127.0.0.1:3000/kontakt"
+        "http://127.0.0.1:4319/",
+        "http://127.0.0.1:4319/speisekarte",
+        "http://127.0.0.1:4319/kontakt"
       ],
       "numberOfRuns": 3,
       "settings": {

@@ -14,7 +14,7 @@
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "check:bundle": "node scripts/check-bundle-budget.mjs",
-    "check:links": "linkinator http://127.0.0.1:3000/ --config linkinator.config.json",
+    "check:links": "linkinator http://127.0.0.1:4319/ --config linkinator.config.json",
     "lhci": "lhci autorun",
     "preview": "npm run patch:opennext && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "npm run patch:opennext && opennextjs-cloudflare build && opennextjs-cloudflare deploy",

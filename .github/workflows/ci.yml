@@ -93,13 +93,15 @@ jobs:
       - name: Build
         run: npm run build
       # Einen Server für Lighthouse UND Link-Check starten (persistiert über
-      # die folgenden Steps). Robuster als lhci seinen eigenen Server managen
-      # zu lassen – warten, bis er wirklich antwortet.
+      # die folgenden Steps). Bewusst auf Port 4319 statt 3000: der
+      # self-hosted Runner ist eine echte Maschine, auf der Port 3000 oft schon
+      # belegt ist (Dev-Server/wrangler) – sonst würde Lighthouse den falschen
+      # Server prüfen. Warten, bis unser Server wirklich antwortet.
       - name: Server starten
         run: |
-          npm run start &
+          PORT=4319 npm run start &
           for i in $(seq 1 40); do
-            curl -sf http://127.0.0.1:3000/ >/dev/null && break
+            curl -sf http://127.0.0.1:4319/ >/dev/null && break
             sleep 1
           done
       - name: Lighthouse CI (Budgets)
