@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import PwaSplash from "@/components/PwaSplash";
+import IosSplashLinks from "@/components/IosSplashLinks";
 import { RestaurantJsonLd, WebsiteJsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
@@ -100,6 +101,10 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} ${script.variable}`}
     >
       <body>
+        {/* iOS-Startbilder (apple-touch-startup-image) – von React in den <head>
+            gehoben. Zeigt beim App-Start auf iOS sofort ein Markenbild statt
+            eines weißen Bildschirms. */}
+        <IosSplashLinks />
         {/* PWA-Ladebildschirm: nur in der installierten App (Standalone) sichtbar,
             im Browser per CSS ausgeblendet. Steht bewusst im Server-HTML, damit er
             beim App-Start sofort erscheint. `PwaSplash` blendet ihn nach dem Laden
