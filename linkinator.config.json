@@ -1,0 +1,6 @@
+{
+  "recurse": true,
+  "timeout": 15000,
+  "retry": true,
+  "skip": ["^(?!http://127\\.0\\.0\\.1:3000)"]
+}

@@ -12,9 +12,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Typecheck, Lint, Next-Build
+  # Typecheck, Lint, Format, Unit-Tests, Next-Build, First-Load-JS-Budget
   quality:
-    name: Typecheck · Lint · Build
+    name: Typecheck · Lint · Format · Unit · Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,8 +27,14 @@ jobs:
         run: npm run typecheck
       - name: Lint
         run: npm run lint
+      - name: Format-Check (Prettier)
+        run: npm run format:check
+      - name: Unit-Tests (Vitest)
+        run: npm run test:unit
       - name: Next build
         run: npm run build
+      - name: First-Load-JS-Budget
+        run: npm run check:bundle
 
   # OpenNext-Worker-Bundle bauen (fängt Cloudflare-/Bundling-Fehler ab)
   worker-build:
@@ -44,7 +50,7 @@ jobs:
       - name: OpenNext build
         run: npm run cf-build
 
-  # E2E- und Accessibility-Tests (Playwright + axe)
+  # E2E- und Accessibility-Tests (Playwright + axe), Desktop + Mobile
   e2e:
     name: E2E & Accessibility (Playwright)
     runs-on: ubuntu-latest
@@ -67,4 +73,35 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 7
+
+  # Performance-Budgets (Lighthouse CI) + interner Link-Check
+  perf:
+    name: Lighthouse & Link-Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Lighthouse CI (Budgets)
+        run: npm run lhci
+      - name: Link-Check (interne Links)
+        run: |
+          npm run start &
+          for i in $(seq 1 40); do
+            curl -sf http://127.0.0.1:3000/ >/dev/null && break
+            sleep 1
+          done
+          npm run check:links
+      - name: Lighthouse-Report hochladen
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci/report/
           retention-days: 7
