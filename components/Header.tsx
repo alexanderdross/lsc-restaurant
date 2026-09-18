@@ -12,6 +12,12 @@ import { site } from "@/content/site";
 // er weder im Server-HTML noch in der First-Load-JS jeder Seite auftaucht.
 const PwaBackButton = dynamic(() => import("./PwaBackButton"), { ssr: false });
 
+// Dezenter Installations-Hinweis (nur solange die App nicht installiert ist).
+// Ebenfalls Insel ohne SSR – gleiche Gründe wie beim Zurück-Button.
+const PwaInstallPrompt = dynamic(() => import("./PwaInstallPrompt"), {
+  ssr: false,
+});
+
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -212,6 +218,10 @@ export default function Header() {
           </a>
         </nav>
       </div>
+
+      {/* Dezenter PWA-Installations-Hinweis – rendert nichts, solange die App
+          installiert ist oder der Hinweis kürzlich weggeklickt wurde. */}
+      <PwaInstallPrompt />
     </>
   );
 }
