@@ -44,10 +44,7 @@ export function RestaurantJsonLd() {
     currenciesAccepted: "EUR",
     paymentAccepted: "Bar, MasterCard, VISA",
     knowsLanguage: ["de", "it"],
-    image: [
-      `${site.url}/opengraph-image.png`,
-      `${site.url}/logo.webp`,
-    ],
+    image: [`${site.url}/opengraph-image.png`, `${site.url}/logo.webp`],
     logo: `${site.url}/icon.png`,
     address: {
       "@type": "PostalAddress",

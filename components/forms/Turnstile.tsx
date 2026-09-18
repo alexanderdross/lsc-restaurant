@@ -43,7 +43,8 @@ function loadTurnstileScript(): Promise<void> {
       s.async = true;
       s.defer = true;
       s.onload = () => resolve();
-      s.onerror = () => reject(new Error("Turnstile konnte nicht geladen werden."));
+      s.onerror = () =>
+        reject(new Error("Turnstile konnte nicht geladen werden."));
       document.head.appendChild(s);
     });
   }
@@ -64,7 +65,12 @@ export default function Turnstile({ action }: { action?: string }) {
 
     loadTurnstileScript()
       .then(() => {
-        if (cancelled || !holder.current || !window.turnstile || widgetId.current)
+        if (
+          cancelled ||
+          !holder.current ||
+          !window.turnstile ||
+          widgetId.current
+        )
           return;
         widgetId.current = window.turnstile.render(holder.current, {
           sitekey: SITE_KEY,

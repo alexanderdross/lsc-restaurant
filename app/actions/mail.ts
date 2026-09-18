@@ -112,7 +112,10 @@ async function sendMail(opts: {
 /* -------------------------------------------------------------------------- */
 const applicationSchema = z.object({
   name: z.string().trim().min(2, "Bitte geben Sie Ihren Namen an."),
-  email: z.string().trim().email("Bitte geben Sie eine gültige E-Mail-Adresse an."),
+  email: z
+    .string()
+    .trim()
+    .email("Bitte geben Sie eine gültige E-Mail-Adresse an."),
   phone: z.string().trim().optional().default(""),
   message: z.string().trim().max(5000).optional().default(""),
 });
@@ -160,7 +163,11 @@ export async function sendApplication(
   }
 
   // Datei-Upload prüfen
-  const attachments: { filename: string; content: string; mimeType?: string }[] = [];
+  const attachments: {
+    filename: string;
+    content: string;
+    mimeType?: string;
+  }[] = [];
   const file = formData.get("file");
   if (file instanceof File && file.size > 0) {
     if (file.size > MAX_UPLOAD) {

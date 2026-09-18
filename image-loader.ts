@@ -27,7 +27,11 @@ export default function cloudflareLoader({
   const enabled = process.env.NEXT_PUBLIC_CF_IMAGE_RESIZING === "true";
   if (!enabled) return src;
 
-  const params = [`width=${width}`, `quality=${quality || 75}`, "format=auto"].join(",");
+  const params = [
+    `width=${width}`,
+    `quality=${quality || 75}`,
+    "format=auto",
+  ].join(",");
   const normalizedSrc = src.startsWith("/") ? src : `/${src}`;
   return `/cdn-cgi/image/${params}${normalizedSrc}`;
 }

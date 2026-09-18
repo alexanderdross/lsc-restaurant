@@ -4,7 +4,11 @@ import Link from "next/link";
  * Hinweis-Box mit Verweis auf die Allergene-Infoseite.
  * Steht auf allen Speisekarten zwischen Gerichten und Zahlungshinweis.
  */
-export default function AllergeneNote({ className = "" }: { className?: string }) {
+export default function AllergeneNote({
+  className = "",
+}: {
+  className?: string;
+}) {
   return (
     <div
       className={`rounded-[var(--radius-card)] border border-cream/10 bg-espresso/60 p-6 text-center text-sm text-cream-dim ${className}`}

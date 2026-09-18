@@ -58,10 +58,7 @@ const DEVICES = [
 async function renderOne(pxW, pxH) {
   // Logo auf ~42 % der kürzeren Kante, Seitenverhältnis erhalten.
   const logoW = Math.round(Math.min(pxW, pxH) * 0.42);
-  const logo = await sharp(logoSrc)
-    .resize({ width: logoW })
-    .png()
-    .toBuffer();
+  const logo = await sharp(logoSrc).resize({ width: logoW }).png().toBuffer();
 
   const file = `apple-splash-${pxW}-${pxH}.png`;
   await sharp({
@@ -109,7 +106,9 @@ async function main() {
     ";\n";
   await writeFile(join(root, "content", "iosSplash.ts"), ts, "utf8");
 
-  console.log(`[ios-splash] ${links.length} Startbilder erzeugt → public/splash/`);
+  console.log(
+    `[ios-splash] ${links.length} Startbilder erzeugt → public/splash/`
+  );
 }
 
 main().catch((err) => {

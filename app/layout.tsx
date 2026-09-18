@@ -13,8 +13,16 @@ import "./globals.css";
 // Keine Abhängigkeit zu Google Fonts – weder beim Build noch zur Laufzeit.
 const fraunces = localFont({
   src: [
-    { path: "./fonts/fraunces-latin-wght-normal.woff2", weight: "100 900", style: "normal" },
-    { path: "./fonts/fraunces-latin-wght-italic.woff2", weight: "100 900", style: "italic" },
+    {
+      path: "./fonts/fraunces-latin-wght-normal.woff2",
+      weight: "100 900",
+      style: "normal",
+    },
+    {
+      path: "./fonts/fraunces-latin-wght-italic.woff2",
+      weight: "100 900",
+      style: "italic",
+    },
   ],
   variable: "--font-fraunces",
   display: "swap",
@@ -22,14 +30,26 @@ const fraunces = localFont({
 });
 
 const inter = localFont({
-  src: [{ path: "./fonts/inter-latin-wght-normal.woff2", weight: "100 900", style: "normal" }],
+  src: [
+    {
+      path: "./fonts/inter-latin-wght-normal.woff2",
+      weight: "100 900",
+      style: "normal",
+    },
+  ],
   variable: "--font-inter",
   display: "swap",
   fallback: ["system-ui", "Segoe UI", "Arial", "sans-serif"],
 });
 
 const script = localFont({
-  src: [{ path: "./fonts/dancing-script-latin-wght-normal.woff2", weight: "400 700", style: "normal" }],
+  src: [
+    {
+      path: "./fonts/dancing-script-latin-wght-normal.woff2",
+      weight: "400 700",
+      style: "normal",
+    },
+  ],
   variable: "--font-script",
   display: "swap",
   fallback: ["cursive"],

@@ -66,7 +66,10 @@ body {
   border-radius: 2px;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-serif);
   font-weight: 500;
   line-height: 1.1;
@@ -117,7 +120,11 @@ h1, h2, h3, h4 {
     font-weight: 600;
     font-size: 0.95rem;
     line-height: 1;
-    transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    transition:
+      transform 0.18s ease,
+      background-color 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease;
     will-change: transform;
   }
   .btn:hover {
@@ -281,7 +288,9 @@ h1, h2, h3, h4 {
    Nur wenn JS aktiv ist (Klasse `js` am <html>), wird vor dem Einblenden
    ausgeblendet. So bleibt der Inhalt bei deaktiviertem JS immer sichtbar. */
 .reveal {
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
 }
 .js .reveal {
   opacity: 0;

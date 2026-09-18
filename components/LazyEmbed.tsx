@@ -55,7 +55,10 @@ export default function LazyEmbed({
   const show = inView && pageLoaded && !needsConsent;
 
   return (
-    <div ref={ref} className={`relative w-full overflow-hidden ${ratio} ${className}`}>
+    <div
+      ref={ref}
+      className={`relative w-full overflow-hidden ${ratio} ${className}`}
+    >
       {show ? (
         <iframe
           title={title}
@@ -100,10 +103,13 @@ function EmbedConsent({
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-cocoa-2 px-6 py-8 text-center">
       <p className="max-w-md text-sm leading-relaxed text-cream-dim">
-        An dieser Stelle binden wir {provider} ein. Beim Laden werden Daten – unter
-        anderem Ihre IP-Adresse – an den Anbieter übermittelt und es können Cookies
-        gesetzt werden. Näheres in unserer{" "}
-        <Link href="/datenschutz" className="font-semibold text-rose hover:text-rose-gold">
+        An dieser Stelle binden wir {provider} ein. Beim Laden werden Daten –
+        unter anderem Ihre IP-Adresse – an den Anbieter übermittelt und es
+        können Cookies gesetzt werden. Näheres in unserer{" "}
+        <Link
+          href="/datenschutz"
+          className="font-semibold text-rose hover:text-rose-gold"
+        >
           Datenschutzerklärung
         </Link>
         .

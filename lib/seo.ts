@@ -29,7 +29,9 @@ export function pageMeta({
   const canonical = path === "/" ? "/" : `${path}/`;
   const url = `${site.url}${canonical}`;
   const ogTitle =
-    path === "/" ? `${site.name} – ${site.claim}` : `${title} | ${site.shortName}`;
+    path === "/"
+      ? `${site.name} – ${site.claim}`
+      : `${title} | ${site.shortName}`;
 
   return {
     title,

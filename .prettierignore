@@ -1,0 +1,21 @@
+# Nicht formatieren
+node_modules
+.next
+.open-next
+.wrangler
+.lighthouseci
+coverage
+test-results
+playwright-report
+blob-report
+
+# Lockfiles & generierte Dateien
+package-lock.json
+content/iosSplash.ts
+
+# Statische Assets
+public
+app/fonts
+
+# Markdown bewusst unangetastet lassen (freie Textformatierung)
+*.md

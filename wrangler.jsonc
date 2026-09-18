@@ -8,7 +8,7 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "directory": ".open-next/assets",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
   },
   // KEIN "limits"-Block hier eintragen, solange der Account auf dem Workers-Free-
   // Plan läuft: die API lehnt das Anlegen der Version sonst ab und JEDER Deploy
@@ -20,8 +20,8 @@
   // gesetzt werden – das ist dann auch das Gegenmittel gegen Error 1102
   // "Worker exceeded resource limits".
   "observability": {
-    "enabled": true
-  }
+    "enabled": true,
+  },
   // SMTP-Zugangsdaten NICHT hier eintragen – als Secrets hinterlegen:
   //   npx wrangler secret put SMTP_HOST
   //   npx wrangler secret put SMTP_PORT

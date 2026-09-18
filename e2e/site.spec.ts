@@ -33,8 +33,12 @@ test.describe("Seiten laden & Grundstruktur", () => {
 
 test("Speisekarte: Kategorien, Gericht und Allergen-Link", async ({ page }) => {
   await page.goto("/speisekarte");
-  await expect(page.getByRole("heading", { name: "Pizza", exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Dessert", exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Pizza", exact: true })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Dessert", exact: true })
+  ).toBeVisible();
   await expect(page.getByText("Pizza Margherita")).toBeVisible();
   await expect(
     page.getByRole("link", { name: /Allergene & Zusatzstoffe/ })
@@ -59,7 +63,9 @@ test("Keine generischen/nicht-beschreibenden Link-Texte", async ({ page }) => {
     const bad = texts
       .map((t) => t.replace(/\s+/g, " ").trim().toLowerCase())
       .filter((t) => generic.has(t));
-    expect(bad, `Generische Link-Texte auf ${path}: ${bad.join(", ")}`).toEqual([]);
+    expect(bad, `Generische Link-Texte auf ${path}: ${bad.join(", ")}`).toEqual(
+      []
+    );
   }
 });
 
@@ -99,7 +105,9 @@ test("Mobiles Menü deckt bei gescrolltem Header den vollen Viewport ab", async 
   expect(box!.height).toBeGreaterThanOrEqual(vp.height - 1);
 });
 
-test("Kontakt: kein Formular, Telefon-Hinweis + Anruf-Link", async ({ page }) => {
+test("Kontakt: kein Formular, Telefon-Hinweis + Anruf-Link", async ({
+  page,
+}) => {
   await page.goto("/kontakt");
   // Kein Kontakt-/Reservierungsformular mehr
   await expect(page.locator("form")).toHaveCount(0);
@@ -114,7 +122,9 @@ test("Kontakt: kein Formular, Telefon-Hinweis + Anruf-Link", async ({ page }) =>
   ).toHaveAttribute("href", /^tel:/);
 });
 
-test("Alte /reservieren-URL leitet dauerhaft auf /kontakt um", async ({ page }) => {
+test("Alte /reservieren-URL leitet dauerhaft auf /kontakt um", async ({
+  page,
+}) => {
   const res = await page.goto("/reservieren");
   expect(res?.status()).toBe(200);
   expect(new URL(page.url()).pathname).toBe("/kontakt/");
@@ -123,11 +133,15 @@ test("Alte /reservieren-URL leitet dauerhaft auf /kontakt um", async ({ page }) 
 test("Bewerbungsformular hat Datei-Upload", async ({ page }) => {
   await page.goto("/jobs");
   await expect(page.locator('input#file[type="file"]')).toBeAttached();
-  await expect(page.getByRole("button", { name: /Bewerbung senden/i })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Bewerbung senden/i })
+  ).toBeVisible();
 });
 
 test.describe("CLS: reservierter Platz für Embeds/Widgets", () => {
-  test("Turnstile-Slot ist von Anfang an reserviert (~300×65)", async ({ page }) => {
+  test("Turnstile-Slot ist von Anfang an reserviert (~300×65)", async ({
+    page,
+  }) => {
     await page.goto("/jobs");
     const slot = page.locator(".turnstile-slot");
     await expect(slot).toBeVisible();
@@ -147,10 +161,13 @@ test.describe("CLS: reservierter Platz für Embeds/Widgets", () => {
 });
 
 test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
-  test("Zwei-Klick: Karte lädt erst nach Zustimmung (Startseite)", async ({ page }) => {
+  test("Zwei-Klick: Karte lädt erst nach Zustimmung (Startseite)", async ({
+    page,
+  }) => {
     const googleReqs: string[] = [];
     page.on("request", (r) => {
-      if (/google\.com\/maps|googleapis\.com/.test(r.url())) googleReqs.push(r.url());
+      if (/google\.com\/maps|googleapis\.com/.test(r.url()))
+        googleReqs.push(r.url());
     });
 
     await page.goto("/");
@@ -160,7 +177,9 @@ test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
       .scrollIntoViewIfNeeded();
 
     // Sichtbar, gescrollt – und trotzdem noch kein Request an Google.
-    const loadButton = page.getByRole("button", { name: "Karte laden" }).first();
+    const loadButton = page
+      .getByRole("button", { name: "Karte laden" })
+      .first();
     await expect(loadButton).toBeVisible();
     await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(0);
     expect(googleReqs, googleReqs.join("\n")).toEqual([]);
@@ -169,7 +188,9 @@ test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
     await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
   });
 
-  test("Zwei-Klick: Zustimmung gilt für den restlichen Besuch", async ({ page }) => {
+  test("Zwei-Klick: Zustimmung gilt für den restlichen Besuch", async ({
+    page,
+  }) => {
     await page.goto("/kontakt");
     await page.getByRole("button", { name: "Karte laden" }).first().click();
     await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
@@ -181,7 +202,9 @@ test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
       .first()
       .scrollIntoViewIfNeeded();
     await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
-    await expect(page.getByRole("button", { name: "Karte laden" })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Karte laden" })).toHaveCount(
+      0
+    );
   });
 
   test("Zwei-Klick: 360°-Tour lädt erst nach Zustimmung", async ({ page }) => {
@@ -205,7 +228,9 @@ test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
     await expect(page.locator('iframe[src*="vr-easy"]')).toHaveCount(1);
   });
 
-  test("Zwei-Klick: Zustimmungen gelten je Anbieter getrennt", async ({ page }) => {
+  test("Zwei-Klick: Zustimmungen gelten je Anbieter getrennt", async ({
+    page,
+  }) => {
     // Karte freigeben – das darf die Tour nicht mitfreigeben.
     await page.goto("/kontakt");
     await page.getByRole("button", { name: "Karte laden" }).first().click();
@@ -216,7 +241,9 @@ test.describe("Lazy-Loading von Drittanbieter-Embeds", () => {
       .locator("div.relative.w-full.overflow-hidden")
       .first()
       .scrollIntoViewIfNeeded();
-    await expect(page.getByRole("button", { name: "Rundgang laden" })).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Rundgang laden" })
+    ).toBeVisible();
     await expect(page.locator('iframe[src*="vr-easy"]')).toHaveCount(0);
   });
 });
@@ -274,7 +301,9 @@ test.describe("PWA: Manifest, Service Worker & Theme-Color", () => {
     );
   });
 
-  test("Service Worker wird als JavaScript ausgeliefert", async ({ request }) => {
+  test("Service Worker wird als JavaScript ausgeliefert", async ({
+    request,
+  }) => {
     const res = await request.get("/sw.js");
     expect(res.status()).toBe(200);
     expect(res.headers()["content-type"] || "").toContain("javascript");
@@ -291,7 +320,9 @@ test.describe("PWA: Manifest, Service Worker & Theme-Color", () => {
 
 test("SEO: JSON-LD BreadcrumbList und Menu vorhanden", async ({ page }) => {
   await page.goto("/speisekarte");
-  const blocks = await page.locator('script[type="application/ld+json"]').allTextContents();
+  const blocks = await page
+    .locator('script[type="application/ld+json"]')
+    .allTextContents();
   const types = blocks.map((b) => {
     try {
       return JSON.parse(b)["@type"];
@@ -328,7 +359,9 @@ test.describe("Local SEO & GEO: strukturierte Daten", () => {
     }
   });
 
-  test("Restaurant-Schema enthält NAP, Geo & Öffnungszeiten", async ({ page }) => {
+  test("Restaurant-Schema enthält NAP, Geo & Öffnungszeiten", async ({
+    page,
+  }) => {
     await page.goto("/");
     const blocks = await page
       .locator('script[type="application/ld+json"]')
@@ -353,7 +386,9 @@ test.describe("Local SEO & GEO: strukturierte Daten", () => {
   test("Alle drei Karten liefern Menu-Schema", async ({ page }) => {
     for (const path of ["/speisekarte", "/mittagstisch", "/saisonkarte"]) {
       await page.goto(path);
-      expect(await jsonLdTypes(page), `Menu fehlt auf ${path}`).toContain("Menu");
+      expect(await jsonLdTypes(page), `Menu fehlt auf ${path}`).toContain(
+        "Menu"
+      );
     }
   });
 
@@ -438,7 +473,9 @@ test.describe("Local SEO & GEO: strukturierte Daten", () => {
     await expect(page.locator('meta[name="ICBM"]')).toHaveCount(1);
   });
 
-  test("/llms.txt liefert eine Text-Zusammenfassung (GEO)", async ({ request }) => {
+  test("/llms.txt liefert eine Text-Zusammenfassung (GEO)", async ({
+    request,
+  }) => {
     const res = await request.get("/llms.txt");
     expect(res.status()).toBe(200);
     expect(res.headers()["content-type"] || "").toContain("text/plain");

@@ -30,9 +30,21 @@ const highlights = [
 ];
 
 const menuLinks = [
-  { href: "/speisekarte", label: "Speisekarte", text: "Vorspeisen, Pasta, Pizza, Fleisch, Fisch & Dessert" },
-  { href: "/mittagstisch", label: "Mittagstisch", text: "Günstige Gerichte, Di – Fr von 12 – 14 Uhr" },
-  { href: "/saisonkarte", label: "Saisonkarte", text: "Saisonale Spezialitäten – frisch für Sie ausgewählt" },
+  {
+    href: "/speisekarte",
+    label: "Speisekarte",
+    text: "Vorspeisen, Pasta, Pizza, Fleisch, Fisch & Dessert",
+  },
+  {
+    href: "/mittagstisch",
+    label: "Mittagstisch",
+    text: "Günstige Gerichte, Di – Fr von 12 – 14 Uhr",
+  },
+  {
+    href: "/saisonkarte",
+    label: "Saisonkarte",
+    text: "Saisonale Spezialitäten – frisch für Sie ausgewählt",
+  },
 ];
 
 export default function Home() {
@@ -65,8 +77,8 @@ export default function Home() {
             />
             <p className="script text-3xl sm:text-4xl">{site.claim}</p>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-cream-dim">
-              Italienische Küche mit Herz – Steinofen-Pizza, hausgemachte Pasta und
-              frische Salate, direkt am Flughafen mit Blick aufs Rollfeld.
+              Italienische Küche mit Herz – Steinofen-Pizza, hausgemachte Pasta
+              und frische Salate, direkt am Flughafen mit Blick aufs Rollfeld.
             </p>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
               <a href={site.phone.href} className="btn btn-primary">
@@ -90,9 +102,9 @@ export default function Home() {
               Der Ort, an dem kulinarische Freuden wahr werden
             </h2>
             <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-cream-dim">
-              Wir begrüßen unsere Gäste mit nahrhaften, leckeren und erschwinglichen
-              Speisen. Überzeuge dich selbst und buche einen Tisch bei uns – wir
-              freuen uns auf dich.
+              Wir begrüßen unsere Gäste mit nahrhaften, leckeren und
+              erschwinglichen Speisen. Überzeuge dich selbst und buche einen
+              Tisch bei uns – wir freuen uns auf dich.
             </p>
             <p className="mt-6 font-serif text-lg italic text-rose">
               {site.owner}
@@ -166,7 +178,11 @@ export default function Home() {
                 src={site.address.mapsEmbed}
                 title="Standort LSC Restaurant auf der Karte"
                 placeholder="Karte wird geladen …"
-                consent={{ provider: "Google Maps", loadLabel: "Karte laden", storageKey: "google-maps" }}
+                consent={{
+                  provider: "Google Maps",
+                  loadLabel: "Karte laden",
+                  storageKey: "google-maps",
+                }}
               />
             </div>
           </Reveal>
@@ -229,11 +245,14 @@ export default function Home() {
             <div className="card flex h-full flex-col justify-center p-8 text-center md:p-10">
               <p className="script text-2xl">Reservieren Sie telefonisch</p>
               <p className="mt-3 text-cream-dim">
-                Ob zu zweit oder in großer Runde – Bestellungen und Reservierungen
-                nehmen wir gerne telefonisch entgegen.
+                Ob zu zweit oder in großer Runde – Bestellungen und
+                Reservierungen nehmen wir gerne telefonisch entgegen.
               </p>
               <div className="mt-7 flex flex-col items-center gap-3">
-                <a href={site.phone.href} className="btn btn-primary w-full sm:w-auto">
+                <a
+                  href={site.phone.href}
+                  className="btn btn-primary w-full sm:w-auto"
+                >
                   Jetzt anrufen: {site.phone.display}
                 </a>
                 <Link

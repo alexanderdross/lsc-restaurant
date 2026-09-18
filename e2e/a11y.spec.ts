@@ -54,7 +54,9 @@ for (const path of ["/", "/speisekarte", "/mittagstisch", "/saisonkarte"]) {
       .analyze();
     expect(
       results.violations,
-      results.violations.map((v) => v.nodes.map((n) => n.html).join("\n")).join("\n")
+      results.violations
+        .map((v) => v.nodes.map((n) => n.html).join("\n"))
+        .join("\n")
     ).toEqual([]);
   });
 }
