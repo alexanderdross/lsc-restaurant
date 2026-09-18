@@ -48,13 +48,19 @@ export default function RundgangPage() {
               <p className="script text-2xl">Bald hier verfügbar</p>
               <p className="mt-4 leading-relaxed text-cream-dim">
                 Der interaktive 360°-Rundgang wird an dieser Stelle eingebunden.
-                Bis dahin freuen wir uns, Sie persönlich bei uns begrüßen zu dürfen.
+                Bis dahin freuen wir uns, Sie persönlich bei uns begrüßen zu
+                dürfen.
               </p>
               <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
                 <a href={site.phone.href} className="btn btn-primary">
                   Jetzt anrufen
                 </a>
-                <a href={site.address.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+                <a
+                  href={site.address.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline"
+                >
                   Anfahrt ansehen
                 </a>
               </div>

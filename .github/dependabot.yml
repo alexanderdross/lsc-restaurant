@@ -1,0 +1,50 @@
+version: 2
+
+# Automatische Abhängigkeits-Updates.
+#
+# Rhythmus: monatlich.
+#
+# Cooldown: `default-days: 14` – es werden nur Versionen vorgeschlagen, die
+# mindestens 14 Tage alt sind. So landen keine brandneuen (potenziell noch
+# fehlerhaften) Framework-Releases sofort in einem PR.
+updates:
+  # --- npm-Pakete (App-Abhängigkeiten) ---
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 14 # nur Versionen, die >= 14 Tage alt sind
+    labels:
+      - "dependencies"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+    groups:
+      # Minor- und Patch-Updates gebündelt (weniger PR-Rauschen); Major-Updates
+      # kommen bewusst einzeln, damit Breaking Changes einzeln geprüft werden.
+      npm-minor-patch:
+        applies-to: version-updates
+        update-types:
+          - "minor"
+          - "patch"
+
+  # --- GitHub-Actions in den Workflows ---
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 14
+    labels:
+      - "dependencies"
+      - "github-actions"
+    groups:
+      actions-all:
+        applies-to: version-updates
+        patterns:
+          - "*"

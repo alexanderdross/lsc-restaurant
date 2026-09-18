@@ -37,7 +37,9 @@ async function main() {
     return;
   }
   await writeFile(target, code.replace(NEEDLE, REPLACEMENT), "utf8");
-  console.log("[patch-opennext] cloudflare:sockets als esbuild-external ergänzt.");
+  console.log(
+    "[patch-opennext] cloudflare:sockets als esbuild-external ergänzt."
+  );
 }
 
 main().catch((err) => {

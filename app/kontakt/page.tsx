@@ -64,11 +64,16 @@ export default function KontaktPage() {
         <div className="container-lsc grid gap-12 py-16 md:py-20 lg:grid-cols-2">
           {/* Kontaktinfos */}
           <div className="card p-6 md:p-8">
-            <h2 className="mb-4 font-serif text-xl text-cream">So erreichen Sie uns</h2>
+            <h2 className="mb-4 font-serif text-xl text-cream">
+              So erreichen Sie uns
+            </h2>
             <ul className="space-y-3 text-cream-dim">
               <li>
                 Telefon:{" "}
-                <a href={site.phone.href} className="text-cream hover:text-rose">
+                <a
+                  href={site.phone.href}
+                  className="text-cream hover:text-rose"
+                >
                   {site.phone.intl}
                 </a>
               </li>
@@ -85,7 +90,9 @@ export default function KontaktPage() {
               </li>
             </ul>
 
-            <h3 className="mb-3 mt-6 font-serif text-lg text-cream">Öffnungszeiten</h3>
+            <h3 className="mb-3 mt-6 font-serif text-lg text-cream">
+              Öffnungszeiten
+            </h3>
             <dl className="space-y-2 text-sm text-cream-dim">
               {site.hours.map((h) => (
                 <div key={h.day} className="flex justify-between gap-4">
@@ -108,7 +115,11 @@ export default function KontaktPage() {
               src={site.address.mapsEmbed}
               title="Standort LSC Restaurant"
               placeholder="Karte wird geladen …"
-              consent={{ provider: "Google Maps", loadLabel: "Karte laden", storageKey: "google-maps" }}
+              consent={{
+                provider: "Google Maps",
+                loadLabel: "Karte laden",
+                storageKey: "google-maps",
+              }}
             />
           </div>
         </div>
@@ -116,14 +127,16 @@ export default function KontaktPage() {
         {/* Anfahrt & Parken – kurzer, faktischer GEO-Content (LLM-zitierfähig) */}
         <div className="container-lsc pb-16 md:pb-20">
           <div className="mx-auto max-w-4xl">
-            <h2 className="text-2xl text-cream md:text-3xl">Anfahrt &amp; Parken</h2>
+            <h2 className="text-2xl text-cream md:text-3xl">
+              Anfahrt &amp; Parken
+            </h2>
             <p className="mt-4 leading-relaxed text-cream-dim">
               Sie finden das {site.shortName} direkt am {site.address.landmark},{" "}
               {site.address.street}, {site.address.zip} {site.address.city} –
               direkt hinter dem Hotel Ibis. Die Anfahrt mit dem Auto führt über
               den Flughafen; direkt vor dem Restaurant steht ein großer,
-              kostenloser Parkplatz zur Verfügung. Von unserer Terrasse aus haben
-              Sie dabei einen direkten Blick aufs Rollfeld.
+              kostenloser Parkplatz zur Verfügung. Von unserer Terrasse aus
+              haben Sie dabei einen direkten Blick aufs Rollfeld.
             </p>
           </div>
         </div>

@@ -16,7 +16,7 @@ export const site = {
   phone: {
     display: "07541 73336",
     intl: "+49 7541 73336",
-    href: "tel:+497541733336",
+    href: "tel:+49754173336",
   },
   email: "info@lsc-restaurant.de",
 
@@ -52,7 +52,14 @@ export const site = {
   // Maschinenlesbar für schema.org
   openingHoursSpec: [
     {
-      days: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      days: [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
       opens: "10:00",
       closes: "22:00",
     },

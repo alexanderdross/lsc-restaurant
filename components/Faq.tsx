@@ -16,7 +16,9 @@ export default function Faq({
         {items.map((it) => (
           <div key={it.q} className="card p-6">
             <dt className="font-serif text-lg text-cream">{it.q}</dt>
-            <dd className="mt-2 text-sm leading-relaxed text-cream-dim">{it.a}</dd>
+            <dd className="mt-2 text-sm leading-relaxed text-cream-dim">
+              {it.a}
+            </dd>
           </div>
         ))}
       </dl>

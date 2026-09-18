@@ -34,6 +34,18 @@ export default defineConfig({
         },
       },
     },
+    {
+      // Mobiles Viewport (Touch, Mobile-UA) – die Seite ist mobile-first + PWA.
+      // Prüft dieselben Specs zusätzlich auf einem Telefon-Layout.
+      name: "mobile",
+      use: {
+        ...devices["Pixel 5"],
+        launchOptions: {
+          executablePath: process.env.PW_CHROMIUM_PATH || undefined,
+          args: ["--no-sandbox"],
+        },
+      },
+    },
   ],
   webServer: {
     command: "npm run start",

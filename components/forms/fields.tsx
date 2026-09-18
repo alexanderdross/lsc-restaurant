@@ -13,7 +13,10 @@ export function FieldLabel({
   required?: boolean;
 }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1.5 block text-sm font-medium text-cream">
+    <label
+      htmlFor={htmlFor}
+      className="mb-1.5 block text-sm font-medium text-cream"
+    >
       {children}
       {required && <span className="text-rose"> *</span>}
     </label>
@@ -34,7 +37,13 @@ export function Honeypot() {
   return (
     <div aria-hidden="true" className="absolute left-[-9999px] top-[-9999px]">
       <label htmlFor="company">Firma (bitte leer lassen)</label>
-      <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" />
+      <input
+        id="company"
+        name="company"
+        type="text"
+        tabIndex={-1}
+        autoComplete="off"
+      />
     </div>
   );
 }

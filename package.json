@@ -9,7 +9,13 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:unit": "vitest run",
     "test:e2e": "playwright test",
+    "check:bundle": "node scripts/check-bundle-budget.mjs",
+    "check:links": "linkinator http://127.0.0.1:4319/ --config linkinator.config.json",
+    "lhci": "lhci autorun",
     "preview": "npm run patch:opennext && opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "npm run patch:opennext && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-build": "npm run patch:opennext && opennextjs-cloudflare build",
@@ -26,6 +32,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@eslint/eslintrc": "^3.3.6",
+    "@lhci/cli": "^0.15.1",
     "@opennextjs/cloudflare": "^1.9.1",
     "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.1.13",
@@ -34,8 +41,11 @@
     "@types/react-dom": "^19.1.7",
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.5.22",
+    "linkinator": "^8.1.0",
+    "prettier": "^3.9.8",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
+    "vitest": "^5.0.1",
     "wrangler": "^4.42.0"
   }
 }

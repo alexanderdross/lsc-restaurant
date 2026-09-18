@@ -36,3 +36,7 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /.playwright/
+
+# lighthouse ci / vitest coverage
+/.lighthouseci/
+/coverage/

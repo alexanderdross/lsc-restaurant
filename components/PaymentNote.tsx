@@ -6,7 +6,11 @@ import { site } from "@/content/site";
  * beim Öffnungszeiten-/Kontaktblock. Layout-Klassen (Abstand, Ausrichtung)
  * kommen über className von der jeweiligen Seite.
  */
-export default function PaymentNote({ className = "" }: { className?: string }) {
+export default function PaymentNote({
+  className = "",
+}: {
+  className?: string;
+}) {
   return (
     <p className={`text-sm leading-relaxed text-cream-dim ${className}`}>
       {site.payment.note}

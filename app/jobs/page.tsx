@@ -9,7 +9,10 @@ export const metadata = pageMeta({
   description:
     "Wir suchen DICH! Werde Teil des Teams im LSC Restaurant am Bodensee-Airport Friedrichshafen. Jetzt online bewerben.",
   path: "/jobs",
-  keywords: ["Jobs Friedrichshafen Gastronomie", "Stellenangebote LSC Restaurant"],
+  keywords: [
+    "Jobs Friedrichshafen Gastronomie",
+    "Stellenangebote LSC Restaurant",
+  ],
 });
 
 const perks = [
@@ -38,8 +41,8 @@ export default function JobsPage() {
           <aside className="space-y-6">
             <p className="leading-relaxed text-cream-dim">
               Ob Service, Küche oder Aushilfe – wenn du Freude an italienischer
-              Gastfreundschaft hast, freuen wir uns auf deine Bewerbung. Sende uns
-              einfach das Formular, gerne mit Lebenslauf im Anhang.
+              Gastfreundschaft hast, freuen wir uns auf deine Bewerbung. Sende
+              uns einfach das Formular, gerne mit Lebenslauf im Anhang.
             </p>
             <ul className="space-y-3">
               {perks.map((p) => (
@@ -51,7 +54,10 @@ export default function JobsPage() {
             </ul>
             <p className="text-sm text-cream-dim">
               Fragen? Ruf uns an unter{" "}
-              <a href={site.phone.href} className="font-semibold text-rose hover:text-rose-gold">
+              <a
+                href={site.phone.href}
+                className="font-semibold text-rose hover:text-rose-gold"
+              >
                 {site.phone.display}
               </a>
               .
@@ -59,7 +65,9 @@ export default function JobsPage() {
           </aside>
 
           <div className="card p-6 md:p-8">
-            <h2 className="mb-6 font-serif text-2xl text-cream">Jetzt bewerben</h2>
+            <h2 className="mb-6 font-serif text-2xl text-cream">
+              Jetzt bewerben
+            </h2>
             <JobForm />
           </div>
         </div>

@@ -11,7 +11,11 @@ const initial: FormState = { ok: false, message: "" };
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <button type="submit" disabled={pending} className="btn btn-primary disabled:opacity-60">
+    <button
+      type="submit"
+      disabled={pending}
+      className="btn btn-primary disabled:opacity-60"
+    >
       {pending ? "Wird gesendet …" : "Bewerbung senden"}
     </button>
   );
@@ -61,7 +65,9 @@ export default function JobForm() {
             autoComplete="email"
             required
             aria-invalid={!!state.errors?.email}
-            aria-describedby={state.errors?.email ? "job-email-error" : undefined}
+            aria-describedby={
+              state.errors?.email ? "job-email-error" : undefined
+            }
             className={inputBase}
           />
           <FieldError id="job-email-error" msg={state.errors?.email} />
@@ -70,12 +76,24 @@ export default function JobForm() {
 
       <div>
         <FieldLabel htmlFor="phone">Telefon</FieldLabel>
-        <input id="phone" name="phone" type="tel" autoComplete="tel" className={inputBase} />
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          autoComplete="tel"
+          className={inputBase}
+        />
       </div>
 
       <div>
         <FieldLabel htmlFor="message">Nachricht</FieldLabel>
-        <textarea id="message" name="message" rows={5} className={inputBase} placeholder="Ein paar Worte zu dir …" />
+        <textarea
+          id="message"
+          name="message"
+          rows={5}
+          className={inputBase}
+          placeholder="Ein paar Worte zu dir …"
+        />
       </div>
 
       <div>
@@ -86,7 +104,9 @@ export default function JobForm() {
           type="file"
           accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
           aria-invalid={!!state.errors?.file}
-          aria-describedby={state.errors?.file ? "job-file-error" : "job-file-hint"}
+          aria-describedby={
+            state.errors?.file ? "job-file-error" : "job-file-hint"
+          }
           className="block w-full text-sm text-cream-dim file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-rose file:px-4 file:py-2 file:font-semibold file:text-espresso hover:file:bg-rose-gold"
         />
         <FieldError id="job-file-error" msg={state.errors?.file} />
@@ -105,8 +125,8 @@ export default function JobForm() {
 
       <SubmitButton />
       <p className="text-xs leading-relaxed text-cream-dim">
-        Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben im Rahmen des
-        Bewerbungsverfahrens zu. Details in unserer{" "}
+        Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben im Rahmen
+        des Bewerbungsverfahrens zu. Details in unserer{" "}
         <a href="/datenschutz" className="underline hover:text-rose">
           Datenschutzerklärung
         </a>

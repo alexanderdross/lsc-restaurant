@@ -41,7 +41,10 @@ interface CfSocket {
 }
 type ConnectFn = (
   address: string | { hostname: string; port: number },
-  options?: { secureTransport?: "off" | "on" | "starttls"; allowHalfOpen?: boolean }
+  options?: {
+    secureTransport?: "off" | "on" | "starttls";
+    allowHalfOpen?: boolean;
+  }
 ) => CfSocket;
 
 async function getConnect(): Promise<ConnectFn> {
@@ -92,7 +95,8 @@ class SmtpConnection {
         const l = lines[i];
         if (/^\d{3} /.test(l)) {
           const code = Number(l.slice(0, 3));
-          const consumed = lines.slice(0, i + 1).join(CRLF).length + CRLF.length;
+          const consumed =
+            lines.slice(0, i + 1).join(CRLF).length + CRLF.length;
           this.buffer = this.buffer.slice(consumed);
           if (codes.length && !codes.includes(code)) {
             throw new Error(`SMTP: unerwartete Antwort ${code}: ${l}`);
@@ -140,7 +144,11 @@ function chunk76(s: string): string {
 }
 
 function buildMessage(opts: SendOptions): string {
-  const boundary = "lsc_" + b64(String(opts.subject.length) + opts.to.email).replace(/[^a-zA-Z0-9]/g, "").slice(0, 24);
+  const boundary =
+    "lsc_" +
+    b64(String(opts.subject.length) + opts.to.email)
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .slice(0, 24);
   const headers = [
     `From: ${formatAddress(opts.from)}`,
     `To: ${formatAddress(opts.to)}`,
@@ -170,7 +178,9 @@ function buildMessage(opts: SendOptions): string {
 
   for (const att of opts.attachments!) {
     parts.push(`--${boundary}`);
-    parts.push(`Content-Type: ${att.mimeType || "application/octet-stream"}; name="${att.filename}"`);
+    parts.push(
+      `Content-Type: ${att.mimeType || "application/octet-stream"}; name="${att.filename}"`
+    );
     parts.push("Content-Transfer-Encoding: base64");
     parts.push(`Content-Disposition: attachment; filename="${att.filename}"`);
     parts.push("");

@@ -23,7 +23,10 @@ function Legend({
       <h2 className="mb-5 font-serif text-2xl text-cream">{title}</h2>
       <dl className="space-y-3">
         {items.map((it) => (
-          <div key={it.code} className="flex gap-4 border-b border-cream/10 pb-3 last:border-0">
+          <div
+            key={it.code}
+            className="flex gap-4 border-b border-cream/10 pb-3 last:border-0"
+          >
             <dt className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wine text-sm font-semibold text-rose">
               {it.code}
             </dt>
