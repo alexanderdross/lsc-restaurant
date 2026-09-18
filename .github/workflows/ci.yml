@@ -92,18 +92,22 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Build
         run: npm run build
-      - name: Lighthouse CI (Budgets)
-        run: |
-          CHROME_PATH="$(node -e "console.log(require('@playwright/test').chromium.executablePath())")" \
-            npm run lhci
-      - name: Link-Check (interne Links)
+      # Einen Server für Lighthouse UND Link-Check starten (persistiert über
+      # die folgenden Steps). Robuster als lhci seinen eigenen Server managen
+      # zu lassen – warten, bis er wirklich antwortet.
+      - name: Server starten
         run: |
           npm run start &
           for i in $(seq 1 40); do
             curl -sf http://127.0.0.1:3000/ >/dev/null && break
             sleep 1
           done
-          npm run check:links
+      - name: Lighthouse CI (Budgets)
+        run: |
+          CHROME_PATH="$(node -e "console.log(require('@playwright/test').chromium.executablePath())")" \
+            npm run lhci
+      - name: Link-Check (interne Links)
+        run: npm run check:links
       - name: Lighthouse-Report hochladen
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
