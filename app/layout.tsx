@@ -4,6 +4,8 @@ import { site } from "@/content/site";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import PwaSplash from "@/components/PwaSplash";
+import IosSplashLinks from "@/components/IosSplashLinks";
 import { RestaurantJsonLd, WebsiteJsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
@@ -99,6 +101,28 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} ${script.variable}`}
     >
       <body>
+        {/* iOS-Startbilder (apple-touch-startup-image) – von React in den <head>
+            gehoben. Zeigt beim App-Start auf iOS sofort ein Markenbild statt
+            eines weißen Bildschirms. */}
+        <IosSplashLinks />
+        {/* PWA-Ladebildschirm: nur in der installierten App (Standalone) sichtbar,
+            im Browser per CSS ausgeblendet. Steht bewusst im Server-HTML, damit er
+            beim App-Start sofort erscheint. `PwaSplash` blendet ihn nach dem Laden
+            aus – als Fallback tut das ohnehin eine CSS-Animation. */}
+        <div id="pwa-splash" role="status" aria-live="polite">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-sm.webp"
+            alt=""
+            width={360}
+            height={202}
+            className="pwa-splash-logo"
+            aria-hidden="true"
+          />
+          <span className="pwa-splash-spinner" aria-hidden="true" />
+          <span className="sr-only">Wird geladen …</span>
+        </div>
+        <PwaSplash />
         {/* Site-weite strukturierte Daten: Restaurant (LocalBusiness) + WebSite.
             Auf jeder Seite vorhanden für konsistente lokale Signale (Local SEO/GEO). */}
         <RestaurantJsonLd />
