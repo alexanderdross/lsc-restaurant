@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { mainNav } from "@/content/nav";
 import { site } from "@/content/site";
+import PwaBackButton from "@/components/PwaBackButton";
 
 export default function Header() {
   const pathname = usePathname();
@@ -65,24 +66,29 @@ export default function Header() {
           scrolled ? "py-1.5" : "py-3"
         }`}
       >
-        <Link
-          href="/"
-          aria-label={`${site.name} – Startseite`}
-          title={`${site.name} – Startseite am Bodensee-Airport`}
-          className="shrink-0"
-        >
-          <Image
-            src="/logo-sm.webp"
-            alt={site.name}
-            width={360}
-            height={202}
-            priority
-            sizes="140px"
-            className={`w-auto transition-all duration-300 motion-reduce:transition-none ${
-              scrolled ? "h-9 sm:h-10" : "h-12 sm:h-14"
-            }`}
-          />
-        </Link>
+        {/* Linke Gruppe: PWA-Zurück-Pfeil (nur im installierten Standalone-Modus
+            sichtbar) + Logo. */}
+        <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+          <PwaBackButton />
+          <Link
+            href="/"
+            aria-label={`${site.name} – Startseite`}
+            title={`${site.name} – Startseite am Bodensee-Airport`}
+            className="shrink-0"
+          >
+            <Image
+              src="/logo-sm.webp"
+              alt={site.name}
+              width={360}
+              height={202}
+              priority
+              sizes="140px"
+              className={`w-auto transition-all duration-300 motion-reduce:transition-none ${
+                scrolled ? "h-9 sm:h-10" : "h-12 sm:h-14"
+              }`}
+            />
+          </Link>
+        </div>
 
         {/* Desktop-Nav */}
         <nav
