@@ -1,6 +1,7 @@
 import PageHero from "@/components/PageHero";
 import PaymentNote from "@/components/PaymentNote";
 import AllergeneNote from "@/components/AllergeneNote";
+import TakeawayNote from "@/components/TakeawayNote";
 import { MenuCategories } from "@/components/Menu";
 import { BreadcrumbJsonLd, MenuJsonLd } from "@/components/JsonLd";
 import { speisekarte } from "@/content/menu";
@@ -17,6 +18,7 @@ export const metadata = pageMeta({
     "Pizza Friedrichshafen",
     "Pasta Friedrichshafen",
     "Italiener Bodensee Airport",
+    "Pizza abholen Friedrichshafen",
   ],
 });
 
@@ -38,6 +40,8 @@ export default function SpeisekartePage() {
       <section className="bg-cocoa">
         <div className="container-lsc py-16 md:py-20">
           <MenuCategories categories={speisekarte} />
+
+          <TakeawayNote className="mt-14" />
 
           <AllergeneNote className="mt-16" />
 

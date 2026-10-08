@@ -70,3 +70,9 @@ Karten (`/speisekarte`, `/mittagstisch`, `/saisonkarte`):
 
 - `components/PaymentNote.tsx` – Kartenzahlung ab 20 € + Trinkgeld bitte bar
 - `components/AllergeneNote.tsx` – Box mit Link auf `/allergene`
+- `components/TakeawayNote.tsx` – Claim & CTA zur Selbstabholung
+
+Das Kampagnen-Band zur Selbstabholung (`components/TakeawayBand.tsx`) steht auf
+der Startseite unter dem Anker `#selbstabholung`. Claim, Argumente und Ablauf
+liegen in `site.takeaway` – von dort speisen sich auch FAQ, JSON-LD und
+`/llms.txt`.

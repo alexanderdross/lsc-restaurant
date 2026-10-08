@@ -69,6 +69,8 @@ export const metadata: Metadata = {
     "Italienisch Friedrichshafen",
     "Pizza Friedrichshafen",
     "Restaurant Flughafen Friedrichshafen",
+    "Pizza abholen Friedrichshafen",
+    "Selbstabholung Friedrichshafen",
   ],
   authors: [{ name: site.name }],
   alternates: { canonical: "/" },

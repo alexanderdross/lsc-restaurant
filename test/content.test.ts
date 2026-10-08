@@ -28,6 +28,46 @@ describe("Stammdaten (site)", () => {
   });
 });
 
+describe("Selbstabholung (takeaway)", () => {
+  it("Claim, Aufhänger und Hinweistext sind gesetzt", () => {
+    const t = site.takeaway;
+    for (const text of [
+      t.claim,
+      t.subclaim,
+      t.eyebrow,
+      t.headline,
+      t.subline,
+      t.note,
+      t.ctaLabel,
+    ]) {
+      expect(text.trim().length).toBeGreaterThan(0);
+    }
+  });
+
+  it("Anker ist eine URL-taugliche ID", () => {
+    expect(site.takeaway.anchor).toMatch(/^[a-z][a-z0-9-]*$/);
+  });
+
+  it("vier Argumente und drei Schritte, jeweils mit Titel und Text", () => {
+    expect(site.takeaway.benefits).toHaveLength(4);
+    expect(site.takeaway.steps).toHaveLength(3);
+    for (const item of [...site.takeaway.benefits, ...site.takeaway.steps]) {
+      expect(item.title.trim().length).toBeGreaterThan(0);
+      expect(item.text.trim().length).toBeGreaterThan(0);
+    }
+  });
+
+  it("FAQ beantwortet Abholung und Lieferdienst", () => {
+    const questions = site.faq.map((f) => f.q);
+    expect(questions).toContain("Kann ich das Essen auch selbst abholen?");
+    expect(questions).toContain("Liefern Sie auch?");
+  });
+
+  it("Ausstattungsmerkmale nennen die Selbstabholung (schema.org/GEO)", () => {
+    expect(site.amenities.some((a) => /Selbstabholung/.test(a))).toBe(true);
+  });
+});
+
 describe("Speisekarte", () => {
   it("Kategorie-IDs sind eindeutig", () => {
     const ids = speisekarte.map((c) => c.id);

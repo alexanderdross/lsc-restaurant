@@ -30,6 +30,12 @@ export function GET(): Response {
 - Ausstattung: ${site.amenities.join(", ")}
 - Einzugsgebiet: ${site.areaServed.join(", ")}
 
+## Selbstabholung (Take-away)
+- Claim: ${site.takeaway.claim} ${site.takeaway.subclaim}
+- Ablauf: ${site.takeaway.steps.map((st) => `${st.title} – ${st.text}`).join(" ")}
+- Vorteile: ${site.takeaway.benefits.map((b) => `${b.title} – ${b.text}`).join(" ")}
+- Lieferdienst: nein. Bestellungen zur Abholung telefonisch unter ${site.phone.intl}.
+
 ## Seiten
 - Startseite: ${url}/
 - Kontakt (Reservierung/Bestellung nur telefonisch): ${url}/kontakt/

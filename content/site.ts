@@ -10,7 +10,7 @@ export const site = {
   claim: "Ein Hauch Italien direkt am Bodensee-Airport",
   tagline: "Made with ♥ – simply delicious",
   description:
-    "Italienische Küche mit Steinofen-Pizza, hausgemachter Pasta und frischen Salaten – direkt am Bodensee-Airport Friedrichshafen, mit Terrasse und Blick aufs Rollfeld.",
+    "Italienische Küche mit Steinofen-Pizza, hausgemachter Pasta und frischen Salaten – direkt am Bodensee-Airport Friedrichshafen, mit Terrasse und Blick aufs Rollfeld. Alle Gerichte auch zur Selbstabholung.",
   url: "https://www.lsc-restaurant.de",
 
   phone: {
@@ -71,6 +71,64 @@ export const site = {
     tipNote: "Trinkgeld bitte in bar, da wir dieses sonst versteuern müssen.",
   },
 
+  /**
+   * Kampagne „Selbstabholung“ – Claim, Aufhänger und Argumente.
+   * Gerendert als Band auf der Startseite (components/TakeawayBand.tsx) und
+   * als kompakter Hinweis auf allen drei Karten (components/TakeawayNote.tsx).
+   * Fließt zusätzlich in FAQ, Ausstattungsmerkmale und /llms.txt ein –
+   * Texte deshalb hier pflegen, nicht in den Seiten.
+   */
+  takeaway: {
+    /** Haupt-Claim – kurz und merkfähig, auch für Anzeigen & Social. */
+    claim: "Ihre Pizza wartet – nicht Sie.",
+    /** Zweitzeile mit dem sinnlichen Versprechen. */
+    subclaim: "Frisch aus dem Steinofen, direkt in Ihre Hände.",
+    eyebrow: "Selbstabholung",
+    /** Aufhänger (H2) im Startseiten-Band. */
+    headline: "Warum bis zu einer Stunde auf den Lieferdienst warten?",
+    subline:
+      "Selbstabholung im LSC Restaurant: Sie rufen an, wir nennen Ihnen die Abholzeit – und Sie nehmen Ihr Essen frisch aus dem Steinofen mit. Kein Lieferfenster, kein Aufschlag, keine lauwarme Pizza.",
+    /** Kompakter Hinweis auf den Speisekarten. */
+    note: "Alle Gerichte unserer Karten gibt es auch zur Selbstabholung – frisch aus dem Steinofen, zum Preis der Karte und ohne langes Warten.",
+    ctaLabel: "Abholung bestellen",
+    /** Anker-ID des Bands auf der Startseite (für Deep-Links & Kampagnen-URLs). */
+    anchor: "selbstabholung",
+    /** Argumente (Reason to believe) – jedes belegbar aus den Stammdaten. */
+    benefits: [
+      {
+        title: "Abholzeit statt Lieferfenster",
+        text: "Am Telefon sagen wir Ihnen, wann Ihr Essen fertig ist. Sie kommen genau dann – statt eine Stunde auf die Klingel zu warten.",
+      },
+      {
+        title: "Heiß statt lauwarm",
+        text: "Keine Stadtrundfahrt im Pappkarton: Die Pizza kommt aus dem Steinofen direkt in Ihre Hände.",
+      },
+      {
+        title: "Preis wie auf der Karte",
+        text: "Keine Liefergebühr, kein Service-Aufschlag, keine Portalgebühr – Sie zahlen genau das, was auf der Speisekarte steht.",
+      },
+      {
+        title: "Parkplatz vor der Tür",
+        text: "Direkt vor dem Restaurant steht ein großer, kostenloser Parkplatz. Kurz vorfahren, abholen, losfahren.",
+      },
+    ],
+    /** Ablauf in drei Schritten – nimmt die Hemmschwelle „wie geht das?“. */
+    steps: [
+      {
+        title: "Anrufen",
+        text: "Bestellung direkt bei uns – ohne App, ohne Portal, ohne Benutzerkonto.",
+      },
+      {
+        title: "Abholzeit erhalten",
+        text: "Wir nennen Ihnen am Telefon die Uhrzeit, zu der alles fertig ist.",
+      },
+      {
+        title: "Abholen & genießen",
+        text: "Vorfahren, mitnehmen, auspacken – solange alles noch dampft.",
+      },
+    ],
+  },
+
   social: {
     facebook: "https://www.facebook.com/lscrestaurant.fn/",
     instagram: "https://www.instagram.com/lscrestaurant.fn/",
@@ -101,7 +159,7 @@ export const site = {
     "Flugzeug-Spotting",
     "Familienfreundlich",
     "Großer kostenloser Parkplatz vor dem Restaurant",
-    "Take-away / Straßenverkauf",
+    "Selbstabholung / Take-away (kein Lieferdienst)",
   ],
 
   /**
@@ -141,6 +199,14 @@ export const site = {
     {
       q: "Gibt es einen Mittagstisch?",
       a: "Ja, von Dienstag bis Freitag von 12:00 bis 14:00 Uhr bieten wir einen wechselnden Mittagstisch zu günstigen Preisen an.",
+    },
+    {
+      q: "Kann ich das Essen auch selbst abholen?",
+      a: "Ja. Alle Gerichte unserer Karten gibt es auch zur Selbstabholung. Rufen Sie unter 07541 73336 an – wir nennen Ihnen am Telefon die Abholzeit, und Sie nehmen Ihr Essen frisch aus dem Steinofen mit. Direkt vor dem Restaurant steht ein großer, kostenloser Parkplatz.",
+    },
+    {
+      q: "Liefern Sie auch?",
+      a: "Nein, einen Lieferdienst bieten wir nicht an. Bei der Selbstabholung zahlen Sie dafür genau die Preise der Speisekarte – ohne Liefergebühr und ohne Service-Aufschlag – und bekommen Ihr Essen frisch aus dem Steinofen statt lauwarm aus dem Karton.",
     },
     {
       q: "Ist das Restaurant für Familien geeignet?",

@@ -1,6 +1,7 @@
 import PageHero from "@/components/PageHero";
 import PaymentNote from "@/components/PaymentNote";
 import AllergeneNote from "@/components/AllergeneNote";
+import TakeawayNote from "@/components/TakeawayNote";
 import { DishList } from "@/components/Menu";
 import { BreadcrumbJsonLd, SaisonkarteJsonLd } from "@/components/JsonLd";
 import { saisonkarte } from "@/content/menu";
@@ -33,6 +34,8 @@ export default function SaisonkartePage() {
       <section className="bg-cocoa">
         <div className="container-lsc py-16 md:py-20">
           <DishList items={saisonkarte.items} />
+
+          <TakeawayNote className="mt-14" />
           <AllergeneNote className="mt-14" />
 
           <PaymentNote className="mx-auto mt-10 max-w-2xl text-center" />
