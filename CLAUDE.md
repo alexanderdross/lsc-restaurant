@@ -72,6 +72,21 @@ Karten (`/speisekarte`, `/mittagstisch`, `/saisonkarte`):
 - `components/AllergeneNote.tsx` – Box mit Link auf `/allergene`
 - `components/TakeawayNote.tsx` – Claim & CTA zur Selbstabholung
 
+## Formulare
+
+Es gibt genau **ein** Formular: das Kontaktformular auf `/jobs`
+(`components/forms/ContactForm.tsx` → `sendMessage` in `app/actions/mail.ts`).
+Es deckt allgemeine Anfragen und Bewerbungen ab – unterschieden über das Feld
+„Anliegen" (`components/forms/topics.ts`), das den Betreff der E-Mail setzt.
+Die E-Mail-Adresse auf `/kontakt` und im Footer verlinkt dorthin.
+
+Reservierungen und Bestellungen laufen weiterhin **ausschließlich telefonisch** –
+dafür gibt es bewusst kein Formular.
+
+Achtung: `app/actions/mail.ts` ist mit `"use server"` markiert und darf nur
+async Funktionen exportieren. Konstanten, die Client und Server teilen, gehören
+in ein eigenes Modul (wie `topics.ts`).
+
 Das Kampagnen-Band zur Selbstabholung (`components/TakeawayBand.tsx`) steht auf
 der Startseite unter dem Anker `#selbstabholung`. Claim, Argumente und Ablauf
 liegen in `site.takeaway` – von dort speisen sich auch FAQ, JSON-LD und

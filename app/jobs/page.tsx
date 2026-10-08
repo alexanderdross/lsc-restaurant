@@ -1,15 +1,17 @@
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
-import JobForm from "@/components/forms/JobForm";
+import ContactForm from "@/components/forms/ContactForm";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { site } from "@/content/site";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata = pageMeta({
-  title: "Jobs & Karriere",
+  title: "Schreiben Sie uns",
   description:
-    "Wir suchen DICH! Werde Teil des Teams im LSC Restaurant am Bodensee-Airport Friedrichshafen. Jetzt online bewerben.",
+    "Kontaktformular des LSC Restaurants am Bodensee-Airport Friedrichshafen: Fragen, Feedback oder Bewerbung – schreiben Sie uns, wir melden uns bei Ihnen.",
   path: "/jobs",
   keywords: [
+    "LSC Restaurant Kontaktformular",
     "Jobs Friedrichshafen Gastronomie",
     "Stellenangebote LSC Restaurant",
   ],
@@ -28,21 +30,40 @@ export default function JobsPage() {
       <BreadcrumbJsonLd
         items={[
           { name: "Startseite", path: "/" },
-          { name: "Jobs & Karriere", path: "/jobs" },
+          { name: "Schreiben Sie uns", path: "/jobs" },
         ]}
       />
       <PageHero
-        eyebrow="Karriere"
-        title="Wir suchen DICH!"
-        subtitle="Auf der Suche nach neuen Herausforderungen? Werde Teil des LSC-Teams."
+        eyebrow="Kontaktformular & Karriere"
+        title="Schreiben Sie uns"
+        subtitle="Ob Frage, Feedback oder Bewerbung – schreiben Sie uns einfach, wir melden uns bei Ihnen."
       />
       <section className="bg-cocoa">
         <div className="container-lsc grid gap-12 py-16 md:py-20 lg:grid-cols-[1fr_1.3fr]">
           <aside className="space-y-6">
             <p className="leading-relaxed text-cream-dim">
+              Für Tischreservierungen und Bestellungen rufen Sie uns bitte
+              direkt an – die nehmen wir ausschließlich telefonisch entgegen.
+              Für alles andere ist dieses Formular der schnellste Weg zu uns.
+            </p>
+            <p>
+              <a
+                href={site.phone.href}
+                title="LSC Restaurant telefonisch erreichen"
+                className="font-semibold text-rose hover:text-rose-gold"
+              >
+                Jetzt anrufen: {site.phone.display}
+              </a>
+            </p>
+
+            <hr className="rule" />
+
+            <h2 className="font-serif text-2xl text-cream">Wir suchen DICH!</h2>
+            <p className="leading-relaxed text-cream-dim">
               Ob Service, Küche oder Aushilfe – wenn du Freude an italienischer
-              Gastfreundschaft hast, freuen wir uns auf deine Bewerbung. Sende
-              uns einfach das Formular, gerne mit Lebenslauf im Anhang.
+              Gastfreundschaft hast, freuen wir uns auf deine Bewerbung. Wähle
+              im Formular einfach „Bewerbung“ aus; Zeugnisse und Lebenslauf
+              kannst du uns nachreichen, sobald wir uns bei dir gemeldet haben.
             </p>
             <ul className="space-y-3">
               {perks.map((p) => (
@@ -52,23 +73,25 @@ export default function JobsPage() {
                 </li>
               ))}
             </ul>
+
             <p className="text-sm text-cream-dim">
-              Fragen? Ruf uns an unter{" "}
-              <a
-                href={site.phone.href}
+              Anfahrt, Öffnungszeiten und häufige Fragen finden Sie auf der{" "}
+              <Link
+                href="/kontakt"
+                title="Kontakt, Anfahrt & Öffnungszeiten des LSC Restaurants"
                 className="font-semibold text-rose hover:text-rose-gold"
               >
-                {site.phone.display}
-              </a>
+                Kontaktseite
+              </Link>
               .
             </p>
           </aside>
 
           <div className="card p-6 md:p-8">
             <h2 className="mb-6 font-serif text-2xl text-cream">
-              Jetzt bewerben
+              Ihre Nachricht
             </h2>
-            <JobForm />
+            <ContactForm />
           </div>
         </div>
       </section>

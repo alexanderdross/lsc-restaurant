@@ -2,7 +2,8 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { sendApplication, type FormState } from "@/app/actions/mail";
+import { sendMessage, type FormState } from "@/app/actions/mail";
+import { topics } from "./topics";
 import { inputBase, FieldLabel, FieldError, Honeypot } from "./fields";
 import Turnstile from "./Turnstile";
 
@@ -16,13 +17,18 @@ function SubmitButton() {
       disabled={pending}
       className="btn btn-primary disabled:opacity-60"
     >
-      {pending ? "Wird gesendet …" : "Bewerbung senden"}
+      {pending ? "Wird gesendet …" : "Nachricht senden"}
     </button>
   );
 }
 
-export default function JobForm() {
-  const [state, formAction] = useActionState(sendApplication, initial);
+/**
+ * Allgemeines Kontaktformular (Anfragen und Bewerbungen).
+ * Über das Feld „Anliegen" landet der passende Betreff in der E-Mail, damit
+ * im Postfach sofort erkennbar ist, worum es geht.
+ */
+export default function ContactForm() {
+  const [state, formAction] = useActionState(sendMessage, initial);
 
   if (state.ok) {
     return (
@@ -49,10 +55,12 @@ export default function JobForm() {
             autoComplete="name"
             required
             aria-invalid={!!state.errors?.name}
-            aria-describedby={state.errors?.name ? "job-name-error" : undefined}
+            aria-describedby={
+              state.errors?.name ? "contact-name-error" : undefined
+            }
             className={inputBase}
           />
-          <FieldError id="job-name-error" msg={state.errors?.name} />
+          <FieldError id="contact-name-error" msg={state.errors?.name} />
         </div>
         <div>
           <FieldLabel htmlFor="email" required>
@@ -66,56 +74,62 @@ export default function JobForm() {
             required
             aria-invalid={!!state.errors?.email}
             aria-describedby={
-              state.errors?.email ? "job-email-error" : undefined
+              state.errors?.email ? "contact-email-error" : undefined
             }
             className={inputBase}
           />
-          <FieldError id="job-email-error" msg={state.errors?.email} />
+          <FieldError id="contact-email-error" msg={state.errors?.email} />
+        </div>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <FieldLabel htmlFor="phone">Telefon</FieldLabel>
+          <input
+            id="phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            className={inputBase}
+          />
+        </div>
+        <div>
+          <FieldLabel htmlFor="topic">Anliegen</FieldLabel>
+          <select
+            id="topic"
+            name="topic"
+            defaultValue={topics[0]}
+            className={inputBase}
+          >
+            {topics.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       <div>
-        <FieldLabel htmlFor="phone">Telefon</FieldLabel>
-        <input
-          id="phone"
-          name="phone"
-          type="tel"
-          autoComplete="tel"
-          className={inputBase}
-        />
-      </div>
-
-      <div>
-        <FieldLabel htmlFor="message">Nachricht</FieldLabel>
+        <FieldLabel htmlFor="message" required>
+          Nachricht
+        </FieldLabel>
         <textarea
           id="message"
           name="message"
-          rows={5}
-          className={inputBase}
-          placeholder="Ein paar Worte zu dir …"
-        />
-      </div>
-
-      <div>
-        <FieldLabel htmlFor="file">Datei hochladen</FieldLabel>
-        <input
-          id="file"
-          name="file"
-          type="file"
-          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-          aria-invalid={!!state.errors?.file}
+          rows={6}
+          required
+          aria-invalid={!!state.errors?.message}
           aria-describedby={
-            state.errors?.file ? "job-file-error" : "job-file-hint"
+            state.errors?.message ? "contact-message-error" : undefined
           }
-          className="block w-full text-sm text-cream-dim file:mr-4 file:cursor-pointer file:rounded-full file:border-0 file:bg-rose file:px-4 file:py-2 file:font-semibold file:text-espresso hover:file:bg-rose-gold"
+          className={inputBase}
+          placeholder="Wie können wir helfen?"
         />
-        <FieldError id="job-file-error" msg={state.errors?.file} />
-        <p id="job-file-hint" className="mt-1 text-xs text-cream-dim">
-          Lebenslauf o. Ä. – PDF, DOC/DOCX, JPG oder PNG, max. 5 MB.
-        </p>
+        <FieldError id="contact-message-error" msg={state.errors?.message} />
       </div>
 
-      <Turnstile action="application" />
+      <Turnstile action="contact" />
 
       {state.message && !state.ok && (
         <p className="text-sm text-rose" role="alert">
@@ -125,8 +139,8 @@ export default function JobForm() {
 
       <SubmitButton />
       <p className="text-xs leading-relaxed text-cream-dim">
-        Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben im Rahmen
-        des Bewerbungsverfahrens zu. Details in unserer{" "}
+        Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben zur
+        Bearbeitung Ihres Anliegens zu. Details in unserer{" "}
         <a href="/datenschutz" className="underline hover:text-rose">
           Datenschutzerklärung
         </a>

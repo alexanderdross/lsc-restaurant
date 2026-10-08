@@ -5,21 +5,13 @@ import { headers } from "next/headers";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { sendSmtpMail } from "@/lib/smtp";
 import { site } from "@/content/site";
+import { topics } from "@/components/forms/topics";
 
 export type FormState = {
   ok: boolean;
   message: string;
   errors?: Record<string, string>;
 };
-
-const MAX_UPLOAD = 5 * 1024 * 1024; // 5 MB
-const ALLOWED_UPLOAD = [
-  "application/pdf",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "image/jpeg",
-  "image/png",
-];
 
 function fieldErrors(err: z.ZodError): Record<string, string> {
   const out: Record<string, string> = {};
@@ -79,7 +71,6 @@ async function sendMail(opts: {
   subject: string;
   text: string;
   replyTo?: { name?: string; email: string };
-  attachments?: { filename: string; content: string; mimeType?: string }[];
 }): Promise<void> {
   const env = getEnv();
   const host = env.SMTP_HOST;
@@ -103,34 +94,29 @@ async function sendMail(opts: {
     replyTo: opts.replyTo,
     subject: opts.subject,
     text: opts.text,
-    attachments: opts.attachments,
   });
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Bewerbungsformular (mit optionalem Datei-Upload)                          */
+/*  Kontaktformular (allgemeine Anfragen und Bewerbungen)                     */
 /* -------------------------------------------------------------------------- */
-const applicationSchema = z.object({
+
+const messageSchema = z.object({
   name: z.string().trim().min(2, "Bitte geben Sie Ihren Namen an."),
   email: z
     .string()
     .trim()
     .email("Bitte geben Sie eine gültige E-Mail-Adresse an."),
   phone: z.string().trim().optional().default(""),
-  message: z.string().trim().max(5000).optional().default(""),
+  topic: z.enum(topics).default(topics[0]),
+  message: z
+    .string()
+    .trim()
+    .min(5, "Bitte schreiben Sie uns ein paar Worte.")
+    .max(5000, "Bitte fassen Sie sich etwas kürzer (max. 5000 Zeichen)."),
 });
 
-function toBase64(buffer: ArrayBuffer): string {
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  const chunk = 0x8000;
-  for (let i = 0; i < bytes.length; i += chunk) {
-    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
-  }
-  return btoa(binary);
-}
-
-export async function sendApplication(
+export async function sendMessage(
   _prev: FormState,
   formData: FormData
 ): Promise<FormState> {
@@ -138,10 +124,11 @@ export async function sendApplication(
     return { ok: true, message: "Vielen Dank!" };
   }
 
-  const parsed = applicationSchema.safeParse({
+  const parsed = messageSchema.safeParse({
     name: formData.get("name"),
     email: formData.get("email"),
     phone: formData.get("phone"),
+    topic: formData.get("topic") ?? undefined,
     message: formData.get("message"),
   });
 
@@ -162,68 +149,36 @@ export async function sendApplication(
     return { ok: false, message: TURNSTILE_ERROR };
   }
 
-  // Datei-Upload prüfen
-  const attachments: {
-    filename: string;
-    content: string;
-    mimeType?: string;
-  }[] = [];
-  const file = formData.get("file");
-  if (file instanceof File && file.size > 0) {
-    if (file.size > MAX_UPLOAD) {
-      return {
-        ok: false,
-        message: "Die Datei ist zu groß (max. 5 MB).",
-        errors: { file: "Datei zu groß (max. 5 MB)." },
-      };
-    }
-    if (file.type && !ALLOWED_UPLOAD.includes(file.type)) {
-      return {
-        ok: false,
-        message: "Dateityp nicht erlaubt (PDF, DOC/DOCX, JPG oder PNG).",
-        errors: { file: "Bitte PDF, DOC/DOCX, JPG oder PNG hochladen." },
-      };
-    }
-    const buf = await file.arrayBuffer();
-    attachments.push({
-      filename: file.name || "bewerbung",
-      content: toBase64(buf),
-      mimeType: file.type || "application/octet-stream",
-    });
-  }
-
   const d = parsed.data;
   const text = [
-    "Neue Bewerbung über die Website:",
+    "Neue Nachricht über die Website:",
     "",
     `Name:     ${d.name}`,
     `E-Mail:   ${d.email}`,
     `Telefon:  ${d.phone || "—"}`,
+    `Anliegen: ${d.topic}`,
     "",
     "Nachricht:",
-    d.message || "—",
-    "",
-    attachments.length ? "Anhang: siehe angehängte Datei." : "Anhang: keiner.",
+    d.message,
   ].join("\n");
 
   try {
     await sendMail({
-      subject: `Bewerbung von ${d.name}`,
+      subject: `${d.topic} von ${d.name}`,
       text,
       replyTo: { name: d.name, email: d.email },
-      attachments,
     });
     return {
       ok: true,
       message:
-        "Vielen Dank für Ihre Bewerbung! Wir haben sie erhalten und melden uns bei Ihnen.",
+        "Vielen Dank für Ihre Nachricht! Wir haben sie erhalten und melden uns bei Ihnen.",
     };
   } catch (err) {
-    console.error("sendApplication failed:", err);
+    console.error("sendMessage failed:", err);
     return {
       ok: false,
       message:
-        "Der Versand ist leider fehlgeschlagen. Bitte senden Sie Ihre Bewerbung direkt an " +
+        "Der Versand ist leider fehlgeschlagen. Bitte schreiben Sie uns direkt an " +
         site.email +
         ".",
     };

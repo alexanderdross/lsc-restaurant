@@ -69,13 +69,16 @@ export default function DatenschutzPage() {
 
             <h2>5. Kontaktaufnahme</h2>
             <p>
-              Diese Website bietet{" "}
-              <strong>kein Kontakt- oder Reservierungsformular</strong> an.
-              Reservierungen und Bestellungen nehmen wir ausschließlich
-              telefonisch entgegen. Wenn Sie uns telefonisch oder per E-Mail
-              kontaktieren, verarbeiten wir die dabei übermittelten Daten
-              ausschließlich zur Bearbeitung Ihres Anliegens. Rechtsgrundlage
-              ist Art. 6 Abs. 1 lit. b DSGVO (Anbahnung/Erfüllung eines
+              Über unser Kontaktformular können Sie uns eine Nachricht senden.
+              Verarbeitet werden dabei die von Ihnen angegebenen Daten (Name,
+              E-Mail-Adresse, optional Telefonnummer, Anliegen und
+              Nachrichtentext). Die Angaben werden per E-Mail an unser Postfach
+              übermittelt und ausschließlich zur Bearbeitung Ihres Anliegens
+              verwendet. Ein{" "}
+              <strong>Reservierungs- oder Bestellformular</strong> bieten wir
+              nicht an – Reservierungen und Bestellungen nehmen wir
+              ausschließlich telefonisch entgegen. Rechtsgrundlage ist Art. 6
+              Abs. 1 lit. b DSGVO (Anbahnung/Erfüllung eines
               Vertragsverhältnisses) bzw. lit. f DSGVO (Bearbeitung Ihrer
               Anfrage). Die Daten werden gelöscht, sobald sie für die
               Bearbeitung nicht mehr erforderlich sind und keine gesetzlichen
@@ -84,11 +87,12 @@ export default function DatenschutzPage() {
 
             <h2>6. Bewerbungen</h2>
             <p>
-              Übermitteln Sie uns eine Bewerbung über das Jobs-Formular,
-              verarbeiten wir die angegebenen Daten sowie ggf. hochgeladene
-              Dokumente ausschließlich zur Durchführung des
-              Bewerbungsverfahrens. Rechtsgrundlage ist § 26 BDSG i. V. m. Art.
-              6 Abs. 1 lit. b DSGVO. Im Falle einer Absage werden die
+              Wählen Sie im Kontaktformular das Anliegen „Bewerbung“,
+              verarbeiten wir die angegebenen Daten ausschließlich zur
+              Durchführung des Bewerbungsverfahrens. Ein Datei-Upload findet
+              nicht statt; Bewerbungsunterlagen übermitteln Sie uns erst nach
+              unserer Rückmeldung. Rechtsgrundlage ist § 26 BDSG i. V. m. Art. 6
+              Abs. 1 lit. b DSGVO. Im Falle einer Absage werden die
               Bewerberdaten spätestens nach sechs Monaten gelöscht, sofern Sie
               keiner längeren Speicherung zugestimmt haben.
             </p>

@@ -28,7 +28,7 @@ app/
   saisonkarte/            # Saisonkarte
   allergene/              # Allergene & Zusatzstoffe
   rundgang/               # 360°-Rundgang (iframe-Einbindung)
-  jobs/                   # Jobs + Bewerbungsformular (mit Datei-Upload)
+  jobs/                   # Kontaktformular (Anfragen & Bewerbungen) + Karriere-Infos
   impressum/, datenschutz/
   actions/mail.ts         # Server Action: Bewerbung (Jobs)
   sitemap.ts, robots.ts   # SEO
@@ -99,20 +99,46 @@ Cloudflare Workers Builds).
 
 ## Formular-Schutz (Cloudflare Turnstile)
 
-Das Bewerbungsformular (Jobs) ist mit **Cloudflare Turnstile**
+Das Kontaktformular (`/jobs`) ist mit **Cloudflare Turnstile**
 geschützt. Der Widget-Slot ist CLS-optimiert (reservierter Platz, kein
 Layout-Shift beim Nachladen). Serverseitig wird das Token in `app/actions/mail.ts`
 gegen die siteverify-API geprüft.
 
-Benötigte Schlüssel (Turnstile im Cloudflare-Dashboard anlegen):
+### Widget anlegen
 
-- **`NEXT_PUBLIC_TURNSTILE_SITE_KEY`** – öffentlicher Site-Key, als **Build-Variable**
-  in Workers Builds (bzw. `.env.local` lokal).
-- **`TURNSTILE_SECRET_KEY`** – geheimer Schlüssel, als **Secret** im Worker
-  (`wrangler secret put TURNSTILE_SECRET_KEY`).
+Entweder im Dashboard (**Turnstile → Add widget**, Modus *Managed*) oder direkt
+per Wrangler – das legt das Widget an und gibt Site-Key und Secret aus:
 
-Solange keine Schlüssel gesetzt sind, bleibt der Platzhalter sichtbar und die
-serverseitige Prüfung wird übersprungen – die Formulare funktionieren weiterhin.
+```bash
+npx wrangler login            # einmalig
+npx wrangler turnstile widget create "lsc-restaurant" \
+  --mode managed \
+  --domain lsc-restaurant.dross-media.workers.dev \
+  --domain www.lsc-restaurant.de \
+  --domain lsc-restaurant.de \
+  --domain localhost \
+  --domain 127.0.0.1
+```
+
+Alle Domains, unter denen das Formular erreichbar ist, müssen in der Liste
+stehen – sonst lehnt Turnstile das Token auf der fehlenden Domain ab.
+
+### Schlüssel hinterlegen
+
+- **`NEXT_PUBLIC_TURNSTILE_SITE_KEY`** (Site-Key, öffentlich) – als
+  **Build-Variable** in Cloudflare → Workers & Pages → `lsc-restaurant` →
+  Settings → Build → Variables. Er wird zur **Bauzeit** ins Frontend
+  eingebettet, ein reiner Redeploy ohne neuen Build reicht also nicht.
+  Lokal: `.env.local` (siehe `.env.example`).
+- **`TURNSTILE_SECRET_KEY`** (geheim) – als **Secret** im Worker:
+  `npx wrangler secret put TURNSTILE_SECRET_KEY`.
+  Lokal: `.dev.vars` (siehe `.dev.vars.example`).
+
+Solange keine Schlüssel gesetzt sind, bleibt der Platzhalter „Sicherheitsprüfung"
+sichtbar und die serverseitige Prüfung wird übersprungen – das Formular
+funktioniert, ist aber **ungeschützt**. Fehlt später nur das Secret (z. B. nach
+einem Worker-Neuanlegen), fällt das nicht auf: Der Versand klappt weiterhin,
+die Bot-Abwehr ist aber still deaktiviert.
 
 ## Bildoptimierung (Cloudflare-Best-Practice)
 
@@ -138,7 +164,7 @@ Laufzeit-Optimierung über **Cloudflare Image Transformations** (`image-loader.t
 - [ ] Echte Foodfotografie / Terrassen- & Innenbilder einbinden
 - [ ] Finale Braun-Hex-Werte gegen Logo/CI abgleichen (`app/globals.css`)
 - [ ] netcup-SMTP-Zugangsdaten als Secrets setzen
-- [ ] Turnstile-Schlüssel setzen (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`)
+- [ ] Turnstile-Widget anlegen und beide Schlüssel setzen (siehe „Formular-Schutz")
 - [ ] Nach Domain-/Zone-Setup: Image Transformations aktivieren + `NEXT_PUBLIC_CF_IMAGE_RESIZING=true`
 - [ ] 360°-Rundgang-Embed-URL in `content/site.ts` (`tourEmbedUrl`) eintragen
 - [ ] Impressum & Datenschutz rechtlich prüfen und `[…]`-Platzhalter ergänzen
