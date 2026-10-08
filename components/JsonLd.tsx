@@ -77,6 +77,16 @@ export function RestaurantJsonLd() {
     // Reservierungen werden ausschließlich telefonisch entgegengenommen –
     // keine Online-ReserveAction (kein Online-Formular mehr).
     acceptsReservations: true,
+    // Selbstabholung maschinenlesbar auszeichnen (Local SEO / GEO):
+    // es gibt keinen Lieferdienst, dafür Abholung vor Ort.
+    makesOffer: {
+      "@type": "Offer",
+      name: `Selbstabholung (Take-away) – ${site.takeaway.claim}`,
+      description: site.takeaway.subline,
+      availableDeliveryMethod: "https://schema.org/OnSitePickup",
+      priceCurrency: "EUR",
+      availableAtOrFrom: { "@id": `${site.url}/#restaurant` },
+    },
     sameAs: [site.social.facebook, site.social.instagram],
     hasMenu: [
       `${site.url}/speisekarte/`,

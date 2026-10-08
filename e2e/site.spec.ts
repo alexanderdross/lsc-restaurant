@@ -45,6 +45,87 @@ test("Speisekarte: Kategorien, Gericht und Allergen-Link", async ({ page }) => {
   ).toHaveAttribute("href", "/allergene/");
 });
 
+test.describe("Selbstabholung: Kampagnen-Band & Hinweis auf den Karten", () => {
+  test("Startseite: Band mit Claim, Argumenten, Ablauf und Telefon-CTA", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const band = page.locator("#selbstabholung");
+    await expect(band).toBeVisible();
+    await expect(
+      band.getByRole("heading", { name: /Warum bis zu einer Stunde/i })
+    ).toBeVisible();
+    await expect(
+      band.getByText("Ihre Pizza wartet – nicht Sie.")
+    ).toBeVisible();
+    await expect(band.getByRole("listitem")).toHaveCount(7); // 4 Argumente + 3 Schritte
+    await expect(
+      band.getByRole("link", { name: /Abholung bestellen/i })
+    ).toHaveAttribute("href", /^tel:/);
+  });
+
+  test("Hero verlinkt auf das Abhol-Band", async ({ page }) => {
+    await page.goto("/");
+    await page
+      .getByRole("link", { name: /Selbstabholung: Ihre Pizza wartet/i })
+      .click();
+    expect(new URL(page.url()).hash).toBe("#selbstabholung");
+  });
+
+  test("Alle drei Karten tragen den Abhol-Hinweis mit tel:-CTA", async ({
+    page,
+  }) => {
+    for (const path of ["/speisekarte", "/mittagstisch", "/saisonkarte"]) {
+      await page.goto(path);
+      const note = page.getByRole("complementary", { name: "Selbstabholung" });
+      await expect(note, `Abhol-Hinweis fehlt auf ${path}`).toBeVisible();
+      await expect(
+        note.getByRole("link", { name: /Abholung bestellen/i })
+      ).toHaveAttribute("href", /^tel:/);
+      await expect(
+        note.getByRole("link", { name: /Vorteile der Selbstabholung/i })
+      ).toHaveAttribute("href", "/#selbstabholung");
+    }
+  });
+
+  test("schema.org: Abholung als Offer mit OnSitePickup", async ({ page }) => {
+    await page.goto("/");
+    const blocks = await page
+      .locator('script[type="application/ld+json"]')
+      .allTextContents();
+    const restaurant = blocks
+      .map((b) => {
+        try {
+          return JSON.parse(b);
+        } catch {
+          return null;
+        }
+      })
+      .find((d) => d && d["@type"] === "Restaurant");
+    expect(restaurant?.makesOffer?.availableDeliveryMethod).toBe(
+      "https://schema.org/OnSitePickup"
+    );
+  });
+
+  test("/llms.txt nennt die Selbstabholung und dass nicht geliefert wird", async ({
+    request,
+  }) => {
+    const body = await (await request.get("/llms.txt")).text();
+    expect(body).toContain("## Selbstabholung (Take-away)");
+    expect(body).toContain("Lieferdienst: nein");
+  });
+
+  test("Kontakt: FAQ beantwortet Abholung und Lieferdienst", async ({
+    page,
+  }) => {
+    await page.goto("/kontakt");
+    await expect(
+      page.getByText("Kann ich das Essen auch selbst abholen?")
+    ).toBeVisible();
+    await expect(page.getByText("Liefern Sie auch?")).toBeVisible();
+  });
+});
+
 test("Keine generischen/nicht-beschreibenden Link-Texte", async ({ page }) => {
   const generic = new Set([
     "hier",

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { site } from "@/content/site";
 import Reveal from "@/components/Reveal";
 import PaymentNote from "@/components/PaymentNote";
+import TakeawayBand from "@/components/TakeawayBand";
 import LazyEmbed from "@/components/LazyEmbed";
 
 const highlights = [
@@ -88,6 +89,14 @@ export default function Home() {
                 Zur Speisekarte
               </Link>
             </div>
+            <p className="mt-6 text-sm">
+              <a
+                href={`#${site.takeaway.anchor}`}
+                className="font-semibold text-rose hover:text-rose-gold"
+              >
+                Selbstabholung: {site.takeaway.claim} →
+              </a>
+            </p>
             <PaymentNote className="mx-auto mt-6 max-w-md text-center" />
           </Reveal>
         </div>
@@ -145,6 +154,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ------------------------------------------------- Selbstabholung */}
+      <TakeawayBand />
 
       {/* ------------------------------------------------------------ USP band */}
       <section className="relative overflow-hidden bg-wine">
