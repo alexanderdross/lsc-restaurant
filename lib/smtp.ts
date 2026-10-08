@@ -6,7 +6,7 @@
  * Bundler (esbuild/webpack) ihn NICHT statisch auflöst, sondern als dynamischen
  * Runtime-Import stehen lässt – workerd stellt das Modul zur Laufzeit bereit.
  *
- * Unterstützt STARTTLS (Port 587) und implizites TLS (Port 465), AUTH LOGIN/PLAIN
+ * Unterstützt STARTTLS (Port 587) und implizites TLS (Port 465), AUTH LOGIN
  * sowie Anhänge (MIME multipart/mixed, base64).
  */
 
@@ -143,7 +143,54 @@ function chunk76(s: string): string {
   return s.replace(/.{1,76}/g, "$&" + CRLF).trimEnd();
 }
 
-function buildMessage(opts: SendOptions): string {
+const RFC5322_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const RFC5322_MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+/**
+ * Datum im Format aus RFC 5322, immer in UTC (`+0000`).
+ * Bewusst von Hand gebaut statt über `toUTCString()`/`toLocaleString()`:
+ * Letztere hängen von Locale bzw. Zeitzone ab und liefern „GMT" statt „+0000".
+ */
+function rfc5322Date(d: Date): string {
+  const p2 = (n: number) => String(n).padStart(2, "0");
+  return (
+    `${RFC5322_DAYS[d.getUTCDay()]}, ${p2(d.getUTCDate())} ` +
+    `${RFC5322_MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()} ` +
+    `${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}:${p2(d.getUTCSeconds())} +0000`
+  );
+}
+
+/** Message-ID in der Absenderdomain – ohne sie stufen viele Filter die Mail ab. */
+function messageId(from: string, d: Date): string {
+  const domain = from.split("@")[1] || "localhost";
+  const rand =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : Math.random().toString(36).slice(2);
+  return `<${d.getTime()}.${rand}@${domain}>`;
+}
+
+/**
+ * Baut die vollständige RFC-5322-Nachricht (Header + Body).
+ * Exportiert, damit die Header ohne Netzwerk testbar sind.
+ */
+export function buildMessage(
+  opts: SendOptions,
+  now: Date = new Date()
+): string {
   const boundary =
     "lsc_" +
     b64(String(opts.subject.length) + opts.to.email)
@@ -154,6 +201,10 @@ function buildMessage(opts: SendOptions): string {
     `To: ${formatAddress(opts.to)}`,
     opts.replyTo ? `Reply-To: ${formatAddress(opts.replyTo)}` : "",
     `Subject: ${encodeWord(opts.subject)}`,
+    // Date und Message-ID sind laut RFC 5322 Pflicht. Fehlen sie, ergänzen
+    // manche Relays sie – viele Spamfilter werten die Mail vorher aber schon ab.
+    `Date: ${rfc5322Date(now)}`,
+    `Message-ID: ${messageId(opts.from.email, now)}`,
     "MIME-Version: 1.0",
   ].filter(Boolean);
 

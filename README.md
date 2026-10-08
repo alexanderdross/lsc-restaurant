@@ -79,27 +79,75 @@ die netcup-Zugangsdaten eintragen (siehe unten).
 4. **Custom Domain** `www.lsc-restaurant.de` dem Worker zuordnen (DNS in
    Cloudflare umstellen).
 
-### SMTP-Secrets (netcup) hinterlegen
+### E-Mail-Versand über netcup einrichten
 
-Die Zugangsdaten werden **nicht** im Code gespeichert, sondern als
-Worker-Secrets. Im Dashboard unter **Workers & Pages → `lsc-restaurant` →
-Settings → Variables and Secrets → Add**, jeweils mit Type `Secret`:
+Das Kontaktformular verschickt über den SMTP-Client in `lib/smtp.ts` direkt aus
+dem Worker (`cloudflare:sockets`, STARTTLS) – kein externer Mail-Dienst.
+Es fehlen nur die Zugangsdaten.
 
-| Variable    | Inhalt                                              |
-| ----------- | --------------------------------------------------- |
-| `SMTP_HOST` | z. B. `mail.your-netcup-server.de`                  |
-| `SMTP_PORT` | `587` (STARTTLS) oder `465` (SSL)                   |
-| `SMTP_USER` | netcup-Postfach, z. B. `info@lsc-restaurant.de`     |
-| `SMTP_PASS` | Postfach-Passwort                                   |
-| `MAIL_FROM` | Absender (echte netcup-Postfachadresse)             |
-| `MAIL_TO`   | Empfänger, z. B. `info@lsc-restaurant.de`           |
+#### 1. Werte aus netcup holen
+
+- **Mailserver-Hostname:** steht im netcup-Kundenmenü bzw. in der Weboberfläche
+  des Webhosting-Tarifs. Derselbe Name gilt für ein- und ausgehende Mails.
+  Nicht raten – der Name hängt vom Tarif/Server ab.
+- **Postfach und Passwort:** das Postfach, über das versendet werden soll,
+  typischerweise `info@lsc-restaurant.de`.
+
+#### 2. Als Worker-Secrets hinterlegen
+
+Dashboard → **Workers & Pages → `lsc-restaurant` → Settings →
+Variables and Secrets → Add**, jeweils Type `Secret`:
+
+| Variable    | Inhalt                                                      |
+| ----------- | ----------------------------------------------------------- |
+| `SMTP_HOST` | Mailserver-Hostname aus dem netcup-Kundenmenü               |
+| `SMTP_PORT` | `587` (STARTTLS, empfohlen) oder `465` (implizites TLS)      |
+| `SMTP_USER` | vollständige Postfachadresse, z. B. `info@lsc-restaurant.de` |
+| `SMTP_PASS` | Postfach-Passwort                                            |
+| `MAIL_FROM` | Absender – muss ein **echtes** Postfach der Domain sein      |
+| `MAIL_TO`   | Empfänger, z. B. `info@lsc-restaurant.de`                    |
+
+Dann **Deploy**. `SMTP_PORT` und `MAIL_TO` sind optional (Vorgaben: `587` und
+`site.email`), die übrigen vier sind Pflicht.
+
+Port `25` funktioniert nicht: Cloudflare Workers können darauf nicht verbinden,
+und zum Einliefern ist er ohnehin der falsche Port.
 
 Nicht mit den **Build**-Variablen verwechseln: Der Block dort heißt genauso,
-wirkt aber nur zur Bauzeit. Secrets gehören in die Laufzeit-Variablen.
+wirkt aber nur zur Bauzeit. Diese Secrets werden zur **Laufzeit** gelesen.
 
 (Von einem Rechner mit Wrangler alternativ: `npx wrangler secret put <NAME>`.)
 
-> Hinweis: Für zuverlässige Zustellung SPF/DKIM der Domain bei netcup einrichten.
+#### 3. Testen
+
+Über `/jobs` eine Nachricht an sich selbst schicken. Was die Antworten bedeuten:
+
+| Meldung im Formular                      | Ursache                                        |
+| ---------------------------------------- | ---------------------------------------------- |
+| „Vielen Dank für Ihre Nachricht!"        | alles in Ordnung                               |
+| „Sicherheitsprüfung fehlgeschlagen"      | Turnstile, nicht SMTP – siehe Formular-Schutz   |
+| „Der Versand ist leider fehlgeschlagen"  | SMTP – genauer Grund steht im Worker-Log        |
+
+Das Worker-Log steht in Cloudflare unter **Workers & Pages → `lsc-restaurant`
+→ Logs** (`observability` ist in `wrangler.jsonc` aktiviert). Typische Einträge:
+
+- `SMTP-Konfiguration unvollständig – fehlende Worker-Secrets: …` – das Secret
+  fehlt oder liegt im Build- statt im Laufzeit-Block.
+- `SMTP_PORT ist kein gültiger Port: …` – Tippfehler im Port.
+- `SMTP: unerwartete Antwort 535 …` – Benutzername oder Passwort stimmen nicht
+  (`SMTP_USER` ist die vollständige Adresse, nicht nur der lokale Teil).
+- `SMTP: Verbindung unerwartet geschlossen.` – falscher Host oder Port, oder
+  der Server erwartet implizites TLS (dann `SMTP_PORT=465`).
+
+#### 4. Zustellbarkeit
+
+**SPF** und **DKIM** für `lsc-restaurant.de` bei netcup einrichten, sonst landen
+die Mails je nach Empfänger im Spam. `MAIL_FROM` muss zu der Domain passen, für
+die SPF/DKIM gelten – eine fremde Absenderadresse bricht beides.
+
+Die Nachricht selbst bringt `Date` und `Message-ID` bereits mit (beides laut
+RFC 5322 Pflicht und ein gängiger Spam-Faktor); Betreff und Anzeigenamen werden
+als MIME encoded-word kodiert, damit Umlaute korrekt ankommen.
 
 ## Technische Notiz: `cloudflare:sockets`
 
@@ -213,7 +261,8 @@ Laufzeit-Optimierung über **Cloudflare Image Transformations** (`image-loader.t
 
 - [ ] Echte Foodfotografie / Terrassen- & Innenbilder einbinden
 - [ ] Finale Braun-Hex-Werte gegen Logo/CI abgleichen (`app/globals.css`)
-- [ ] netcup-SMTP-Zugangsdaten als Secrets setzen
+- [ ] netcup-SMTP-Zugangsdaten als Secrets setzen und einen Testversand machen
+      (siehe „E-Mail-Versand über netcup einrichten")
 - [x] Turnstile-Widget anlegen und beide Schlüssel setzen (siehe „Formular-Schutz") –
       Site-Key im Bundle verifiziert, Widget rendert; das Secret bestätigt sich
       beim ersten erfolgreichen Testversand

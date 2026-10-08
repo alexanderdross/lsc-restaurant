@@ -80,8 +80,28 @@ async function sendMail(opts: {
   const from = env.MAIL_FROM || user;
   const to = env.MAIL_TO || site.email;
 
+  // Beim Einrichten ist der häufigste Fehler ein vergessenes oder im falschen
+  // Block (Build statt Laufzeit) hinterlegtes Secret. Deshalb benennen wir im
+  // Log genau, welches fehlt – die Meldung an den Gast bleibt allgemein.
   if (!host || !user || !pass || !from) {
-    throw new Error("SMTP-Konfiguration fehlt (Secrets nicht gesetzt).");
+    const missing = [
+      ["SMTP_HOST", host],
+      ["SMTP_USER", user],
+      ["SMTP_PASS", pass],
+      ["MAIL_FROM", from],
+    ]
+      .filter(([, v]) => !v)
+      .map(([k]) => k);
+    throw new Error(
+      `SMTP-Konfiguration unvollständig – fehlende Worker-Secrets: ${missing.join(", ")}. ` +
+        "Sie gehören zu den Laufzeit-Variablen des Workers, nicht zu den Build-Variablen."
+    );
+  }
+
+  if (!Number.isInteger(port) || port <= 0 || port > 65535) {
+    throw new Error(
+      `SMTP_PORT ist kein gültiger Port: "${env.SMTP_PORT}". Erwartet wird 587 (STARTTLS) oder 465 (SSL).`
+    );
   }
 
   await sendSmtpMail({

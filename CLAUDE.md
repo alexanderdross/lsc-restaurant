@@ -111,6 +111,15 @@ Achtung: `app/actions/mail.ts` ist mit `"use server"` markiert und darf nur
 async Funktionen exportieren. Konstanten, die Client und Server teilen, gehören
 in ein eigenes Modul (wie `topics.ts`).
 
+Der Versand läuft über `lib/smtp.ts` direkt aus dem Worker (`cloudflare:sockets`,
+STARTTLS) und braucht die SMTP-Secrets zur Laufzeit. Schlägt er fehl, sieht der
+Gast nur eine allgemeine Meldung – der Grund steht im Worker-Log
+(Workers & Pages → `lsc-restaurant` → Logs). Einrichtung und Fehlerbilder stehen
+im README unter „E-Mail-Versand über netcup einrichten".
+
+`buildMessage` aus `lib/smtp.ts` ist exportiert, damit die Mail-Header ohne
+Netzwerk testbar sind (`test/smtp.test.ts`).
+
 Das Kampagnen-Band zur Selbstabholung (`components/TakeawayBand.tsx`) steht auf
 der Startseite unter dem Anker `#selbstabholung`. Claim, Argumente und Ablauf
 liegen in `site.takeaway` – von dort speisen sich auch FAQ, JSON-LD und
