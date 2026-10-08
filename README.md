@@ -104,41 +104,74 @@ geschützt. Der Widget-Slot ist CLS-optimiert (reservierter Platz, kein
 Layout-Shift beim Nachladen). Serverseitig wird das Token in `app/actions/mail.ts`
 gegen die siteverify-API geprüft.
 
-### Widget anlegen
+Alles Nötige wird im **Cloudflare-Dashboard** eingerichtet – eine lokale
+Wrangler-Installation braucht es dafür nicht.
 
-Entweder im Dashboard (**Turnstile → Add widget**, Modus *Managed*) oder direkt
-per Wrangler – das legt das Widget an und gibt Site-Key und Secret aus:
+### 1. Widget anlegen
 
-```bash
-npx wrangler login            # einmalig
-npx wrangler turnstile widget create "lsc-restaurant" \
-  --mode managed \
-  --domain lsc-restaurant.dross-media.workers.dev \
-  --domain www.lsc-restaurant.de \
-  --domain lsc-restaurant.de \
-  --domain localhost \
-  --domain 127.0.0.1
-```
+Dashboard → **Turnstile** → **Add widget**:
 
-Alle Domains, unter denen das Formular erreichbar ist, müssen in der Liste
-stehen – sonst lehnt Turnstile das Token auf der fehlenden Domain ab.
+- **Widget name**: `lsc-restaurant`
+- **Widget mode**: `Managed`
+- **Hostname management**: diese zwei Einträge genügen, weil Turnstile
+  Subdomains automatisch mit abdeckt:
+  - `dross-media.workers.dev` – deckt `lsc-restaurant.dross-media.workers.dev`
+    und alle Preview-Versionen ab
+  - `lsc-restaurant.de` – deckt auch `www.lsc-restaurant.de` ab
 
-### Schlüssel hinterlegen
+Nach **Create** werden **Site-Key** und **Secret-Key** angezeigt. Beide
+brauchst du im nächsten Schritt; der Secret-Key ist später nicht mehr im
+Klartext einsehbar.
 
-- **`NEXT_PUBLIC_TURNSTILE_SITE_KEY`** (Site-Key, öffentlich) – als
-  **Build-Variable** in Cloudflare → Workers & Pages → `lsc-restaurant` →
-  Settings → Build → Variables. Er wird zur **Bauzeit** ins Frontend
-  eingebettet, ein reiner Redeploy ohne neuen Build reicht also nicht.
-  Lokal: `.env.local` (siehe `.env.example`).
-- **`TURNSTILE_SECRET_KEY`** (geheim) – als **Secret** im Worker:
-  `npx wrangler secret put TURNSTILE_SECRET_KEY`.
-  Lokal: `.dev.vars` (siehe `.dev.vars.example`).
+(Nur für lokale Entwicklung zusätzlich `localhost` und `127.0.0.1` eintragen.)
 
-Solange keine Schlüssel gesetzt sind, bleibt der Platzhalter „Sicherheitsprüfung"
-sichtbar und die serverseitige Prüfung wird übersprungen – das Formular
-funktioniert, ist aber **ungeschützt**. Fehlt später nur das Secret (z. B. nach
-einem Worker-Neuanlegen), fällt das nicht auf: Der Versand klappt weiterhin,
-die Bot-Abwehr ist aber still deaktiviert.
+### 2. Site-Key als Build-Variable
+
+Dashboard → **Workers & Pages** → `lsc-restaurant` → **Settings** → **Build**
+→ **Build Variables and Secrets** → Variable hinzufügen:
+
+| Name                             | Wert                |
+| -------------------------------- | ------------------- |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | der Site-Key        |
+
+Der Site-Key wird zur **Bauzeit** ins Frontend eingebettet. Es muss danach also
+ein **neuer Build** laufen – am sichersten durch einen Push auf `main`; ein
+erneut ausgeführter Build aus der Build-Historie tut es ebenfalls. Ein reiner
+Redeploy ohne Build reicht nicht.
+
+Wichtig: Build-Variablen sind zur Laufzeit **nicht** verfügbar – der Secret-Key
+gehört deshalb nicht hierhin, sondern in Schritt 3.
+
+### 3. Secret-Key als Worker-Secret
+
+Dashboard → **Workers & Pages** → `lsc-restaurant` → **Settings** →
+**Variables and Secrets** → **Add**:
+
+| Type     | Variable name          | Value          |
+| -------- | ---------------------- | -------------- |
+| `Secret` | `TURNSTILE_SECRET_KEY` | der Secret-Key |
+
+Dann **Deploy**. Dieses Secret liest `app/actions/mail.ts` zur Laufzeit.
+
+(Alternativ von einem Rechner mit Wrangler:
+`npx wrangler secret put TURNSTILE_SECRET_KEY`.)
+
+### 4. Prüfen
+
+Auf `/jobs` muss statt des grauen Kastens „Sicherheitsprüfung" das
+Turnstile-Widget erscheinen. Tut es das nicht, fehlt der Site-Key oder es lief
+seitdem kein neuer Build.
+
+### Verhalten ohne Schlüssel
+
+Solange keine Schlüssel gesetzt sind, bleibt der Platzhalter
+„Sicherheitsprüfung" sichtbar und die serverseitige Prüfung wird übersprungen –
+das Formular funktioniert, ist aber **ungeschützt**. Fehlt später nur das
+Secret (z. B. nach einem Worker-Neuanlegen), fällt das nicht auf: Der Versand
+klappt weiterhin, die Bot-Abwehr ist aber still deaktiviert.
+
+Lokale Entwicklung: Site-Key in `.env.local` (siehe `.env.example`),
+Secret in `.dev.vars` (siehe `.dev.vars.example`).
 
 ## Bildoptimierung (Cloudflare-Best-Practice)
 

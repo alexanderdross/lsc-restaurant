@@ -32,6 +32,23 @@ npm run typecheck && npm run lint && npm run build
 
 Ein PR wird erst zum Mergen vorgeschlagen, wenn alle drei Jobs grün sind.
 
+## Konfiguration: Dashboard statt CLI
+
+Alexander arbeitet ausschließlich in der GitHub-/Cloud-Umgebung, nicht lokal.
+Anleitungen für Cloudflare deshalb immer über das **Dashboard** schreiben, nicht
+über die Wrangler-CLI – `wrangler login` und `wrangler secret put` sind für ihn
+kein gangbarer Weg. Beides geht im Dashboard:
+
+- **Secrets** (Laufzeit, z. B. `TURNSTILE_SECRET_KEY`, SMTP):
+  Workers & Pages → `lsc-restaurant` → Settings → Variables and Secrets
+- **Build-Variablen** (Bauzeit, z. B. `NEXT_PUBLIC_TURNSTILE_SITE_KEY`):
+  Workers & Pages → `lsc-restaurant` → Settings → Build →
+  Build Variables and Secrets
+
+Build-Variablen sind zur Laufzeit nicht verfügbar und umgekehrt. Alles mit
+`NEXT_PUBLIC_`-Präfix wird zur Bauzeit eingebettet und braucht nach einer
+Änderung einen neuen Build, keinen reinen Redeploy.
+
 ## Deployment
 
 Cloudflare **Workers Builds** ist direkt mit dem GitHub-Repo verbunden und
