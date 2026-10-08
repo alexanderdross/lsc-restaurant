@@ -16,21 +16,28 @@ Branch – kein zweiter PR.
 ## CI (`.github/workflows/ci.yml`)
 
 Läuft automatisch bei jedem PR gegen `main` und bei jedem Push auf `main`.
-Drei Jobs, die parallel laufen:
+Vier Jobs, die parallel laufen:
 
-| Job            | Inhalt                                                  |
-| -------------- | ------------------------------------------------------- |
-| `quality`      | `npm run typecheck`, `npm run lint`, `npm run build`      |
-| `worker-build` | `npm run cf-build` (OpenNext-Bundle für Cloudflare)       |
-| `e2e`          | Playwright + axe (Accessibility), Report als Artefakt     |
+| Job            | Inhalt                                                                                      |
+| -------------- | ------------------------------------------------------------------------------------------- |
+| `quality`      | `typecheck`, `lint`, `format:check`, `test:unit`, `build`, `check:bundle` (First-Load-Budget) |
+| `worker-build` | `npm run cf-build` (OpenNext-Bundle für Cloudflare)                                            |
+| `e2e`          | Playwright + axe (Accessibility), Desktop und Mobile, Report als Artefakt                      |
+| `perf`         | Lighthouse CI (advisory) + Link-Check interner Links, Report als Artefakt                      |
 
-Vor dem Push lokal absichern – das ist dasselbe, was `quality` prüft:
+Dazu kommt **Workers Builds** von Cloudflare als eigener Check – der baut und
+deployt (bei `main`) bzw. erzeugt eine Preview-Version.
+
+Vor dem Push lokal absichern – das deckt ab, woran `quality` scheitert:
 
 ```bash
-npm run typecheck && npm run lint && npm run build
+npm run typecheck && npm run lint && npm run format:check && npm run test:unit && npm run build
 ```
 
-Ein PR wird erst zum Mergen vorgeschlagen, wenn alle drei Jobs grün sind.
+`format:check` nicht weglassen: Prettier-Abweichungen lassen den Job rot werden,
+auch wenn Typecheck, Lint und Build sauber durchlaufen.
+
+Ein PR wird erst zum Mergen vorgeschlagen, wenn alle Jobs grün sind.
 
 ## Konfiguration: Dashboard statt CLI
 
