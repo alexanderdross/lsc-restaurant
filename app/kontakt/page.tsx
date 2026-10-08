@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 import LazyEmbed from "@/components/LazyEmbed";
 import Faq from "@/components/Faq";
@@ -79,9 +80,13 @@ export default function KontaktPage() {
               </li>
               <li>
                 E-Mail:{" "}
-                <a href={`mailto:${site.email}`} className="hover:text-rose">
+                <Link
+                  href="/jobs"
+                  title="Nachricht über das Kontaktformular senden"
+                  className="hover:text-rose"
+                >
                   {site.email}
-                </a>
+                </Link>
               </li>
               <li className="pt-2">
                 {site.address.street}

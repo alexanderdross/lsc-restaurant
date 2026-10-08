@@ -44,7 +44,8 @@ export const mainNav: NavItem[] = [
   {
     label: "Jobs",
     href: "/jobs",
-    title: "Jobs & Karriere im LSC Restaurant Friedrichshafen",
+    title:
+      "Kontaktformular & Karriere – Nachricht an das LSC Restaurant Friedrichshafen",
   },
   {
     label: "Bewerten",

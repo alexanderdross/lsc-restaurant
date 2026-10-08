@@ -39,8 +39,8 @@ export default function Footer() {
             </p>
             <p>
               <Link
-                href="/kontakt"
-                title="Kontakt zum LSC Restaurant"
+                href="/jobs"
+                title="Nachricht über das Kontaktformular senden"
                 className="hover:text-rose"
               >
                 {site.email}

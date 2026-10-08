@@ -211,12 +211,33 @@ test("Alte /reservieren-URL leitet dauerhaft auf /kontakt um", async ({
   expect(new URL(page.url()).pathname).toBe("/kontakt/");
 });
 
-test("Bewerbungsformular hat Datei-Upload", async ({ page }) => {
+test("Kontaktformular: kein Datei-Upload, Anliegen-Auswahl vorhanden", async ({
+  page,
+}) => {
   await page.goto("/jobs");
-  await expect(page.locator('input#file[type="file"]')).toBeAttached();
+  // Der Lebenslauf-Upload wurde entfernt – es darf kein File-Input mehr geben.
+  await expect(page.locator('input[type="file"]')).toHaveCount(0);
+  await expect(page.locator("select#topic")).toBeVisible();
+  await expect(page.locator("select#topic option")).toHaveText([
+    "Allgemeine Anfrage",
+    "Bewerbung",
+  ]);
   await expect(
-    page.getByRole("button", { name: /Bewerbung senden/i })
+    page.getByRole("button", { name: /Nachricht senden/i })
   ).toBeVisible();
+});
+
+test("E-Mail-Adresse verlinkt auf das Kontaktformular", async ({ page }) => {
+  for (const path of ["/kontakt", "/"]) {
+    await page.goto(path);
+    const link = page
+      .getByRole("link", { name: "info@lsc-restaurant.de" })
+      .first();
+    await expect(link, `E-Mail-Link fehlt auf ${path}`).toHaveAttribute(
+      "href",
+      "/jobs/"
+    );
+  }
 });
 
 test.describe("CLS: reservierter Platz für Embeds/Widgets", () => {
