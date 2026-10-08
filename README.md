@@ -7,14 +7,15 @@ Braun-Rosé-Markenwelt in einem aufgefrischten, mobiloptimierten Design.
 
 ## Tech-Stack
 
-- **Next.js 15** (App Router, React 19, TypeScript)
+- **Next.js 16** (App Router, React 19, TypeScript)
 - **@opennextjs/cloudflare** – Adapter für Cloudflare Workers
 - **Tailwind CSS v4** – Design-Tokens als CSS-Variablen (dunkles Braun-Rosé-Theme)
 - **next/font/local** – vollständig self-hosted Variable Fonts (Fraunces, Inter,
   Dancing Script als `woff2` in `app/fonts/`), `font-display: swap`, keine
   Google-Abhängigkeit (Build + Runtime)
-- **Kontakt-/Bewerbungsformular** – Server Actions + eigener SMTP-Client
-  (`lib/smtp.ts`, `cloudflare:sockets`, STARTTLS) an **netcup**
+- **Kontaktformular** (Anfragen & Bewerbungen) – Server Actions + eigener
+  SMTP-Client (`lib/smtp.ts`, `cloudflare:sockets`, STARTTLS) an **netcup**,
+  geschützt durch Cloudflare Turnstile
 
 ## Projektstruktur
 
@@ -22,7 +23,7 @@ Braun-Rosé-Markenwelt in einem aufgefrischten, mobiloptimierten Design.
 app/
   layout.tsx              # Fonts, Header, Footer, Metadata
   page.tsx                # Startseite
-  kontakt/                # Kontakt (kein Formular – Reservierung/Bestellung telefonisch)
+  kontakt/                # Anfahrt, Zeiten, FAQ (Reservierung nur telefonisch)
   speisekarte/            # Speisekarte
   mittagstisch/           # Mittagstisch
   saisonkarte/            # Saisonkarte
@@ -30,7 +31,9 @@ app/
   rundgang/               # 360°-Rundgang (iframe-Einbindung)
   jobs/                   # Kontaktformular (Anfragen & Bewerbungen) + Karriere-Infos
   impressum/, datenschutz/
-  actions/mail.ts         # Server Action: Bewerbung (Jobs)
+  offline/                # Fallback-Seite der PWA
+  actions/mail.ts         # Server Action: sendMessage (Anfragen & Bewerbungen)
+  llms.txt/               # Klartext-Zusammenfassung für generative Engines (GEO)
   sitemap.ts, robots.ts   # SEO
 components/                # Header, Footer, Menu, Formulare, …
 content/
@@ -56,6 +59,9 @@ die netcup-Zugangsdaten eintragen (siehe unten).
 
 - **Speise-/Saison-/Mittagskarte:** `content/menu.ts`
 - **Adresse, Öffnungszeiten, Telefon, Social, 360°-Tour-URL:** `content/site.ts`
+- **Kampagne „Selbstabholung" (Claim, Argumente, Ablauf):** `site.takeaway` in
+  `content/site.ts` – speist Startseiten-Band, Karten-Hinweis, FAQ, JSON-LD und
+  `/llms.txt`
 - **Navigation:** `content/nav.ts`
 
 Änderungen committen und pushen – Cloudflare Workers Builds deployt automatisch.
@@ -65,7 +71,7 @@ die netcup-Zugangsdaten eintragen (siehe unten).
 1. In Cloudflare: **Workers & Pages → Create → Workers** und das GitHub-Repository
    verbinden (Branch wählen).
 2. Build-Einstellungen:
-   - **Build command:** `npx opennextjs-cloudflare build`
+   - **Build command:** `npm run cf-build`
    - **Deploy command:** `npx wrangler deploy`
    - (Alternativ lokal: `npm run deploy`)
 3. `wrangler.jsonc` ist bereits konfiguriert (`nodejs_compat`, aktuelles
@@ -76,16 +82,22 @@ die netcup-Zugangsdaten eintragen (siehe unten).
 ### SMTP-Secrets (netcup) hinterlegen
 
 Die Zugangsdaten werden **nicht** im Code gespeichert, sondern als
-Worker-Secrets:
+Worker-Secrets. Im Dashboard unter **Workers & Pages → `lsc-restaurant` →
+Settings → Variables and Secrets → Add**, jeweils mit Type `Secret`:
 
-```bash
-npx wrangler secret put SMTP_HOST     # z. B. mail.your-netcup-server.de
-npx wrangler secret put SMTP_PORT     # 587 (STARTTLS) oder 465 (SSL)
-npx wrangler secret put SMTP_USER     # netcup-Postfach, z. B. info@lsc-restaurant.de
-npx wrangler secret put SMTP_PASS     # Postfach-Passwort
-npx wrangler secret put MAIL_FROM     # Absender (echte netcup-Postfachadresse)
-npx wrangler secret put MAIL_TO       # Empfänger, z. B. info@lsc-restaurant.de
-```
+| Variable    | Inhalt                                              |
+| ----------- | --------------------------------------------------- |
+| `SMTP_HOST` | z. B. `mail.your-netcup-server.de`                  |
+| `SMTP_PORT` | `587` (STARTTLS) oder `465` (SSL)                   |
+| `SMTP_USER` | netcup-Postfach, z. B. `info@lsc-restaurant.de`     |
+| `SMTP_PASS` | Postfach-Passwort                                   |
+| `MAIL_FROM` | Absender (echte netcup-Postfachadresse)             |
+| `MAIL_TO`   | Empfänger, z. B. `info@lsc-restaurant.de`           |
+
+Nicht mit den **Build**-Variablen verwechseln: Der Block dort heißt genauso,
+wirkt aber nur zur Bauzeit. Secrets gehören in die Laufzeit-Variablen.
+
+(Von einem Rechner mit Wrangler alternativ: `npx wrangler secret put <NAME>`.)
 
 > Hinweis: Für zuverlässige Zustellung SPF/DKIM der Domain bei netcup einrichten.
 
@@ -103,6 +115,11 @@ Das Kontaktformular (`/jobs`) ist mit **Cloudflare Turnstile**
 geschützt. Der Widget-Slot ist CLS-optimiert (reservierter Platz, kein
 Layout-Shift beim Nachladen). Serverseitig wird das Token in `app/actions/mail.ts`
 gegen die siteverify-API geprüft.
+
+**Status: eingerichtet.** Widget, Site-Key und Secret-Key sind gesetzt, das
+Widget wird auf `/jobs` ausgeliefert. Die folgende Anleitung ist die Referenz
+zum Nachvollziehen – etwa wenn der Worker neu angelegt oder die Domain
+gewechselt wird.
 
 Alles Nötige wird im **Cloudflare-Dashboard** eingerichtet – eine lokale
 Wrangler-Installation braucht es dafür nicht.
@@ -197,9 +214,11 @@ Laufzeit-Optimierung über **Cloudflare Image Transformations** (`image-loader.t
 - [ ] Echte Foodfotografie / Terrassen- & Innenbilder einbinden
 - [ ] Finale Braun-Hex-Werte gegen Logo/CI abgleichen (`app/globals.css`)
 - [ ] netcup-SMTP-Zugangsdaten als Secrets setzen
-- [ ] Turnstile-Widget anlegen und beide Schlüssel setzen (siehe „Formular-Schutz")
+- [x] Turnstile-Widget anlegen und beide Schlüssel setzen (siehe „Formular-Schutz") –
+      Site-Key im Bundle verifiziert, Widget rendert; das Secret bestätigt sich
+      beim ersten erfolgreichen Testversand
 - [ ] Nach Domain-/Zone-Setup: Image Transformations aktivieren + `NEXT_PUBLIC_CF_IMAGE_RESIZING=true`
-- [ ] 360°-Rundgang-Embed-URL in `content/site.ts` (`tourEmbedUrl`) eintragen
+- [x] 360°-Rundgang-Embed-URL in `content/site.ts` (`tourEmbedUrl`) eingetragen
 - [ ] Impressum & Datenschutz rechtlich prüfen und `[…]`-Platzhalter ergänzen
 - [ ] Allergen-Legende (`content/menu.ts`) gegen die interne Kennzeichnung abgleichen
 - [ ] Speisekarten-Preise final gegenprüfen
