@@ -22,12 +22,16 @@
   "observability": {
     "enabled": true,
   },
-  // SMTP-Zugangsdaten NICHT hier eintragen – als Secrets hinterlegen:
-  //   npx wrangler secret put SMTP_HOST
-  //   npx wrangler secret put SMTP_PORT
-  //   npx wrangler secret put SMTP_USER
-  //   npx wrangler secret put SMTP_PASS
-  //   npx wrangler secret put MAIL_FROM
-  //   npx wrangler secret put MAIL_TO
+  // SMTP-Zugangsdaten und der Turnstile-Secret-Key gehören NICHT hierhin,
+  // sondern als Secrets an den Worker. Im Dashboard (kein Wrangler nötig):
+  //   Workers & Pages → lsc-restaurant → Settings → Variables and Secrets
+  //   → Add → Type "Secret" → Deploy
+  // Benötigt werden: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, MAIL_FROM,
+  // MAIL_TO und TURNSTILE_SECRET_KEY.
+  // Von einem Rechner mit Wrangler alternativ: npx wrangler secret put <NAME>
   // Für lokale Entwicklung: in .dev.vars (siehe .dev.vars.example)
+  //
+  // Achtung: Build-Variablen (z. B. NEXT_PUBLIC_TURNSTILE_SITE_KEY) sind etwas
+  // anderes und stehen unter Settings → Build → Build Variables and Secrets.
+  // Sie wirken nur zur Bauzeit, nicht zur Laufzeit.
 }
